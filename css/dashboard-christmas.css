@@ -1,0 +1,129 @@
+/* Template Giáng sinh cho dashboard — dùng chung ảnh, font, bảng màu với trang đăng nhập */
+
+/* ---------- Bảng màu theo cảnh ngày / đêm (tự đổi theo giờ) ---------- */
+:root[data-scene="day"] {
+  --bg:#f6ebdd; --sf:#fffaf2f0; --sf2:#f6ebdd; --tx:#3b1a14; --mu:#7d5a4c; --bd:#e6cfb4;
+  --ac:#a31118; --g:#1c7c3a; --gb:#d9f0dd; --y:#b45f06; --yb:#fdeabf; --r:#c4122f; --rb:#fbdadf;
+  --n:#9b7e6e; --nb:#efe2d3;
+  --pri-bg:linear-gradient(135deg,#b3141c,#820d15); --pri-tx:#fff1d5;
+  --veil:#b8cedc00; color-scheme:light;
+}
+:root[data-scene="night"] {
+  --bg:#2a070c; --sf:#3a0b12e8; --sf2:#4f1019; --tx:#fff1d5; --mu:#e0c3a3; --bd:#7d2a33;
+  --ac:#f1d6a6; --g:#7ee19a; --gb:#17402a; --y:#ffc86a; --yb:#4a3410; --r:#ff8197; --rb:#5a1624;
+  --n:#c9a58f; --nb:#4a1a20;
+  --pri-bg:linear-gradient(120deg,#f1d6a6,#dcb16f); --pri-tx:#4a1a14;
+  --veil:#0a020500; color-scheme:dark;
+}
+html { background:var(--bg); }
+
+/* ---------- Nền cảnh Giáng sinh ---------- */
+.xmas-scene { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+.xmas-bg {
+  position:absolute; inset:0; background-size:cover; background-position:center;
+  transition:opacity 1.6s ease;
+}
+.xmas-bg-day { background-image:url("../image/christmas-festive-garden-day-v1-2x.jpg"); }
+.xmas-bg-night { background-image:url("../image/christmas-festive-garden-night-v1-2x.jpg"); }
+:root[data-scene="day"] .xmas-bg-night, :root[data-scene="night"] .xmas-bg-day { opacity:0; }
+.xmas-wash { position:absolute; inset:0; transition:background .6s; }
+:root[data-scene="day"] .xmas-wash { background:linear-gradient(180deg,#ffffff1f,#f6ebdd3d); }
+:root[data-scene="night"] .xmas-wash { background:linear-gradient(180deg,#12040855,#1a05088c); }
+#xmas-snow { position:absolute; inset:0; width:100%; height:100%; display:block; }
+
+/* ---------- Dây đèn nhấp nháy trên cùng ---------- */
+.xmas-lights {
+  position:fixed; left:0; right:0; top:env(safe-area-inset-top,0px); height:30px; z-index:30; pointer-events:none;
+  background:
+    radial-gradient(circle at 12px 17px,#ff4d5a 0 5px,#ff4d5a00 6px),
+    radial-gradient(circle at 42px 21px,#ffd35c 0 5px,#ffd35c00 6px),
+    radial-gradient(circle at 72px 17px,#4ade80 0 5px,#4ade8000 6px),
+    radial-gradient(circle at 102px 21px,#60a5fa 0 5px,#60a5fa00 6px),
+    linear-gradient(#1f3a2a,#1f3a2a) 0 5px/100% 2px no-repeat;
+  background-size:120px 30px,120px 30px,120px 30px,120px 30px,100% 2px;
+  background-repeat:repeat-x,repeat-x,repeat-x,repeat-x,no-repeat;
+  filter:drop-shadow(0 0 5px #ffd98a99);
+  animation:xmas-twinkle 2.4s ease-in-out infinite alternate;
+}
+@keyframes xmas-twinkle { from{opacity:.62; filter:drop-shadow(0 0 3px #ffd98a66)} to{opacity:1; filter:drop-shadow(0 0 8px #ffd98acc)} }
+
+/* ---------- Bố cục ---------- */
+.wrap { position:relative; z-index:2; padding-top:44px; }
+h1, h2, .banner h1 { font-family:"Cormorant Garamond",Georgia,serif; font-weight:600; letter-spacing:-.4px; line-height:1.1; }
+h1 { font-size:34px; }
+h2 { font-size:24px; }
+.banner h1 { font-size:42px; }
+.gc b { font-family:"Cormorant Garamond",Georgia,serif; font-weight:600; font-size:50px; }
+
+/* ---------- Thẻ (card) ---------- */
+.auth-bar, .hero, .vid, .rep, .empty, .meta label, .bar {
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+}
+.auth-bar { border-color:color-mix(in srgb,#dcb16f 55%,var(--bd)); box-shadow:0 12px 30px -14px #54281d88; }
+.hero { border-color:color-mix(in srgb,#dcb16f 45%,var(--bd)); box-shadow:0 18px 44px -16px #54281d99; }
+.rep { border-color:color-mix(in srgb,#dcb16f 45%,var(--bd)); box-shadow:0 18px 44px -18px #54281d99; }
+.vid { box-shadow:0 10px 26px -16px #54281d88; }
+.bar { background:var(--sf); border:1px solid var(--bd); border-radius:16px; padding:10px 16px; }
+.bar h2 { font-size:22px; }
+.empty { background:var(--sf); }
+.auth-avatar { background:linear-gradient(135deg,#a31118,#750812); color:#fff1d5; border:2px solid #f1d6a6; font-family:"Cormorant Garamond",Georgia,serif; font-size:19px; }
+.xmas-logo { display:block; flex:none; height:34px; }
+.xmas-logo img { height:34px; width:auto; display:block; }
+:root[data-scene="day"] .logo-night, :root[data-scene="night"] .logo-day { display:none; }
+@media (max-width:560px){ .xmas-logo{display:none} }
+
+/* ---------- Nút & ô nhập ---------- */
+input { background:color-mix(in srgb,var(--sf2) 70%,var(--sf)); }
+.pri { background:var(--pri-bg); color:var(--pri-tx); border-color:#f1d6a6aa; box-shadow:0 8px 18px -8px #54281daa; }
+.pri:hover { box-shadow:0 12px 24px -8px #54281dcc; }
+.add { color:var(--ac); border-color:color-mix(in srgb,#dcb16f 70%,var(--bd)); background:var(--sf); }
+.add:hover { background:var(--sf2); }
+.toast { background:#a31118; color:#fff1d5; border:1px solid #f1d6a6; }
+pre { background:color-mix(in srgb,var(--sf2) 80%,var(--sf)); }
+:root[data-scene="night"] input::placeholder { color:#c9a58f; }
+
+/* ---------- Banner đỏ Giáng sinh + họa tiết bông tuyết ---------- */
+.banner {
+  background:
+    linear-gradient(120deg,#a31118ee 0%,#820d15ee 55%,#750812f2 100%),
+    url("../image/christmas-red-snowflake-texture-v1.webp") center/cover;
+  border:1px solid #f1d6a6;
+  box-shadow:0 20px 44px -18px #54281dcc, inset 0 1px 0 #ffffff33;
+}
+.banner[data-ph=night], .banner[data-ph=dusk] {
+  background:
+    linear-gradient(120deg,#6d0a12f0 0%,#4a0710f0 55%,#2f040af5 100%),
+    url("../image/christmas-red-snowflake-texture-v1.webp") center/cover;
+}
+.banner::before { background:radial-gradient(circle,#f1d6a655,transparent 68%); }
+.banner p { color:#fff1d5; font-size:15px; }
+.chips span { background:#f1d6a62b; border-color:#f1d6a68c; color:#fff1d5; }
+.clock { background:#fff1d51f; border-color:#f1d6a6; }
+.ct small, .ct span { color:#f1d6a6; }
+.ct b { font-family:"Cormorant Garamond",Georgia,serif; font-weight:600; font-size:28px; color:#fff1d5; }
+.deco rect { fill:#f1d6a64d; } .deco rect.hi { fill:#f1d6a6b3; }
+.deco .ln { stroke:#f1d6a6; } .deco circle { fill:#f1d6a6; }
+
+@media (max-width:720px){
+  .banner h1 { font-size:32px; }
+  .wrap { padding-top:40px; }
+}
+@media (prefers-reduced-motion:reduce){ .xmas-lights{animation:none!important} .xmas-bg{transition:none!important} }
+
+/* Khối Tên / Ngày: nền riêng để dễ đọc trên cảnh */
+.top > .meta { background:var(--sf); border:1px solid var(--bd); border-radius:16px; padding:10px 14px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+.top > .meta label { color:var(--mu); }
+.meta label { backdrop-filter:none; -webkit-backdrop-filter:none; }
+
+/* ---------- Khung số liệu (.k) ở cảnh ĐÊM: sáng và ấm hơn, không còn tối xỉn ---------- */
+:root[data-scene="night"] .k {
+  background:
+    linear-gradient(160deg, #ffffff1c, #ffffff05 55%),
+    color-mix(in srgb, var(--v,var(--ac)) 24%, #6b1d28);
+  border:1px solid color-mix(in srgb, var(--v,var(--ac)) 50%, #7d2a33);
+  box-shadow:inset 0 1px 0 #ffffff2e, 0 8px 18px -12px #000a;
+}
+:root[data-scene="night"] .k small,
+:root[data-scene="night"] .k i { color:#f8e6c9; }
+:root[data-scene="night"] .k b { color:var(--tx); }
+:root[data-scene="night"] .k.sk[data-g] b { color:var(--v); text-shadow:0 1px 0 #0006; }

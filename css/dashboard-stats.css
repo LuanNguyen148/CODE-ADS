@@ -1,0 +1,68 @@
+/* Khối thống kê theo ngày */
+.stats .sub{margin:4px 0 0;color:var(--mu);font-size:13px}
+.stats .hint2{margin:10px 0 12px;color:var(--mu);font-size:12px}
+.srange{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-top:14px}
+.srange label{flex:1 1 150px;max-width:210px}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+.presets button{padding:9px 14px;font-size:13px}
+.presets button.on{background:var(--pri-bg);color:var(--pri-tx);border-color:#f1d6a6aa}
+.skp{grid-template-columns:repeat(5,1fr)}
+.sk{--v:var(--ac)}
+.sk[data-g=g]{--v:var(--g)}.sk[data-g=y]{--v:var(--y)}.sk[data-g=r]{--v:var(--r)}
+.sk[data-g] b{font-size:19px}
+.sk[data-g=g] b,.sk[data-g=y] b,.sk[data-g=r] b{color:var(--v)}
+.legend{display:flex;gap:16px;margin:16px 0 6px;font-size:12px;color:var(--mu)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i,.sbars i{display:block;border-radius:4px 4px 0 0}
+.legend i{width:12px;height:12px;border-radius:3px}
+.sp{background:var(--ac)}
+.sr{background:var(--g)}
+.chartwrap{overflow-x:auto;padding-bottom:4px}
+.schart{display:flex;gap:4px;align-items:stretch;min-width:min(100%,520px);height:190px}
+.sc{flex:1 0 30px;display:flex;flex-direction:column;cursor:pointer;border-radius:8px}
+.sc:hover{background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.sbars{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;border-bottom:1px solid var(--bd);padding:0 2px}
+.sbars i{width:42%;max-width:14px;min-height:0;transition:height .5s cubic-bezier(.22,1,.36,1)}
+.sc span{font-size:10px;text-align:center;color:var(--mu);padding-top:4px;font-variant-numeric:tabular-nums}
+.sc.no{opacity:.45}
+.tw{overflow-x:auto;margin-top:14px;border:1px solid var(--bd);border-radius:12px}
+.stats table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;min-width:480px}
+.stats th{text-align:right;font-weight:600;color:var(--mu);padding:9px 12px;background:color-mix(in srgb,var(--sf2) 80%,var(--sf));white-space:nowrap}
+.stats td{text-align:right;padding:9px 12px;border-top:1px solid var(--bd);white-space:nowrap}
+.stats th:first-child,.stats td:first-child{text-align:left;font-weight:600}
+.stats tbody tr[data-d]{cursor:pointer}
+.stats tbody tr[data-d]:hover{background:color-mix(in srgb,var(--ac) 9%,transparent)}
+.spill{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:700;font-size:12px;background:var(--nb);color:var(--n)}
+.spill[data-g=g]{background:var(--gb);color:var(--g)}.spill[data-g=y]{background:var(--yb);color:var(--y)}.spill[data-g=r]{background:var(--rb);color:var(--r)}
+.sempty{text-align:center!important;color:var(--mu);padding:22px!important}
+@media (max-width:720px){.skp{grid-template-columns:1fr 1fr}.srange label{max-width:none}}
+
+/* ---------- Tab điều hướng trên banner ---------- */
+[hidden]{display:none!important}
+.bt{max-width:660px;z-index:3}
+.deco{pointer-events:none}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.tabs button{padding:9px 18px;border-radius:99px;font-size:13px;font-weight:600;color:#fff1d5;background:#f1d6a62b;border:1px solid #f1d6a68c;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s,color .2s,transform .1s,box-shadow .2s}
+.tabs button:hover{background:#f1d6a655}
+.tabs button[aria-selected=true]{background:linear-gradient(120deg,#f1d6a6,#dcb16f);color:#4a1a14;border-color:#f1d6a6;font-weight:700;box-shadow:0 8px 18px -8px #000b}
+.tabs button:focus-visible{outline:2px solid #fff1d5;outline-offset:2px}
+@media (max-width:560px){.tabs button{padding:8px 14px;font-size:12.5px}}
+
+/* ---------- Thống kê theo bài ---------- */
+.subh{font-size:18px;font-weight:600;margin:18px 0 8px;font-family:"Cormorant Garamond",Georgia,serif}
+.sk b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbars{display:grid;gap:8px;margin-bottom:16px}
+.hb{--v:var(--n);display:grid;grid-template-columns:minmax(80px,170px) 1fr 62px;gap:10px;align-items:center;font-size:13px}
+.hb[data-g=g]{--v:var(--g)}.hb[data-g=y]{--v:var(--y)}.hb[data-g=r]{--v:var(--r)}
+.hn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.ht{height:12px;border-radius:99px;background:var(--nb);overflow:hidden}
+.ht i{display:block;height:100%;border-radius:99px;background:var(--v);transition:width .6s cubic-bezier(.22,1,.36,1)}
+.hb b{text-align:right;color:var(--v);font-variant-numeric:tabular-nums}
+#atab{min-width:760px}
+.sortb{all:unset;cursor:pointer;font-weight:600;color:inherit;white-space:nowrap;padding:2px 0}
+.sortb:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:4px}
+#atab th[aria-sort=ascending] .sortb::after{content:" ▲";font-size:10px}
+#atab th[aria-sort=descending] .sortb::after{content:" ▼";font-size:10px}
+#atab td:first-child{max-width:220px;overflow:hidden;text-overflow:ellipsis}
+#rangeCard .sub{margin-top:12px}
+#rangeCard .hint2{margin:2px 0 0}

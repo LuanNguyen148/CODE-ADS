@@ -1,0 +1,6 @@
+node_modules/
+supabase/.temp/
+*.bak
+*.before-*.html
+_tmp-*.html
+.claude/

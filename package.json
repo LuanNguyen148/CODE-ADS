@@ -1,0 +1,11 @@
+{
+  "name": "adscgd",
+  "private": true,
+  "description": "Trang đánh giá chỉ số quảng cáo (adsCGD) — web tĩnh + Supabase Edge Function",
+  "scripts": {
+    "test": "node tests/run-all.js"
+  },
+  "devDependencies": {
+    "jsdom": "24.1.3"
+  }
+}

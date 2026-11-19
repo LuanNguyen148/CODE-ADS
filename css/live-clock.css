@@ -1,0 +1,66 @@
+/* Đồng hồ ngày giờ — phong cách Giáng sinh */
+.live-clock {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px 8px 14px;
+  border-radius: 999px;
+  color: #fff1d5;
+  background: linear-gradient(135deg, #a31118e6, #750812e6);
+  border: 1px solid #f1d6a6;
+  box-shadow: 0 10px 30px #54281d55, inset 0 1px 0 #ffffff33;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+.live-clock-icon {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 18px;
+  background: linear-gradient(120deg, #f1d6a6, #dcb16f);
+  color: #7a3a2c;
+  box-shadow: 0 0 12px #f1d6a688;
+}
+.live-clock-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.live-clock-time {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+}
+.live-clock-date {
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #f1d6a6;
+}
+@media (max-width: 560px) {
+  .live-clock { gap: 9px; padding: 6px 14px 6px 10px; }
+  .live-clock-icon { width: 28px; height: 28px; font-size: 15px; }
+  .live-clock-time { font-size: 21px; }
+  .live-clock-date { font-size: 13px; }
+}
+
+/* Màn hình nhỏ: header đã có logo + MENU nên đưa đồng hồ xuống đáy */
+@media (max-width: 850px) {
+  .live-clock {
+    top: auto;
+    bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  }
+}
