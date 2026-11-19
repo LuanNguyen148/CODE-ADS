@@ -743,6 +743,27 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
 
 /* Ghi chú: nhãn trạng thái + nút ẩn/hiện, không che nội dung khi mở trên màn hình nhỏ */
 @media (max-width:1099px){.debt-card{width:min(300px,calc(100vw - 24px))}}
+/* ===== v30: Điện thoại — không tràn ngang (ô chọn TKQC và nút đồng bộ co theo màn hình) ===== */
+@media (max-width:760px){
+  .hier-nav,.hier-top,.acc-ctl,.sync-ctl,.acc-sel{min-width:0;max-width:100%}
+  .hier-top{width:100%;box-sizing:border-box}
+  .acc-ctl{width:100%;flex:none}
+  .acc-sel{flex:1 1 auto;width:100%}
+  .acc-sel select{width:100%;min-width:0;max-width:100%;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+  .sync-ctl{width:100%;flex-wrap:wrap}
+  .sync-ctl .btn-fb{flex:1 1 auto;justify-content:center;min-width:0}
+  .sync-msg{min-width:0}
+  .acc-ctl .fb-badge{max-width:100%;white-space:normal;text-align:center}
+}
+/* ===== v31: Điện thoại — popup Dư nợ thành nút tròn, tab dính có mép mờ, chừa đáy trang ===== */
+@media (max-width:760px){
+  body{padding-bottom:72px}
+  .debt{right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+  .debt-pill{width:48px;height:48px;min-height:48px;padding:0;justify-content:center;font-size:0;border-radius:50%}
+  .debt-pill::before{content:'💳';font-size:20px;line-height:1}
+  .debt-pill b{display:none}
+  .mini-tabs{-webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);mask-image:linear-gradient(90deg,#000 86%,transparent)}
+}
 </style>
 <link rel="stylesheet" href="css/fonts.css?v=woff2a">
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
@@ -1006,7 +1027,7 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
 
 <script integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=localdev1"></script>
-<script src="js/supabase-client.js?v=localdev1"></script>
+<script src="js/supabase-client.js?v=sync1"></script>
 <script>
 (function(){
 var ADS_FB_API = window.ADS_FB_API || "https://graph.facebook.com/v21.0/";
@@ -1027,16 +1048,32 @@ if(window.ADS_LOCAL_SESSION){
     if(!r.data.session){ADS_SIGNOUT_LOCAL();location.replace("index.html");return}
     ADS_REVEAL();
   });
-  // Kéo dữ liệu từ cloud; nếu mới hơn bản trên máy thì ghi vào và nạp lại trang 1 lần
+  // Đồng bộ với cloud. Mốc đồng bộ (KEY-cloudts) CHỈ đổi khi thật sự nhận từ / đẩy lên cloud — không bị save() tự động làm mới.
+  // Quy tắc: máy chưa từng đồng bộ, hoặc cloud mới hơn mốc → lấy cloud; ngược lại bản trên máy là mới nhất.
+  // Mọi lần đẩy lên cloud bị giữ lại cho tới khi biết cloud đang có gì (máy mới không được ghi đè dữ liệu của máy khác).
+  ADS_CLOUD.onPushed=function(ts){try{localStorage.setItem(KEY+"-cloudts",ts)}catch(e){}};
   ADS_CLOUD.pull().then(function(r){
-    if(!r||!r.state)return;
-    var nxt=JSON.stringify(r.state),cur=localStorage.getItem(KEY);
-    if(cur===nxt||sessionStorage.getItem("ads_cloud_synced")===r.updated_at)return;
-    var lt=Date.parse(localStorage.getItem(KEY+"-ts")||0)||0;
-    if(Date.parse(r.updated_at)>lt){
-      localStorage.setItem(KEY,nxt);localStorage.setItem(KEY+"-ts",r.updated_at);
-      sessionStorage.setItem("ads_cloud_synced",r.updated_at);location.reload();
+    if(r&&r.failed){ // không hỏi được cloud → KHÔNG đẩy gì lên, tránh ghi đè
+      console.warn("Không đọc được dữ liệu cloud:",r.message);
+      setTimeout(function(){if(window.toast)toast("Chưa đồng bộ được với máy chủ — dữ liệu chưa được lưu lên cloud",{type:"error"})},1200);
+      return;
     }
+    if(!r||!r.state){ADS_CLOUD.release();return} // cloud chưa có dữ liệu → bản trên máy được đẩy lên bình thường
+    var nxt=JSON.stringify(r.state),cur=localStorage.getItem(KEY),mk=localStorage.getItem(KEY+"-cloudts");
+    var cloudNewer=!mk||Date.parse(r.updated_at)>(Date.parse(mk)||0);
+    // Máy cũ đã có dữ liệu nhưng CHƯA có mốc đồng bộ (trước khi có cơ chế này): không tin mù quáng bản cloud.
+    // Nếu bản trên máy có nhiều SĐT/doanh số nhập tay hơn thì giữ bản trên máy và đẩy lên (sửa lại cloud nếu bị ghi đè trước đó).
+    function manualCount(st){var n=0;try{Object.keys(st.byAcc||{}).forEach(function(a){var d=(st.byAcc[a]||{}).days||{};Object.keys(d).forEach(function(k){(d[k]||[]).forEach(function(x){if(x&&(pm(x.rev)>0||n_(x.phone)>0))n++})})})}catch(e){}return n}
+    function n_(v){v=parseFloat(v);return isFinite(v)?v:0}
+    if(!mk&&cur){var lc=null;try{lc=JSON.parse(cur)}catch(e){}if(lc&&manualCount(lc)>manualCount(r.state)){ADS_CLOUD.release();return}}
+    if(cur===nxt){localStorage.setItem(KEY+"-cloudts",r.updated_at);ADS_CLOUD.release();return}
+    if(cloudNewer&&sessionStorage.getItem("ads_cloud_synced")!==r.updated_at){
+      localStorage.setItem(KEY,nxt);localStorage.setItem(KEY+"-cloudts",r.updated_at);
+      sessionStorage.setItem("ads_cloud_synced",r.updated_at);
+      ADS_CLOUD.drop(); // bản trên máy đã cũ: bỏ lần đẩy đang chờ, giữ nguyên trạng thái giữ cho tới khi nạp lại
+      location.reload();return;
+    }
+    ADS_CLOUD.release(); // bản trên máy mới nhất → đẩy lên
   });
 }else{
   // Không khởi tạo được Supabase thật (mạng lỗi, CDN bị chặn, thiếu cấu hình...) và cũng không phải
@@ -1579,7 +1616,7 @@ function fd(v){return isFinite(v)?ab(v)+" đ":"–"}
 function num(el,to,fmt,dur){var from=el._v;el._v=to;cancelAnimationFrame(el._r);if(RM||!isFinite(to)||from===to){el.textContent=fmt(to);return}if(from===undefined||!isFinite(from))from=0;var t0=performance.now();(function s(t){var p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e);if(p<1)el._r=requestAnimationFrame(s)})(t0)}
 function load(){try{var r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}}
 function hasData(rows){return(rows||[]).some(function(r){return pm(r.spend)>0||n(r.mess)>0||n(r.phone)>0||pm(r.rev)>0})}
-function save(notify){S.days=S.days||{};S.days[S.day]=S.rows;Object.keys(S.days).forEach(function(k){if(k!==S.day&&!hasData(S.days[k]))delete S.days[k]});try{localStorage.setItem(KEY,JSON.stringify(S,function(k,v){return(this===S&&(k==="days"||k==="rows")&&currentAccountId===ALL_ACC)?undefined:v}));if(window.ADS_CLOUD&&ADS_CLOUD.on){localStorage.setItem(KEY+"-ts",new Date().toISOString());ADS_CLOUD.push(JSON.parse(localStorage.getItem(KEY)),{notify:!!notify})}}catch(e){}}
+function save(notify){S.days=S.days||{};S.days[S.day]=S.rows;Object.keys(S.days).forEach(function(k){if(k!==S.day&&!hasData(S.days[k]))delete S.days[k]});try{localStorage.setItem(KEY,JSON.stringify(S,function(k,v){return(this===S&&(k==="days"||k==="rows")&&currentAccountId===ALL_ACC)?undefined:v}));if(window.ADS_CLOUD&&ADS_CLOUD.on){ADS_CLOUD.push(JSON.parse(localStorage.getItem(KEY)),{notify:!!notify})}}catch(e){}}
 function n(v){v=parseFloat(v);return isFinite(v)?v:0}
 function money(v){return isFinite(v)?Math.round(v).toLocaleString("vi-VN"):"–"}
 function div(a,b){return b>0?a/b:NaN}

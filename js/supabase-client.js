@@ -14,13 +14,15 @@
     window.sb=window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true}});
   }
   var timer=null,pending=null;
+  // Giữ mọi lần đẩy lên cloud cho tới khi trang biết cloud đang có gì (tránh máy mới ghi đè dữ liệu của máy khác)
+  var hold=!!window.sb;
   window.ADS_CLOUD={
     on:!!window.sb,
     // Lấy dữ liệu đã lưu; trả về {state, updated_at} hoặc null
     async pull(){
       if(!window.sb)return null;
       var r=await window.sb.from('ads_user_state').select('state,updated_at').maybeSingle();
-      return r.error?null:r.data;
+      return r.error?{failed:true,message:r.error.message}:r.data;
     },
     // Ghi dữ liệu lên cloud (gộp lần ghi liên tiếp, chờ 0,8 giây). opts.notify = true khi người dùng nhập tay SĐT/doanh số
     push(state,opts){
@@ -32,13 +34,15 @@
     // Ghi ngay dữ liệu đang chờ lên Supabase (gọi khi rời trang / ẩn tab)
     async flush(){
       clearTimeout(timer);
-      if(!window.sb||!pending)return;
+      if(!window.sb||!pending||hold)return;
       var job=pending;pending=null;
       try{
         var s=await window.sb.auth.getSession();var u=s.data&&s.data.session&&s.data.session.user;
         if(!u)throw new Error('Chưa đăng nhập Supabase');
-        var r=await window.sb.from('ads_user_state').upsert({user_id:u.id,state:job.state,updated_at:new Date().toISOString()});
+        var stamp=new Date().toISOString();
+        var r=await window.sb.from('ads_user_state').upsert({user_id:u.id,state:job.state,updated_at:stamp});
         if(r.error)throw new Error(r.error.message);
+        if(typeof ADS_CLOUD.onPushed==='function')ADS_CLOUD.onPushed(stamp);
         if(job.notify&&typeof ADS_CLOUD.onSaved==='function')ADS_CLOUD.onSaved();
       }catch(e){
         console.warn('Supabase lưu lỗi:',e.message);
@@ -46,6 +50,10 @@
         if(typeof ADS_CLOUD.onError==='function')ADS_CLOUD.onError(e.message);
       }
     },
+    // Trang đã biết cloud đang có gì: cho phép đẩy dữ liệu đang chờ (nếu có)
+    release(){hold=false;if(pending)ADS_CLOUD.flush()},
+    // Bỏ dữ liệu đang chờ đẩy (khi vừa nhận dữ liệu mới hơn từ cloud, bản trên máy đã cũ)
+    drop(){pending=null;clearTimeout(timer)},
     // fetch tới Facebook Graph qua Edge Function (hỗ trợ cả GET & POST, token nằm trên server)
     async fb(url,opts){
       if(!window.sb)return fetch(url,opts);

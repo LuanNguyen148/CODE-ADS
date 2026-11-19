@@ -66,6 +66,8 @@
 - **Vòng tròn CPQC:** không hiện chữ "Cắt / sửa" (chỉ đổi màu đỏ).
 - **Đã bỏ hẳn:** tab Thanh toán (trang), ô nhập "Tên" (tên lấy từ tài khoản đăng nhập), nút "Dọn dữ liệu rác / 0đ", cột phải "Đồng bộ Facebook", mục "Kết nối Facebook" ở menu.
 
+- **Đồng bộ cloud (Supabase `ads_user_state`):** mọi lần đẩy bị giữ lại (`ADS_CLOUD` hold) cho tới khi trang đọc xong cloud. So sánh bằng mốc riêng `KEY-cloudts` (chỉ đổi khi nhận từ / đẩy lên cloud thành công), **không** dùng thời điểm `save()`. Máy mới lấy cloud; lỗi đọc cloud thì không đẩy gì; máy cũ chưa có mốc nhưng có nhiều SĐT/doanh số hơn cloud thì giữ máy và khôi phục cloud. Đã có bài thử `tests/cloudtest.js` (lỗi cũ: máy mới ghi đè dữ liệu nhập tay của máy khác).
+
 ## 7. Kiểm thử (bài thử nằm trong repo)
 - Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 12 bài).
 - Bài thử dùng jsdom với dữ liệu giả. Đặt `ADS_LOCAL_SESSION = true` vì `supabase-client.js` không chạy trong jsdom.
