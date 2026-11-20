@@ -1101,6 +1101,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
 <link rel="stylesheet" href="css/dashboard-stats.css?v=6">
 <link rel="stylesheet" href="css/logout-popup.css?v=2">
+<link rel="stylesheet" href="css/ui-polish.css?v=1">
 </head>
 <body>
 <div class="xmas-scene" aria-hidden="true"><span class="xmas-bg xmas-bg-day"></span><span class="xmas-bg xmas-bg-night"></span><span class="xmas-wash"></span><canvas id="xmas-snow"></canvas></div>
@@ -1189,9 +1190,10 @@ td .pick{margin-right:8px;vertical-align:middle}
 
 <div class="bar"><h2 id="hier-heading">1. Danh sách Chiến dịch (Bấm vào Chiến dịch để xem Nhóm QC)</h2>
 <div class="meta">
-<label>CPQC tốt ≤ (%)<input id="t1" type="number" inputmode="decimal" min="0" class="in-pct"></label>
-<label>Theo dõi ≤ (%)<input id="t2" type="number" inputmode="decimal" min="0" class="in-pct"></label>
-</div></div>
+<label title="CPQC nhỏ hơn hoặc bằng mức này được tính là Tốt (xanh)">CPQC tốt ≤ (%)<input id="t1" type="number" inputmode="decimal" min="0" class="in-pct" aria-describedby="thr-hint"></label>
+<label title="CPQC nhỏ hơn hoặc bằng mức này (nhưng cao hơn mức Tốt) là Theo dõi (vàng)">Theo dõi ≤ (%)<input id="t2" type="number" inputmode="decimal" min="0" class="in-pct" aria-describedby="thr-hint"></label>
+</div>
+<p class="thr-hint" id="thr-hint">Màu CPQC: ≤ mức tốt → <b class="g">Tốt</b> · ≤ mức theo dõi → <b class="y">Theo dõi</b> · cao hơn → <b class="r">Cắt / sửa</b>.</p></div>
 
 <div class="hier-nav" aria-label="Điều hướng phân cấp Chiến dịch - Nhóm quảng cáo - Quảng cáo">
   <div class="hier-top"><div class="slot" id="hier-acc-slot"><div class="acc-ctl" id="acc-ctl"><label class="acc-sel" title="Đổi tài khoản sẽ tự tải dữ liệu riêng của tài khoản đó"><select id="fb-acc-select" aria-label="Tài khoản quảng cáo"><option value="">-- Đang tải danh sách tài khoản... --</option></select></label><button type="button" class="fb-badge" id="fb-badge" data-open-account title="Tài khoản &amp; Token Facebook">Đang kết nối</button></div></div><div class="slot" id="hier-sync-slot"><div class="sync-ctl" id="sync-ctl"><span class="sync-msg" id="fb-msg">Đang kết nối tới Facebook...</span><button type="button" class="btn-fb" id="fb-sync-btn" title="Lấy số liệu Facebook của ngày đang xem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span id="fb-sync-label">Lấy số liệu ngày này</span></button><button type="button" class="btn-fb" id="fb-sync-range" title="Đồng bộ nhiều ngày theo khoảng ngày đã chọn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span>Đồng bộ khoảng ngày</span></button></div></div></div>
@@ -1250,13 +1252,9 @@ td .pick{margin-right:8px;vertical-align:middle}
 
 <section class="rep stats" id="rangeCard" aria-label="Chọn khoảng ngày" hidden>
 <div class="hier-top"><div class="slot" id="rng-acc-slot"></div><div class="slot" id="rng-sync-slot"></div></div>
-<div class="srange">
-<label>Từ ngày<input id="sf" type="date"></label>
-<label>Đến ngày<input id="st" type="date"></label>
-<div class="presets" id="spresets" role="group" aria-label="Chọn nhanh"><button type="button" data-n="7">7 ngày</button><button type="button" data-n="14">14 ngày</button><button type="button" data-n="30">30 ngày</button></div>
-</div>
+<div class="srange"><div class="date-slot" id="rng-date-slot"></div></div>
 <p class="sub" id="sinfo"></p>
-<p class="hint2">Xem tối đa 30 ngày.</p>
+<p class="hint2">Dùng chung bộ chọn ngày với Báo cáo ngày — chọn ở đâu, các tab đều đổi theo. Xem tối đa 31 ngày.</p>
 </section>
 
 <section class="rep stats view" id="v-days" role="tabpanel" aria-labelledby="tab-days" hidden>
@@ -3370,7 +3368,9 @@ function renderStats(){
     return'<tr data-d="'+x.d+'" title="Bấm để mở ngày này"><td>'+dm(x.d)+'</td><td>'+fd(x.t.s)+'</td><td>'+money(x.t.m)+'</td><td>'+money(x.t.p)+'</td><td>'+fd(x.t.d)+'</td><td><span class="spill" data-g="'+gg+'">'+pct(x.t.cp)+'</span></td></tr>'}).join(""):'<tr><td colspan="6" class="sempty">Chưa có dữ liệu trong khoảng ngày này.</td></tr>';
 }
 var AS={k:"s",dir:-1};
-function renderRange(){var D=statsData();$("sinfo").textContent=D.n+" ngày được chọn · "+D.k+" ngày có dữ liệu";document.querySelectorAll("#spresets button").forEach(function(b){b.classList.toggle("on",+b.dataset.n===D.n&&S.st===sd(new Date()))})}
+function renderRange(){var D=statsData();$("sinfo").textContent=D.n+" ngày được chọn · "+D.k+" ngày có dữ liệu"}
+// Tab Thống kê dùng chung bộ chọn ngày với Báo cáo ngày: khoảng ngày = khoảng đang chọn (hoặc đúng 1 ngày đang xem)
+function statsSyncRange(){S.sf=dpRange?dpRange.from:S.day;S.st=dpRange?dpRange.to:S.day}
 // ================= POPUP DƯ NỢ (góc dưới phải) =================
 // Chỉ hiện số tiền cần thanh toán (balance) của TKQC đang xem. Dùng các trường có trong tài liệu Ad Account:
 // name, account_id, currency, balance, account_status.
@@ -3578,6 +3578,7 @@ function dpSet(from, to) {
     }
   }
   dpSync();
+  if (S.tab === "days" || S.tab === "ads") renderViews(); // tab Thống kê vẽ lại theo khoảng ngày vừa chọn
   dpClose(true);
   return true;
 }
@@ -3643,12 +3644,12 @@ $("acct-dialog").addEventListener("click", function(e) {
   su.addEventListener("keydown", function(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openAccount(false); } });
 })();
 
-function renderViews(){if(S.tab==="day"||S.tab==="settings")return;if(S.tab==="toggle"){if(typeof renderToggleView==="function")renderToggleView(true);return}renderRange();if(S.tab==="days")renderStats();else renderAds()}
+function renderViews(){if(S.tab==="day"||S.tab==="settings")return;if(S.tab==="toggle"){if(typeof renderToggleView==="function")renderToggleView(true);return}statsSyncRange();renderRange();if(S.tab==="days")renderStats();else renderAds()}
 function setTab(t,init){
-  S.tab=t;document.documentElement.setAttribute("data-tab",t);var show={day:["v-day","metaDay"],days:["rangeCard","v-days"],ads:["rangeCard","v-ads"],toggle:["metaDay","v-toggle"],settings:["v-settings"]};
+  S.tab=t;document.documentElement.setAttribute("data-tab",t);var show={day:["v-day","metaDay"],days:["rangeCard","v-days","metaDay"],ads:["rangeCard","v-ads","metaDay"],toggle:["metaDay","v-toggle"],settings:["v-settings"]};
   ["v-day","metaDay","rangeCard","v-days","v-ads","v-toggle","v-settings"].forEach(function(id){$(id).hidden=(show[t]||show.day).indexOf(id)<0});
   var pre=t==="toggle"?"tg":(t==="days"||t==="ads")?"rng":"hier";[["acc-ctl","-acc-slot"],["sync-ctl","-sync-slot"]].forEach(function(x){var s=$(pre+x[1]),el=$(x[0]);if(s&&el&&el.parentNode!==s)s.appendChild(el)});
-  var dslot=$(t==="toggle"?"tg-date-slot":"hier-date-slot");if(dslot&&$("metaDay").parentNode!==dslot)dslot.appendChild($("metaDay"));if(typeof dpClose==="function")dpClose();
+  var dslot=$(t==="toggle"?"tg-date-slot":(t==="days"||t==="ads")?"rng-date-slot":"hier-date-slot");if(dslot&&$("metaDay").parentNode!==dslot)dslot.appendChild($("metaDay"));if(typeof dpClose==="function")dpClose();
   document.querySelectorAll("#tabs [data-tab]").forEach(function(b){var on=b.dataset.tab===t;b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1});
   document.querySelectorAll("#side [data-side-tab]").forEach(function(b){if(b.dataset.sideTab===t)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
   if(!init)save();renderViews()}
@@ -3680,11 +3681,7 @@ function renderAds(){
 $("atab").addEventListener("click",function(e){var b=e.target.closest(".sortb");if(!b)return;var k=b.dataset.k;if(AS.k===k)AS.dir*=-1;else{AS.k=k;AS.dir=(k==="name"||k==="cp"||k==="gm"||k==="gp")?1:-1}renderAds()});
 function adsText(){var D=adsData(),L=sortAds(D.list),o="Thống kê theo bài từ "+dm(S.sf)+" đến "+dm(S.st)+" ("+L.length+" bài)\n\n"+block("Tổng cộng",D.tot);L.forEach(function(x){o+="\n\n"+block(x.name+" ("+x.days+" ngày)",x)});return o}
 $("acopy").onclick=function(){var t=adsText();try{navigator.clipboard.writeText(t).then(function(){toast("Đã sao chép thống kê")},function(){toast("Không sao chép được")})}catch(e){toast("Không sao chép được")}};
-function setRange(f,t,msg){S.sf=f;S.st=t;$("sf").value=f;$("st").value=t;save();renderViews();if(msg)toast(msg)}
-$("sf").onchange=function(){var f=this.value;if(!f)return;var t=S.st;if(t<f)t=f;var m;if(span(f,t)>30){t=ad(f,29);m="Chỉ xem tối đa 30 ngày"}setRange(f,t,m)};
-$("st").onchange=function(){var t=this.value;if(!t)return;var f=S.sf;if(f>t)f=t;var m;if(span(f,t)>30){f=ad(t,-29);m="Chỉ xem tối đa 30 ngày"}setRange(f,t,m)};
-$("spresets").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var td=sd(new Date());setRange(ad(td,1-(+b.dataset.n)),td)});
-function openDay(e){var r=e.target.closest("[data-d]");if(!r)return;gotoDay(r.dataset.d);setTab("day");window.scrollTo({top:0,behavior:RM?"auto":"smooth"});toast("Đang xem ngày "+dm(r.dataset.d))}
+function openDay(e){var r=e.target.closest("[data-d]");if(!r)return;dpRange=null;dpRangeRows=null;gotoDay(r.dataset.d);setTab("day");window.scrollTo({top:0,behavior:RM?"auto":"smooth"});toast("Đang xem ngày "+dm(r.dataset.d))}
 $("stab").addEventListener("click",openDay);$("schart").addEventListener("click",openDay);
 function statsText(){var D=statsData(),o="Thống kê từ "+dm(S.sf)+" đến "+dm(S.st)+" ("+D.n+" ngày, "+D.k+" ngày có dữ liệu)\n\n"+block("Tổng cộng",D.tot);D.days.forEach(function(x){if(x.h)o+="\n\n"+block(dm(x.d).slice(0,5),x.t)});return o}
 $("scopy").onclick=function(){var t=statsText();try{navigator.clipboard.writeText(t).then(function(){toast("Đã sao chép thống kê")},function(){toast("Không sao chép được")})}catch(e){toast("Không sao chép được")}};
@@ -3695,7 +3692,6 @@ if(S.day&&S.rows&&S.rows.length&&!S.days[S.day])S.days[S.day]=S.rows;
 S.day=sd(new Date());S.rows=S.days[S.day]&&S.days[S.day].length?S.days[S.day]:blank();
 $("day").value=S.day;dpSync();
 if(!S.st||!S.sf||span(S.sf,S.st)<1||span(S.sf,S.st)>30){S.st=S.day;S.sf=ad(S.day,-6)}
-$("sf").value=S.sf;$("st").value=S.st;
 if(["day","days","ads","toggle","settings"].indexOf(S.tab)<0)S.tab="day";
 if(["day","days","ads","toggle","settings"].indexOf(S.tab)<0)S.tab="day";
 render();setTab(S.tab,true);

@@ -37,6 +37,8 @@ const seed = { t1: 25, t2: 35, day: today, byAcc: { act_1: { name: 'TK', days: {
   const tileByLabel = (id, label) => tiles(id).find(t => t.querySelector('small').textContent.trim() === label);
 
   d.querySelector('#tab-ads').click(); await wait(300);
+  // Các tab thống kê dùng chung bộ chọn ngày với Báo cáo ngày: chọn khoảng 7 ngày gần đây bằng chính bộ chọn đó
+  d.getElementById('dp-from').value = day(-6); d.getElementById('dp-to').value = today; d.getElementById('dp-apply').click(); await wait(300);
   const a1 = tileByLabel('akp', 'Số bài ads'), a4 = tileByLabel('akp', 'CPQC chung');
   check(a1 && a1.querySelector('b').textContent.trim() === '3', '"Số bài ads" vẫn hiện số bài (3)');
   check(a1 && !/Tốt|Theo dõi|Cắt/.test(a1.textContent), '"Số bài ads": đã bỏ dòng "Tốt · Theo dõi · Cắt/sửa" (thực tế: "' + (a1 ? a1.textContent.replace(/\s+/g, ' ').trim() : '') + '")');
