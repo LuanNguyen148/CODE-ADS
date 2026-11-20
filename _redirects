@@ -1,0 +1,3 @@
+# Netlify: địa chỉ gọn /dashboard mở trang dashboard.html (tải lại trang không bị 404).
+# Thanh địa chỉ được đổi từ /dashboard.html sang /dashboard bởi js/clean-url.js.
+/dashboard   /dashboard.html   200

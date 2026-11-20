@@ -36,6 +36,7 @@ document.documentElement.classList.add('ads-auth-pending');
 
 })();
 </script>
+<script src="js/clean-url.js?v=1"></script>
 <style>
 html.ads-auth-pending body{visibility:hidden}
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -541,11 +542,11 @@ pre:not([hidden]){animation:pop .3s ease both}
 @keyframes nt-in{from{opacity:0;transform:translateX(24px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes nt-out{to{opacity:0;transform:translateX(24px) scale(.98)}}
 @keyframes nt-shrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
-/* Màn hình nhỏ (chưa có menu trái): thông báo ở đáy, mới nhất nằm dưới cùng */
+/* Màn hình nhỏ (điện thoại / máy tính bảng): thông báo ở PHÍA TRÊN, ngay dưới dây đèn, mới nhất nằm trên cùng, trượt xuống */
 @media (max-width:1099px){
-  .nt-stack{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);right:50%;transform:translateX(50%);width:min(440px,calc(100vw - 20px));flex-direction:column-reverse}
-  @keyframes nt-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-  @keyframes nt-out{to{opacity:0;transform:translateY(16px)}}
+  .nt-stack{top:calc(env(safe-area-inset-top,0px) + 34px);bottom:auto;right:50%;transform:translateX(50%);width:min(440px,calc(100vw - 20px));flex-direction:column}
+  @keyframes nt-in{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+  @keyframes nt-out{to{opacity:0;transform:translateY(-16px)}}
 }
 @media (max-width:760px),(pointer:coarse){.nt-x{width:36px;height:36px}.nt-act{min-height:36px}}
 

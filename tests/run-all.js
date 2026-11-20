@@ -32,6 +32,7 @@ const TESTS = [
   { file: 'statstest.js', arg: DASH },
   { file: 'numfmttest.js', arg: DASH },
   { file: 'fabtest.js', arg: DASH },
+  { file: 'cleanurltest.js', arg: DASH },
   { file: 'cloudtest.js', arg: DASH },
   { file: 'testproxy2.js', arg: PROXY },
 ];

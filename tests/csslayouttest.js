@@ -34,5 +34,12 @@ check(['#dp-btn|\\.dp-btn', '\\.hier-sort select', '\\.acc-sel select'].every(s 
 check(find(/\.tbl td\.in \.nm\b/, /text-overflow:\s*ellipsis/), 'bảng Báo cáo ngày: tên quảng cáo dài hiện dấu "…"');
 // Tiêu đề cột đầu bảng Báo cáo ngày thẳng mép với nội dung (ô đầu thụt 16px)
 check(find(/\.tbl th:first-child/, /padding-left:\s*16px/), 'bảng Báo cáo ngày: tiêu đề cột đầu thụt 16px như ô bên dưới');
+// Điện thoại (< 1100px): thông báo hiện ở PHÍA TRÊN màn hình, mới nhất nằm trên cùng (người dùng yêu cầu)
+{
+  const m = css.match(/@media \(max-width:1099px\)\s*{\s*\.nt-stack\s*{([^}]*)}/);
+  const body = m ? m[1] : '';
+  check(!!m && /(^|;)\s*top:\s*calc\(env\(safe-area-inset-top/.test(body) && /bottom:\s*auto/.test(body), 'điện thoại: khung thông báo neo ở phía trên (top theo vùng an toàn, bottom:auto)');
+  check(!!m && !/column-reverse/.test(body), 'điện thoại: thông báo mới nhất nằm trên cùng (không đảo cột)');
+}
 console.log(ok ? '\nALL PASS' : '\nSOME FAILED');
 process.exit(ok ? 0 : 2);

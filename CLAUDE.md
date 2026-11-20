@@ -15,6 +15,7 @@
 - `js/auth-feedback.js` — đăng nhập/đăng ký; đăng ký có **kiểm tra token Facebook** trước khi tạo tài khoản.
 - `js/app.js` — form, validate, menu, animation trang đăng nhập.
 - `js/bootstrap.js` — tải script hiệu ứng song song nhưng giữ đúng thứ tự (`async=false`).
+- `js/clean-url.js` + `_redirects` — địa chỉ gọn trên web deploy (Netlify): `/dashboard.html` → `/dashboard`, `/index.html` → `/` bằng `history.replaceState`; `_redirects` rewrite `/dashboard` → `dashboard.html` (200). localhost/127.0.0.1/file:// giữ nguyên. Script đặt SAU các script inline trong `<head>` (nếu đặt trước sẽ chặn script giao diện → bài thử settingstest hỏng). Bài thử `tests/cleanurltest.js`.
 - `js/logout-popup.js` — đăng xuất: xóa phiên + token.
 - `css/*.css` — `styles.css` (trang đăng nhập), `dashboard-christmas.css`, `dashboard-stats.css`, `frame-menu.css`, `fonts.css`.
 - `dashboard.html` — **file lớn (~3.200 dòng)** chứa CSS + JS inline. Các khối chính:
@@ -73,7 +74,7 @@
 - **Dashboard không tải được thư viện Supabase** (mạng/CDN lỗi): **không xóa phiên**, chỉ hiện khung `#ads-offline` có nút "Tải lại trang", nội dung vẫn ẩn. Bài thử `tests/offlinetest.js`.
 - **Bật/Tắt quảng cáo:** hiện tất cả chiến dịch/nhóm/quảng cáo (kể cả chưa tiêu tiền), phân trang 10/20/50/100 (mặc định 10), công tắc gửi `POST status=ACTIVE|PAUSED`, thông báo có **Hoàn tác**.
 - **Điện thoại / máy tính bảng (< 1100px): nút menu nổi `#fab-menu`** (☰ tròn đỏ viền vàng, mặc định góc dưới trái) thay cho thanh nổi `mini-bar` (đã gỡ hẳn CSS/HTML/JS) và nút ☰ cũ ở đầu trang (`#side-open` ẩn, vẫn giữ trong DOM). Chạm → mở menu trái; giữ và kéo (ngưỡng 8px) → đặt đâu cũng được, kẹp trong màn hình, nhớ vị trí theo tỉ lệ ở `ads_fab_pos_v1`; kéo xong không tự mở menu. Máy tính ẩn nút. Bài thử `tests/fabtest.js`; thử cảm ứng thật bằng scratchpad `tools/fabshot.js`.
-- **Thông báo:** góc trên phải (máy tính), đáy màn hình (điện thoại), tối đa 3 thẻ, lỗi không tự tắt.
+- **Thông báo:** góc trên phải (máy tính), **phía trên giữa màn hình, ngay dưới dây đèn (điện thoại < 1100px, mới nhất trên cùng)** — người dùng yêu cầu đổi từ đáy lên trên; bài thử trong `csslayouttest.js`, tối đa 3 thẻ, lỗi không tự tắt.
 - **Dư nợ:** nằm trong cửa sổ **Tài khoản** (`#debt-pop`), chỉ hiện `balance` + link thanh toán trên Facebook; nút "Tài khoản" ở menu trái có huy hiệu số dư (`#side-debt`) khi còn nợ. **Không làm popup nổi góc dưới phải** (bị huy hiệu "Powered by Netlify" che).
 - **Thông báo tải tài khoản:** "Đã tải thành công tài khoản <tên>" (tên bỏ phần "(mã số)" bằng `accShortName`).
 - **Chữ bị cắt "…":** bấm vào hiện khung `#fulltip` với tên đầy đủ (danh sách selector `TRUNC` trong `dashboard.html`); ở thẻ Chiến dịch/Nhóm QC bấm tên chỉ xem tên, mở cấp tiếp theo bằng nút "Mở … ➔". Ô chọn TKQC (`<select>`) dùng danh sách gốc của trình duyệt nên không áp dụng.
@@ -92,7 +93,7 @@
 - **Đã thử rồi bỏ (người dùng thấy rườm rà):** tab **Tin nhắn Fanpage** (đọc/trả lời Messenger, kiểu hộp thư Business Suite). Đã gỡ khỏi web và proxy. Ghi chú nếu làm lại: cần quyền `pages_show_list`, `pages_messaging`, `pages_read_engagement`; Page token phải ở server; trang tài liệu `saved_message_responses` đã 404.
 
 ## 7. Kiểm thử (bài thử nằm trong repo)
-- Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 25 bài).
+- Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 26 bài).
 - Bài thử proxy chạy `index.ts` bằng Node sau khi gỡ chú thích kiểu TypeScript bằng regex → khi sửa proxy chỉ dùng chú thích kiểu đơn giản (`x: string`, `): unknown {`), không dùng `as`, generic phức tạp.
 - Lệnh shell (Bash) làm **mất dấu `\`** khi ghi code qua heredoc/node -e → sửa code có regex bằng công cụ Edit.
 - Bài thử dùng jsdom với dữ liệu giả. Đặt `ADS_LOCAL_SESSION = true` vì `supabase-client.js` không chạy trong jsdom.
