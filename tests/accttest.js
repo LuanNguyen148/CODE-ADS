@@ -47,9 +47,20 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   check(gets.some(u => /me\/adaccounts/.test(u) && /access_token=EAAbadtoken123/.test(u)), 'dán token → tự áp dụng sau ~0,6s, gọi Facebook bằng token mới (giữ cách hoạt động cũ)');
   const t = d.querySelector('#nt-stack .nt-error');
   check(t && /Invalid OAuth/.test(t.textContent) && t.querySelector('.nt-act') && t.querySelector('.nt-act').textContent === 'Cập nhật token', 'token sai → thông báo lỗi kèm nút "Cập nhật token"');
+  check(dlg.open, 'token sai → cửa sổ Tài khoản vẫn mở để dán lại');
   d.getElementById('acct-close').click();
   t.querySelector('.nt-act').click();
   check(dlg.open && d.activeElement === input, 'bấm "Cập nhật token" → mở lại cửa sổ, con trỏ ở ô token');
+  // Dán token đúng → lấy tài khoản thành công thì cửa sổ tự đóng
+  fbMode = 'ok';
+  input.value = 'EAAgoodtoken' + 'x'.repeat(40); input.dispatchEvent(new w.Event('input', { bubbles: true }));
+  await wait(900);
+  check(!dlg.open, 'token đúng, lấy tài khoản thành công → cửa sổ Tài khoản tự đóng');
+  check(/kết nối Facebook thành công/i.test([...d.querySelectorAll('#nt-stack .nt')].map(e => e.textContent).join(' ')), 'có thông báo "kết nối Facebook thành công"');
+  check(!/Chưa có Access Token/.test(d.getElementById('acct-fb-state').textContent), 'dòng trạng thái không còn ghi "Chưa có Access Token"');
+  d.querySelector('#side .side-account').click();
+  check(dlg.open && /Trạng thái/.test(d.getElementById('acct-fb-state').textContent), 'mở lại Tài khoản → trạng thái cập nhật (đã có token)');
+  d.getElementById('acct-close').click();
   // Cửa sổ Tài khoản không còn nút Đăng xuất (đăng xuất ở menu trái)
   check(!d.getElementById('acct-logout') && !/Đăng xuất/.test(dlg.textContent), 'cửa sổ Tài khoản đã bỏ nút "Đăng xuất"');
   d.getElementById('acct-close').click();

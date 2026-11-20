@@ -5,7 +5,7 @@
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
-  let flakes = [], w = 0, h = 0, raf = 0, last = 0, paused = false;
+  let flakes = [], w = 0, h = 0, raf = 0, last = 0, paused = document.documentElement.classList.contains('no-snow');
 
   function resize() {
     w = innerWidth; h = innerHeight;

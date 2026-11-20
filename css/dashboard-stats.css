@@ -11,7 +11,7 @@
 .sk[data-g=g]{--v:var(--g)}.sk[data-g=y]{--v:var(--y)}.sk[data-g=r]{--v:var(--r)}
 .sk[data-g] b{font-size:19px}
 .sk[data-g=g] b,.sk[data-g=y] b,.sk[data-g=r] b{color:var(--v)}
-.legend{display:flex;gap:16px;margin:16px 0 6px;font-size:12px;color:var(--mu)}
+.legend{display:flex;gap:16px;margin:16px 0 6px;font-size:13px;font-weight:600;color:var(--tx)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i,.sbars i{display:block;border-radius:4px 4px 0 0}
 .legend i{width:12px;height:12px;border-radius:3px}
@@ -23,17 +23,19 @@
 .sc:hover{background:color-mix(in srgb,var(--ac) 10%,transparent)}
 .sbars{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;border-bottom:1px solid var(--bd);padding:0 2px}
 .sbars i{width:42%;max-width:14px;min-height:0;transition:height .5s cubic-bezier(.22,1,.36,1)}
-.sc span{font-size:10px;text-align:center;color:var(--mu);padding-top:4px;font-variant-numeric:tabular-nums}
-.sc.no{opacity:.45}
+.sc span{font-size:12px;font-weight:700;text-align:center;color:var(--tx);padding-top:6px;font-variant-numeric:tabular-nums}
+.sc.no{opacity:1}
+.sc.no span{color:var(--tx);opacity:.72;font-weight:600}
 .tw{overflow-x:auto;margin-top:14px;border:1px solid var(--bd);border-radius:12px}
 .stats table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;min-width:480px}
-.stats th{text-align:right;font-weight:600;color:var(--mu);padding:9px 12px;background:color-mix(in srgb,var(--sf2) 80%,var(--sf));white-space:nowrap}
-.stats td{text-align:right;padding:9px 12px;border-top:1px solid var(--bd);white-space:nowrap}
+.stats th{text-align:right;font-weight:700;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);padding:12px 14px;background:color-mix(in srgb,var(--sf2) 80%,var(--sf));white-space:nowrap}
+.stats td{text-align:right;padding:13px 14px;border-top:1px solid var(--bd);white-space:nowrap}
 .stats th:first-child,.stats td:first-child{text-align:left;font-weight:600}
 .stats tbody tr[data-d]{cursor:pointer}
 .stats tbody tr[data-d]:hover{background:color-mix(in srgb,var(--ac) 9%,transparent)}
-.spill{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:700;font-size:12px;background:var(--nb);color:var(--n)}
-.spill[data-g=g]{background:var(--gb);color:var(--g)}.spill[data-g=y]{background:var(--yb);color:var(--y)}.spill[data-g=r]{background:var(--rb);color:var(--r)}
+.spill{display:inline-block;padding:4px 12px;border-radius:99px;font-weight:800;font-size:11.5px;letter-spacing:.02em;background:transparent;color:var(--mu);border:1px solid var(--mu)}
+.spill[data-g=g]{background:#1c7c3a;color:#fff;border-color:transparent}.spill[data-g=y]{background:#dcb16f;color:#4a1a14;border-color:transparent}.spill[data-g=r]{background:#c4122f;color:#fff;border-color:transparent}
+:root[data-scene="night"] .spill[data-g=g]{background:#1f9d55}:root[data-scene="night"] .spill[data-g=y]{background:#f1d6a6}:root[data-scene="night"] .spill[data-g=r]{background:#e0364a}
 .sempty{text-align:center!important;color:var(--mu);padding:22px!important}
 @media (max-width:720px){.skp{grid-template-columns:1fr 1fr}.srange label{max-width:none}}
 
@@ -58,11 +60,15 @@
 .ht{height:12px;border-radius:99px;background:var(--nb);overflow:hidden}
 .ht i{display:block;height:100%;border-radius:99px;background:var(--v);transition:width .6s cubic-bezier(.22,1,.36,1)}
 .hb b{text-align:right;color:var(--v);font-variant-numeric:tabular-nums}
-#atab{min-width:760px}
+/* Cột số rộng đều nhau → khoảng cách giữa các cột đều; cột tên/ngày có độ rộng riêng */
+#stab{table-layout:fixed;min-width:640px}
+#stab th:first-child{width:22%}
+#atab{table-layout:fixed;min-width:960px}
+#atab th:first-child{width:24%}
 .sortb{all:unset;cursor:pointer;font-weight:600;color:inherit;white-space:nowrap;padding:2px 0}
 .sortb:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:4px}
 #atab th[aria-sort=ascending] .sortb::after{content:" ▲";font-size:10px}
 #atab th[aria-sort=descending] .sortb::after{content:" ▼";font-size:10px}
-#atab td:first-child{max-width:220px;overflow:hidden;text-overflow:ellipsis}
+#atab td:first-child{overflow:hidden;text-overflow:ellipsis}
 #rangeCard .sub{margin-top:12px}
 #rangeCard .hint2{margin:2px 0 0}
