@@ -35,7 +35,8 @@ function makeWorld({ cloud, pullFails }) {
 }
 
 // Mở dashboard như một lần tải trang. snapshot = nội dung localStorage / sessionStorage có sẵn (mô phỏng nạp lại hoặc máy cũ).
-function boot(world, snapshot) {
+function boot(world, snapshot, opts) {
+  const fbDelay = (opts && opts.fbDelay) || 0, accList = (opts && opts.accounts) || [{ account_id: '1', name: 'TK 1', account_status: 1, currency: 'VND' }]; // trễ của Facebook/proxy so với Supabase (điện thoại mạng chậm)
   const errors = [];
   const vc = new VirtualConsole(); vc.on('jsdomError', e => { const m = String(e.message || e); if (!/navigation|Not implemented/i.test(m)) errors.push(m); });
   const dom = new JSDOM(fs.readFileSync(path.join(ROOT, 'dashboard.html'), 'utf8'), {
@@ -47,10 +48,10 @@ function boot(world, snapshot) {
       w.matchMedia = q => ({ matches: false, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} });
       w.IntersectionObserver = class { observe() {} disconnect() {} };
       w.HTMLElement.prototype.scrollIntoView = function () {}; w.scrollTo = () => {};
-      w.fetch = (url) => { url = String(url); let body = { data: [] };
-        if (/adaccounts/.test(url)) body = { data: [{ account_id: '1', name: 'TK 1', account_status: 1, currency: 'VND' }] };
+      w.fetch = (url) => { url = String(url); let body = { data: [] }; const pause = () => new Promise(r => setTimeout(r, fbDelay));
+        if (/adaccounts/.test(url)) body = { data: accList };
         if (/insights/.test(url)) body = { data: [{ campaign_id: 'C1', campaign_name: 'Camp A', adset_id: 'A1', adset_name: 'Set 1', ad_id: 'AD1', ad_name: 'QC A', spend: '698376', actions: [] }] };
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(body), text: () => Promise.resolve('') }); };
+        return pause().then(() => ({ ok: true, json: () => Promise.resolve(body), text: () => Promise.resolve('') })); };
     },
   });
   return { w: dom.window, errors };
@@ -125,6 +126,33 @@ const snap = w => { const local = {}, session = {}; for (let i = 0; i < w.localS
     const loc = rowOf(JSON.parse(w.localStorage.getItem(KEY) || '{}'))[0] || {}, cl = rowOf(world.cloud.state)[0] || {};
     check(loc.rev === '3900000' && Number(loc.phone) === 6, 'máy cũ có dữ liệu: giữ nguyên SĐT/doanh số trên máy (rev=' + loc.rev + ')');
     check(cl.rev === '3900000' && Number(cl.phone) === 6, 'máy cũ có dữ liệu: cloud được khôi phục từ máy (rev=' + cl.rev + ', phone=' + cl.phone + ')');
+    w.close();
+  }
+
+  // 6) ĐIỆN THOẠI MẠNG CHẬM: Supabase trả lời trước, danh sách tài khoản Facebook về sau.
+  //    Dữ liệu cloud vừa nhận không được bị ghi đè bởi lần lưu muộn của trang đang chuẩn bị nạp lại.
+  {
+    const world = makeWorld({ cloud: { state: stateOf([adRow()]), updated_at: hourAgo } });
+    const { w } = boot(world, { local: base }, { fbDelay: 900 });
+    await wait(2600);
+    const loc = rowOf(JSON.parse(w.localStorage.getItem(KEY) || '{}'))[0] || {};
+    check(loc.rev === '3900000' && Number(loc.phone) === 6, 'điện thoại mạng chậm: dữ liệu cloud vừa nhận không bị lần lưu muộn ghi đè (rev=' + loc.rev + ', phone=' + loc.phone + ')');
+    check(world.upserts.length === 0, 'điện thoại mạng chậm: không đẩy bản rỗng lên cloud (' + world.upserts.length + ' lần đẩy)');
+    w.close();
+  }
+
+  // 7) ĐIỆN THOẠI ĐĂNG NHẬP LẦN ĐẦU, NHIỀU TÀI KHOẢN QC: phải mở đúng tài khoản mà máy tính đang xem
+  //    (trước đây máy mới luôn chọn tài khoản đầu danh sách Facebook → thấy tài khoản khác, SĐT/doanh số "mất").
+  {
+    const st = stateOf([adRow()]); st.lastAcc = 'act_1';
+    st.byAcc.act_2 = { name: 'TK 2', days: { [today]: [adRow({ accountId: 'act_2', campaign_id: 'C9', campaign: 'Camp Z', ad_id: 'AD9', name: 'QC Z', rev: '', phone: 0 })] } };
+    const ts = new Date(Date.now() - 600 * 1000).toISOString();
+    const world = makeWorld({ cloud: { state: st, updated_at: ts } });
+    const local = { 'ads_auth_session_v1': base['ads_auth_session_v1'], [KEY]: JSON.stringify(st), [KEY + '-cloudts']: ts }; // không có TKQC đã chọn
+    const { w } = boot(world, { local }, { accounts: [{ account_id: '2', name: 'TK 2', account_status: 1, currency: 'VND' }, { account_id: '1', name: 'TK 1', account_status: 1, currency: 'VND' }] });
+    await wait(2500);
+    check(w.document.getElementById('fb-acc-select').value === 'act_1', 'máy mới nhiều TK: mở đúng tài khoản máy tính đang xem (act_1), không phải TK đầu danh sách (chọn: ' + w.document.getElementById('fb-acc-select').value + ')');
+    check(world.upserts.every(u => ((u.state.byAcc.act_1.days[today] || [])[0] || {}).rev === '3900000'), 'máy mới nhiều TK: mọi lần đẩy lên cloud đều còn doanh số của act_1');
     w.close();
   }
 

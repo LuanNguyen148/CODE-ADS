@@ -571,15 +571,7 @@ pre:not([hidden]){animation:pop .3s ease both}
 .t-adw .nm{flex:1;min-width:0}
 .tg-main .ad-thumb{margin-top:-2px}
 
-/* ===== v23: Popup Dư nợ (góc dưới phải) ===== */
-.debt{position:fixed;right:20px;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);z-index:55;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:calc(100vw - 24px)}
-.debt[hidden]{display:none}
-.debt-card{width:320px;max-width:100%;border-radius:16px;overflow:hidden;background:var(--sf);border:1px solid #f1d6a6;box-shadow:0 18px 40px -16px #54281dcc}
-.debt.is-min .debt-card{display:none}
-.debt-head{display:flex;align-items:center;gap:8px;padding:10px 10px 10px 14px;color:#fff1d5;background:linear-gradient(120deg,#a31118f2,#750812f5),url("image/christmas-red-snowflake-texture-v1.webp") center/cover}
-.debt-head strong{flex:1;font-size:14px;font-weight:800}
-.debt-head button{width:30px;height:30px;padding:0;border-radius:8px;border:1px solid #f1d6a666;background:#f1d6a622;color:#fff1d5;font-size:14px;display:inline-flex;align-items:center;justify-content:center}
-.debt-head button:hover{background:#f1d6a644}
+/* ===== v23: Dư nợ quảng cáo (hiển thị trong mục Tài khoản) ===== */
 .debt-list{list-style:none;margin:0;padding:4px 14px;max-height:min(50vh,320px);overflow:auto}
 .debt-row{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;padding:10px 0;border-bottom:1px dashed var(--bd)}
 .debt-row:last-child{border-bottom:0}
@@ -591,17 +583,6 @@ pre:not([hidden]){animation:pop .3s ease both}
 .debt-tag{justify-self:start;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:rgba(192,20,43,.12);color:#c0142b}
 .debt-pay{justify-self:start;font-size:12.5px;font-weight:700;color:#a31118;text-decoration:underline;text-underline-offset:2px}
 .debt-foot{margin:0;padding:6px 14px 10px;font-size:12px;color:var(--mu)}
-.debt-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;min-height:40px;border-radius:99px;border:1px solid #f1d6a6;font-size:13px;font-weight:700;color:#fff1d5;background:linear-gradient(120deg,#a31118,#750812);box-shadow:0 12px 26px -12px #54281dcc}
-.debt-pill b{font-variant-numeric:tabular-nums}
-.debt:not(.is-min) .debt-pill{display:none}
-.debt.has-unpaid .debt-pill{box-shadow:0 0 0 3px #f59e0b88,0 12px 26px -12px #54281dcc}
-.debt-pill:focus-visible,.debt-head button:focus-visible,.debt-pay:focus-visible{outline:2px solid #fff1d5;outline-offset:2px;box-shadow:0 0 0 4px #a31118}
-/* Màn hình nhỏ: thông báo (toast) ở đáy → đẩy lên trên popup */
-@media (max-width:1099px){
-  .debt{right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
-  :root.has-debt .nt-stack{bottom:calc(env(safe-area-inset-bottom,0px) + 68px)}
-}
-@media (max-width:760px),(pointer:coarse){.debt-head button{width:40px;height:40px}}
 
 /* ===== v21: Màn hình rộng — dùng hết bề ngang: cột chính + cột phải cố định (khung Facebook) ===== */
 @media (min-width:1440px){
@@ -680,9 +661,7 @@ pre:not([hidden]){animation:pop .3s ease both}
 .acct .fb-token-wrap input{width:100%;min-height:42px}
 .acct .fb-token-hint{margin-top:6px;font-size:12px}
 .acct-note{margin:8px 0 0;font-size:12px;color:var(--mu)}
-.acct-logout{padding:9px 16px;min-height:40px;border-radius:10px;border:1px solid color-mix(in srgb,#c0142b 40%,var(--bd));background:color-mix(in srgb,#c0142b 7%,var(--sf));color:#c0142b;font-weight:800}
-.acct-logout:hover{background:rgba(192,20,43,.14)}
-.acct-x:focus-visible,.acct-logout:focus-visible{outline:2px solid #a31118;outline-offset:2px}
+.acct-x:focus-visible{outline:2px solid #a31118;outline-offset:2px}
 
 /* ===== v27: Bỏ cột phải; hàng chọn TKQC + đồng bộ ngay trên các tab (kiểu Ads Manager) ===== */
 @media (min-width:1440px){.wrap{display:block}}
@@ -728,21 +707,6 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
 #add:disabled,#reset:disabled{opacity:.45;cursor:not-allowed}
 @media (max-width:760px){.dp-pop{width:min(320px,calc(100vw - 40px))}.dp-range input,.dp-apply{min-height:44px}}
 
-/* ===== v29: Điều chỉnh thiết kế — popup Dư nợ đọc rõ, thu gọn mặc định ===== */
-.debt-card{background:#2a0709f2;color:#fff1d5;border-color:#f1d6a6}
-.debt-row{border-bottom-color:#f1d6a647}
-.debt-name{color:#f1d6a6}
-.debt-amt,.debt-amt.is-due{color:#ffe7b0}
-.debt-amt.is-loading{color:#f1d6a6}
-.debt-err{color:#ffb4b4}
-.debt-tag{background:#c0142b59;color:#ffd6d6}
-.debt-pay{color:#ffd27a}
-.debt-foot{color:#f1d6a6}
-.debt-pill{color:#fff1d5}
-.debt-pill b{color:#ffe7b0}
-
-/* Ghi chú: nhãn trạng thái + nút ẩn/hiện, không che nội dung khi mở trên màn hình nhỏ */
-@media (max-width:1099px){.debt-card{width:min(300px,calc(100vw - 24px))}}
 /* ===== v30: Điện thoại — không tràn ngang (ô chọn TKQC và nút đồng bộ co theo màn hình) ===== */
 @media (max-width:760px){
   .hier-nav,.hier-top,.acc-ctl,.sync-ctl,.acc-sel{min-width:0;max-width:100%}
@@ -755,15 +719,114 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
   .sync-msg{min-width:0}
   .acc-ctl .fb-badge{max-width:100%;white-space:normal;text-align:center}
 }
-/* ===== v31: Điện thoại — popup Dư nợ thành nút tròn, tab dính có mép mờ, chừa đáy trang ===== */
+/* ===== v31: Điện thoại — tab dính có mép mờ, chừa đáy trang ===== */
 @media (max-width:760px){
   body{padding-bottom:72px}
-  .debt{right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
-  .debt-pill{width:48px;height:48px;min-height:48px;padding:0;justify-content:center;font-size:0;border-radius:50%}
-  .debt-pill::before{content:'💳';font-size:20px;line-height:1}
-  .debt-pill b{display:none}
   .mini-tabs{-webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);mask-image:linear-gradient(90deg,#000 86%,transparent)}
 }
+
+/* Khung hiện tên đầy đủ khi bấm vào chữ bị cắt */
+.fulltip{position:fixed;z-index:90;max-width:min(420px,calc(100vw - 16px));padding:10px 12px;border-radius:12px;background:#2a0709;color:#fff1d5;border:1px solid #f1d6a6;font-size:13.5px;font-weight:600;line-height:1.45;overflow-wrap:anywhere;box-shadow:0 18px 40px -14px #000a}
+
+/* Dư nợ trong mục Tài khoản + huy hiệu ở nút Tài khoản */
+.acct-debt-head{display:flex;align-items:center;gap:8px}
+.acct-debt-head h3{flex:1;margin:0}
+.acct-debt-head button{width:36px;height:36px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);cursor:pointer;font-size:15px}
+.acct-debt-head button:focus-visible,.debt-pay:focus-visible{outline:2px solid #a31118;outline-offset:2px}
+.acct-debt.has-unpaid{box-shadow:0 0 0 2px #f59e0b88;border-radius:12px}
+.debt-list{max-height:none;padding:0}
+.debt-foot{padding:6px 0 0}
+.side-debt{margin-left:auto;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:99px;background:#f1d6a6;color:#6b0a12;font-variant-numeric:tabular-nums;white-space:nowrap}
+.side-debt[hidden]{display:none}
+.side-debt.is-unpaid{background:#f59e0b}
+
+/* ===== v32: Nâng cấp giao diện — chữ đọc rõ, gọn thanh điều khiển, banner thấp, ô số liệu cân ===== */
+/* Chữ vàng nhạt trên nền kem rất khó đọc → nâu hổ phách đậm (cùng tông Giáng sinh) */
+body .htab.active,body .htab.active .htab-lb small,body .crumb-item:hover,body .crumb-item.current,body .drill-cta,
+body .drill-meta.acc,body .drill-meta.par,body .drill-meta.idc:hover,body .ibtn:hover,body .pth.camp,body .pth-edit:hover,
+body .seg button.on,body .tbl th[data-sort]:hover,body .tbl th.on,body .tbl .t-sub b,body .tg-pills button.on,
+body .tg-crumb button.cur,body .tg-name.drill:hover{color:#6b3f06}
+body .hier-tabs .htab:not(.active){color:#5b4630}
+body .drill-card:hover .drill-cta{color:#fff}
+
+/* Ô số liệu tổng ngày: tự chia đều, không để trống một góc */
+body .hero .kp{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+
+/* Hàng đầu danh sách: tiêu đề + ngưỡng CPQC gọn trên một dòng */
+body .bar{padding:6px 14px;min-height:0;gap:8px 16px;align-items:center}
+body .bar h2{font-size:19px;margin:0}
+body .bar .meta{display:flex;flex-direction:row;align-items:center;gap:8px;margin:0;flex:none}
+body .bar .meta label{display:flex;flex-direction:row;align-items:center;gap:6px;padding:2px 8px;font-size:12px;border-radius:10px}
+body .bar .meta .in-pct{width:58px;min-height:30px;padding:3px 6px}
+
+/* Thanh điều khiển: bớt một hàng và bớt đường kẻ */
+body .hier-nav{padding:10px 14px}
+body .hier-top{margin-bottom:8px;padding-bottom:8px}
+body .sync-msg{white-space:normal;max-width:300px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+body .hier-crumb.is-trivial{display:none}
+
+/* Banner đầu trang thấp hơn, số liệu lên cao hơn; giữ nguyên đồng hồ, biểu đồ, hoa văn */
+body .banner{min-height:0;padding:16px 24px}
+body .banner h1{font-size:34px}
+body .banner p{margin:4px 0 0;font-size:14px}
+body .banner .deco{width:170px;height:85px}
+
+/* Ô ngày giờ: căn giữa theo chiều dọc của banner, chữ căn giữa dưới biểu tượng mặt trời/trăng */
+@media (min-width:721px){
+  body .banner{min-height:116px;display:flex;align-items:center}
+  body .banner .clock{top:50%;right:24px;transform:translateY(-50%);padding:10px 18px 10px 12px;gap:12px}
+}
+body .clock .ct{align-items:flex-start;text-align:left;gap:1px}
+body .clock .ct b{line-height:1.05}
+body .clock .orb{align-self:center}
+
+/* Chừa chỗ cuối trang (huy hiệu "Powered by Netlify" nằm góc dưới phải) */
+body{padding-bottom:84px}
+
+@media (max-width:760px){
+  /* Banner: bỏ câu mô tả, tab chức năng thành một hàng cuộn ngang */
+  body .banner{padding:14px 16px}
+  body .banner .clock{width:100%;box-sizing:border-box;justify-content:center;margin-bottom:10px}
+  body .banner h1{font-size:25px}
+  body .banner p{display:none}
+  body .banner .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-top:10px;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+  body .banner .tabs::-webkit-scrollbar{display:none}
+  body .banner .tabs button{flex:none;white-space:nowrap}
+  /* Hàng ngưỡng */
+  body .bar{padding:8px 12px}
+  body .bar h2{flex:1 1 100%}
+  body .bar .meta{width:100%;flex-wrap:nowrap}
+  body .bar .meta label{flex:1 1 0;min-width:0;font-size:11.5px;line-height:1.2}
+  body .bar .meta .in-pct{flex:1 1 40px;min-width:0;width:auto}
+  /* Chọn TKQC + đồng bộ: nút lên trước, thông báo nhỏ bên dưới */
+  body .acc-ctl{flex-wrap:nowrap}
+  body .sync-ctl{display:flex;flex-direction:column-reverse;align-items:stretch;gap:6px}
+  body .sync-msg{max-width:none;font-size:12px}
+  /* Ngày + kiểu xem + sắp xếp: 2 hàng thay vì 4 */
+  body .hier-tools{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;width:100%}
+  body .hier-tools .day-pick{grid-column:1/-1}
+  body .hier-sort{min-width:0}
+  body .hier-sort select{flex:1;min-width:0;width:100%}
+  body .htab{padding:8px 6px;font-size:12px}
+}
+@media (max-width:720px){body .hero .kp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Chọn nhiều Chiến dịch / Nhóm QC để xem cùng lúc */
+.pick{display:inline-flex;align-items:center;justify-content:center;min-width:32px;min-height:32px;cursor:pointer;flex:none}
+.pick input{position:absolute;opacity:0;width:0;height:0}
+.pick span{width:20px;height:20px;border-radius:6px;border:2px solid #8a5a12;background:var(--sf);display:inline-flex;align-items:center;justify-content:center;transition:background .15s}
+.pick input:checked+span{background:#a31118;border-color:#a31118}
+.pick input:checked+span::after{content:"";width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.pick input:focus-visible+span{outline:2px solid #a31118;outline-offset:2px}
+td .pick{margin-right:8px;vertical-align:middle}
+.drill-card:has(.pick input:checked){border-color:#a31118;box-shadow:0 0 0 2px color-mix(in srgb,#a31118 28%,transparent)}
+.pick-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin:0 0 12px;padding:10px 14px;border-radius:14px;background:var(--sf);border:1px solid color-mix(in srgb,#a31118 40%,var(--bd));font-size:13px;color:var(--mu)}
+.pick-bar[hidden]{display:none}
+.pick-bar b{color:var(--tx);font-variant-numeric:tabular-nums}
+.pick-bar .pick-t{color:var(--tx);font-weight:700}
+.pick-bar button{margin-left:auto;min-height:34px;padding:4px 12px;border-radius:10px;border:1px solid #f1d6a6;background:linear-gradient(120deg,#a31118,#750812);color:#fff1d5;font-weight:700;font-size:12.5px}
+@media (max-width:760px){.pick-bar{gap:4px 12px}.pick-bar button{width:100%;margin-left:0}}
+
 </style>
 <link rel="stylesheet" href="css/fonts.css?v=woff2a">
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
@@ -805,7 +868,7 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
     <button type="button" data-side-tab="toggle" title="Bật / Tắt quảng cáo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="5"/><circle cx="16" cy="12" r="3"/></svg><span>Bật / Tắt quảng cáo</span></button>
   </nav>
   <div class="side-foot">
-    <button type="button" class="side-account" data-open-account title="Tài khoản &amp; kết nối Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Tài khoản</span></button>
+    <button type="button" class="side-account" data-open-account title="Tài khoản &amp; kết nối Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Tài khoản</span><b class="side-debt" id="side-debt" hidden></b></button>
     <button type="button" class="side-logout" title="Đăng xuất"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span>Đăng xuất</span></button>
     <p class="side-note" aria-hidden="true"><span>❄</span><span class="side-note-t">Giáng sinh an lành</span></p>
   </div>
@@ -910,6 +973,7 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
 </div>
 
 <p class="range-note" id="range-note" hidden></p>
+<div class="pick-bar" id="pick-bar" hidden aria-live="polite"></div>
 <div class="list" id="list"></div>
 <button class="add" id="add">+ Thêm bài ads</button>
 
@@ -1011,19 +1075,12 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
       <small class="fb-token-hint" id="fb-token-hint">Token hay hết hạn? <a href="https://developers.facebook.com/tools/debug/accesstoken/" target="_blank" rel="noopener noreferrer">Gia hạn 60 ngày ↗</a></small>
     <p class="acct-note" id="acct-token-note"></p>
   </section>
-  <section class="acct-sec">
-    <h3>Phiên đăng nhập</h3>
-    <button type="button" class="acct-logout" id="acct-logout">Đăng xuất</button>
-  </section>
-</dialog>
-<aside class="debt" id="debt-pop" aria-label="Dư nợ quảng cáo" hidden>
-  <div class="debt-card" id="debt-card">
-    <div class="debt-head"><strong>💳 Dư nợ quảng cáo</strong><button type="button" id="debt-refresh" aria-label="Tải lại dư nợ" title="Tải lại dư nợ">↻</button><button type="button" id="debt-min" aria-label="Thu gọn" title="Thu gọn">–</button></div>
+  <section class="acct-sec acct-debt" id="debt-pop" aria-labelledby="debt-h" hidden>
+    <div class="acct-debt-head"><h3 id="debt-h">💳 Dư nợ quảng cáo</h3><button type="button" id="debt-refresh" aria-label="Tải lại dư nợ" title="Tải lại dư nợ">↻</button></div>
     <ul class="debt-list" id="debt-list" aria-live="polite"></ul>
     <p class="debt-foot"><span>Số tiền cần thanh toán cho Facebook</span> · <span id="debt-at"></span></p>
-  </div>
-  <button type="button" class="debt-pill" id="debt-pill" aria-controls="debt-card" aria-expanded="false">💳 Dư nợ <b id="debt-pill-amt">—</b></button>
-</aside>
+  </section>
+</dialog>
 
 <script integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=localdev1"></script>
@@ -1071,6 +1128,7 @@ if(window.ADS_LOCAL_SESSION){
       localStorage.setItem(KEY,nxt);localStorage.setItem(KEY+"-cloudts",r.updated_at);
       sessionStorage.setItem("ads_cloud_synced",r.updated_at);
       ADS_CLOUD.drop(); // bản trên máy đã cũ: bỏ lần đẩy đang chờ, giữ nguyên trạng thái giữ cho tới khi nạp lại
+      window.ADS_RELOADING=true; // từ đây save() không được ghi đè bản vừa nhận (mạng chậm: danh sách TK Facebook về sau cloud)
       location.reload();return;
     }
     ADS_CLOUD.release(); // bản trên máy mới nhất → đẩy lên
@@ -1252,9 +1310,9 @@ function getCachedStatus(id) {
 }
 
 // Phân trang danh sách Bật / Tắt (trang tự về 1 khi đổi cấp, bộ lọc, tìm kiếm, tài khoản hoặc ngày)
-var TG_PAGE_SIZES = [20, 50, 100];
-var tgPage = 1, tgPageSig = "", tgPageSize = 20;
-try { var _ps = parseInt(localStorage.getItem("ads_tg_pagesize_v1"), 10); if (TG_PAGE_SIZES.indexOf(_ps) >= 0) tgPageSize = _ps; } catch (e) {}
+var TG_PAGE_SIZES = [10, 20, 50, 100];
+var tgPage = 1, tgPageSig = "", tgPageSize = 10;
+try { var _ps = parseInt(localStorage.getItem("ads_tg_pagesize_v2"), 10); if (TG_PAGE_SIZES.indexOf(_ps) >= 0) tgPageSize = _ps; } catch (e) {}
 
 function renderTgPager(totalItems, pages, from) {
   var el = $("tg-pager");
@@ -1456,6 +1514,13 @@ function renderToggleView(autoFetch) {
     return true;
   });
 
+  // Bộ lọc "Tất cả": đưa mục ĐANG BẬT lên đầu (giữ nguyên thứ tự trong từng nhóm)
+  if (tgStatusFilter === "all") {
+    listItems = listItems.map(function(item, i) { return { item: item, i: i, on: getCachedStatus(item.id) === "ACTIVE" ? 0 : 1 }; })
+      .sort(function(a, b) { return a.on - b.on || a.i - b.i; })
+      .map(function(w) { return w.item; });
+  }
+
   // Phân trang
   var tgSig = [tgLvl, tgCampKey, tgAdsetKey, tgStatusFilter, q, currentAccountId, S.day].join("§");
   if (tgSig !== tgPageSig) { tgPageSig = tgSig; tgPage = 1; }
@@ -1575,9 +1640,9 @@ $("tg-pager").addEventListener("click", function(e) {
 });
 $("tg-pager").addEventListener("change", function(e) {
   if (e.target.id !== "tg-pg-size") return;
-  tgPageSize = parseInt(e.target.value, 10) || 20;
+  tgPageSize = parseInt(e.target.value, 10) || 10;
   tgPage = 1;
-  try { localStorage.setItem("ads_tg_pagesize_v1", String(tgPageSize)); } catch (e2) {}
+  try { localStorage.setItem("ads_tg_pagesize_v2", String(tgPageSize)); } catch (e2) {}
   renderToggleView(false);
 });
 
@@ -1616,7 +1681,8 @@ function fd(v){return isFinite(v)?ab(v)+" đ":"–"}
 function num(el,to,fmt,dur){var from=el._v;el._v=to;cancelAnimationFrame(el._r);if(RM||!isFinite(to)||from===to){el.textContent=fmt(to);return}if(from===undefined||!isFinite(from))from=0;var t0=performance.now();(function s(t){var p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e);if(p<1)el._r=requestAnimationFrame(s)})(t0)}
 function load(){try{var r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}}
 function hasData(rows){return(rows||[]).some(function(r){return pm(r.spend)>0||n(r.mess)>0||n(r.phone)>0||pm(r.rev)>0})}
-function save(notify){S.days=S.days||{};S.days[S.day]=S.rows;Object.keys(S.days).forEach(function(k){if(k!==S.day&&!hasData(S.days[k]))delete S.days[k]});try{localStorage.setItem(KEY,JSON.stringify(S,function(k,v){return(this===S&&(k==="days"||k==="rows")&&currentAccountId===ALL_ACC)?undefined:v}));if(window.ADS_CLOUD&&ADS_CLOUD.on){ADS_CLOUD.push(JSON.parse(localStorage.getItem(KEY)),{notify:!!notify})}}catch(e){}}
+function save(notify){if(window.ADS_RELOADING)return;if(currentAccountId)S.lastAcc=currentAccountId; // nhớ TK đang xem để máy khác mở đúng TK này
+S.days=S.days||{};S.days[S.day]=S.rows;Object.keys(S.days).forEach(function(k){if(k!==S.day&&!hasData(S.days[k]))delete S.days[k]});try{localStorage.setItem(KEY,JSON.stringify(S,function(k,v){return(this===S&&(k==="days"||k==="rows")&&currentAccountId===ALL_ACC)?undefined:v}));if(window.ADS_CLOUD&&ADS_CLOUD.on){ADS_CLOUD.push(JSON.parse(localStorage.getItem(KEY)),{notify:!!notify})}}catch(e){}}
 function n(v){v=parseFloat(v);return isFinite(v)?v:0}
 function money(v){return isFinite(v)?Math.round(v).toLocaleString("vi-VN"):"–"}
 function div(a,b){return b>0?a/b:NaN}
@@ -1630,6 +1696,24 @@ function fld(l,f,v,ph){var mo=f==="spend"||f==="rev";return'<label>'+l+'<input d
 var drillTab = "campaign"; // 'campaign' | 'adset' | 'ad'
 var selectedCampKey = null;
 var selectedAdsetKey = null;
+// Chọn nhiều Chiến dịch / Nhóm QC để xem cùng lúc (chỉ là bộ lọc hiển thị, không ghi vào dữ liệu)
+var pickCamp = {}, pickAdset = {};
+function pickBox(scope, key) {
+  var on = (scope === "camp" ? pickCamp : pickAdset)[key];
+  var what = scope === "camp" ? "chiến dịch" : "nhóm quảng cáo";
+  return '<label class="pick" title="Chọn để xem cùng lúc với ' + what + ' khác"><input type="checkbox" data-pick="' + scope + '" data-key="' + esc(key) + '"' + (on ? " checked" : "") + ' aria-label="Chọn ' + what + ' để xem cùng lúc"><span aria-hidden="true"></span></label>';
+}
+function renderPickBar(rows, label) {
+  var el = $("pick-bar");
+  if (!el) return;
+  if (!rows || !rows.length) { el.hidden = true; el.innerHTML = ""; return; }
+  var t = total(rows);
+  el.hidden = false;
+  el.innerHTML = '<span class="pick-t">Đang xem <b>' + label + '</b></span>' +
+    '<span>Tiền chạy <b>' + fd(t.s) + '</b></span><span>Mess <b>' + money(t.m) + '</b></span>' +
+    '<span>SĐT <b>' + money(t.p) + '</b></span><span>Doanh số <b>' + fd(t.d) + '</b></span><span>CPQC <b>' + pct(t.cp) + '</b></span>' +
+    '<button type="button" id="pick-clear">Bỏ chọn</button>';
+}
 var onlySpent = true;
 var currentAccountId = ""; // ID tài khoản quảng cáo đang xem (vd: act_123456)
 var currentAccountName = "";
@@ -1662,6 +1746,11 @@ function setAccName(k, name) {
   if (!S.byAcc || typeof S.byAcc !== "object") S.byAcc = {};
   if (!S.byAcc[k]) S.byAcc[k] = { days: {} };
   S.byAcc[k].name = name;
+}
+// Tên gọn của tài khoản để hiện trong thông báo: bỏ phần "(mã số - trạng thái)" ở cuối, vd. "HAI 7 - 2026 (6859…)" → "HAI 7 - 2026"
+function accShortName(label) {
+  var s = String(label || "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return s || String(label || "");
 }
 function accountLabelFor(id) {
   if (!id) return "";
@@ -2065,6 +2154,8 @@ function renderBreadcrumb(camps, activeCamp, activeAdset, filteredAdsetsCount, f
     rightHtml = ''; // không kèm tên tài khoản quảng cáo (đã có ở khung Facebook)
   }
   crumbEl.innerHTML = '<div class="crumb-path">' + parts.join("") + '</div>' + rightHtml;
+  // Ở cấp Chiến dịch, chưa lọc gì: thanh đường dẫn chỉ lặp lại tab đang chọn → ẩn cho gọn
+  crumbEl.classList.toggle("is-trivial", drillTab === "campaign" && !selectedCampKey && !selectedAdsetKey);
   var resetBtn = $("btn-reset-drill");
   if (resetBtn) {
     resetBtn.onclick = function() {
@@ -2123,6 +2214,11 @@ function render() {
   S.rows = (S.rows || []).filter(function(r) { return !isLegacyDefaultRow(r); });
   dpRangeRows = null; // tính lại số liệu gộp mỗi lần vẽ
   var camps = buildHierarchy(VR());
+  // Bỏ các lựa chọn không còn tồn tại (đổi ngày / tài khoản)
+  var validC = {}, validA = {};
+  camps.forEach(function(c) { validC[c.key] = 1; c.adsets.forEach(function(a) { validA[a.key] = 1; }); });
+  Object.keys(pickCamp).forEach(function(k) { if (!validC[k]) delete pickCamp[k]; });
+  Object.keys(pickAdset).forEach(function(k) { if (!validA[k]) delete pickAdset[k]; });
 
   var activeCamp = null;
   if (selectedCampKey) {
@@ -2152,17 +2248,20 @@ function render() {
   camps.forEach(function(c) {
     c.adsets = sortList(c.adsets, function(a) { return total(a.rows); }, function(a) { return a.name; });
   });
+  // Đang đi sâu vào 1 chiến dịch / nhóm thì ưu tiên nó; nếu không, áp dụng các mục đã tick
+  var pickedCamps = activeCamp ? [] : camps.filter(function(c) { return pickCamp[c.key]; });
   var visibleAdsets = [];
-  (activeCamp ? [activeCamp] : camps).forEach(function(c) {
+  (activeCamp ? [activeCamp] : (pickedCamps.length ? pickedCamps : camps)).forEach(function(c) {
     c.adsets.forEach(function(a) { visibleAdsets.push(a); });
   });
   if (!activeCamp) visibleAdsets = sortList(visibleAdsets, function(a) { return total(a.rows); }, function(a) { return a.name; });
+  var pickedAdsets = activeAdset ? [] : visibleAdsets.filter(function(a) { return pickAdset[a.key]; });
 
   var visibleAdItems = [];
   if (activeAdset) {
     visibleAdItems = activeAdset.items.slice();
   } else {
-    visibleAdsets.forEach(function(a) {
+    (pickedAdsets.length ? pickedAdsets : visibleAdsets).forEach(function(a) {
       a.items.forEach(function(it) { visibleAdItems.push(it); });
     });
   }
@@ -2191,14 +2290,16 @@ function render() {
   } else if (drillTab === "adset") {
     if (heading) heading.textContent = activeCamp
       ? ("2. Nhóm quảng cáo thuộc Chiến dịch: " + activeCamp.name)
-      : "2. Tất cả Nhóm quảng cáo";
+      : (pickedCamps.length ? ("2. Nhóm quảng cáo của " + pickedCamps.length + " chiến dịch đã chọn") : "2. Tất cả Nhóm quảng cáo");
     if (addBtn) addBtn.textContent = activeCamp
       ? ("+ Thêm Nhóm QC vào chiến dịch “" + activeCamp.name + "”")
       : "+ Thêm Nhóm quảng cáo mới";
   } else {
     if (heading) heading.textContent = activeAdset
       ? ("3. Quảng cáo thuộc Nhóm: " + activeAdset.name)
-      : (activeCamp ? ("3. Quảng cáo thuộc Chiến dịch: " + activeCamp.name) : "3. Tất cả Quảng cáo");
+      : (activeCamp ? ("3. Quảng cáo thuộc Chiến dịch: " + activeCamp.name)
+        : (pickedAdsets.length ? ("3. Quảng cáo của " + pickedAdsets.length + " nhóm đã chọn")
+          : (pickedCamps.length ? ("3. Quảng cáo của " + pickedCamps.length + " chiến dịch đã chọn") : "3. Tất cả Quảng cáo")));
     if (addBtn) addBtn.textContent = activeAdset
       ? ("+ Thêm Quảng cáo vào nhóm “" + activeAdset.name + "”")
       : "+ Thêm bài Quảng cáo mới";
@@ -2206,6 +2307,17 @@ function render() {
   if (heading) heading.title = heading.textContent; // rê chuột xem đủ khi tên bị cắt
 
   renderBreadcrumb(camps, activeCamp, activeAdset, visibleAdsets.length, visibleAdItems.length);
+
+  // Thanh tổng hợp các mục đã tick (tab Chiến dịch dùng chiến dịch đã chọn; tab khác ưu tiên nhóm đã chọn)
+  var pickRows = null, pickLabel = "";
+  if (drillTab !== "campaign" && pickedAdsets.length) {
+    pickRows = []; pickedAdsets.forEach(function(a) { a.rows.forEach(function(r) { pickRows.push(r); }); });
+    pickLabel = pickedAdsets.length + " nhóm QC";
+  } else if (pickedCamps.length) {
+    pickRows = []; pickedCamps.forEach(function(c) { c.rows.forEach(function(r) { pickRows.push(r); }); });
+    pickLabel = pickedCamps.length + " chiến dịch";
+  }
+  renderPickBar(pickRows, pickLabel);
 
   if (!camps.length) {
     $("list").innerHTML = '<div class="empty">Chưa có quảng cáo nào tiêu tiền vào ngày <b>' + dm(S.day) + '</b>.<br><small>Thử chọn ngày khác, hoặc bấm <b>“Lấy số liệu ngày này”</b> để cập nhật từ Facebook.</small></div>';
@@ -2250,7 +2362,7 @@ function render() {
           (isAll() && accId ? '<span class="t-sub" title="' + esc(accountLabelFor(accId)) + '">🏷 ' + esc(shortAcc(accId)) + '</span>' : '');
         var key = x.key, scope = isC ? "camp" : "adset", attr = isC ? 'data-drill-camp' : 'data-drill-adset';
         return '<tr ' + attr + '="' + esc(key) + '" data-g="' + g[0] + '" tabindex="0" title="Bấm để mở ' + (isC ? 'các Nhóm QC' : 'các Quảng cáo') + '">' +
-          '<td>' + nameBlock(x.name, isC ? "camp" : "adset") + '<span class="t-cnt">' + cnt + (x.id ? ' · ID ' + esc(shortId(x.id)) : '') + '</span>' + sub + '</td>' +
+          '<td>' + pickBox(scope, key) + nameBlock(x.name, isC ? "camp" : "adset") + '<span class="t-cnt">' + cnt + (x.id ? ' · ID ' + esc(shortId(x.id)) : '') + '</span>' + sub + '</td>' +
           '<td class="sp"><b>' + fd(t.s) + '</b><span class="mini" title="' + pc2.toFixed(1) + '% ' + (isC ? 'tổng chi tiêu' : 'chi tiêu của chiến dịch') + '"><i style="width:' + pc2.toFixed(1) + '%"></i></span></td>' +
           '<td>' + money(t.m) + '</td><td>' + fd(t.gm) + '</td>' +
           tdEdit("p", scope, key, t.p) + tdEdit("d", scope, key, t.d) +
@@ -2294,7 +2406,7 @@ function render() {
             '<div class="drill-chips"><span class="drill-meta">' + c.adsets.length + ' nhóm QC · ' + c.rows.length + ' quảng cáo</span>' +
             idChip(c.id) + accChip(c.rows[0] && c.rows[0].accountId) + '</div>' +
           '</div>' +
-          '<div class="drill-side">' +
+          '<div class="drill-side">' + pickBox("camp", c.key) +
             '<span class="pill" data-camp-o="gr">' + gc[1] + '</span>' +
             '<button type="button" class="ibtn" data-copy="' + esc(c.name) + '" title="Sao chép tên chiến dịch" aria-label="Sao chép tên chiến dịch">⧉</button>' +
             '<span class="drill-cta">Mở ' + c.adsets.length + ' Nhóm QC ➔</span>' +
@@ -2316,7 +2428,7 @@ function render() {
               '<span class="drill-meta">' + a.items.length + ' quảng cáo</span>' +
               idChip(a.id) + accChip(a.items[0] && a.items[0].r.accountId) + '</div>' +
           '</div>' +
-          '<div class="drill-side">' +
+          '<div class="drill-side">' + pickBox("adset", a.key) +
             '<span class="pill" data-adset-o="gr">' + ga[1] + '</span>' +
             '<button type="button" class="ibtn" data-copy="' + esc(a.name) + '" title="Sao chép tên nhóm quảng cáo" aria-label="Sao chép tên nhóm quảng cáo">⧉</button>' +
             '<span class="drill-cta">Mở ' + a.items.length + ' Quảng cáo ➔</span>' +
@@ -2601,6 +2713,7 @@ $("list").addEventListener("keydown", function(e) {
   if (e.key === "Enter" && e.target.classList && e.target.classList.contains("drill-in")) { e.preventDefault(); e.target.blur(); }
 });
 $("list").addEventListener("click", function(e) {
+  if (e.target.closest(".pick")) { e.stopPropagation(); return; } // tick chọn không được mở Nhóm QC / Quảng cáo
   var cp = e.target.closest("[data-copy]");
   if (cp) { e.stopPropagation(); copyText(cp.dataset.copy, "Đã sao chép: " + (cp.dataset.copy.length > 40 ? cp.dataset.copy.slice(0, 40) + "…" : cp.dataset.copy)); return; }
   var tg = e.target.closest("[data-toggle-hier]");
@@ -2669,12 +2782,62 @@ $("list").addEventListener("input", function(e) {
 });
 
 $("list").addEventListener("change", function(e) {
+  var pk = e.target.dataset && e.target.dataset.pick;
+  if (pk) {
+    var map = pk === "camp" ? pickCamp : pickAdset;
+    if (e.target.checked) map[e.target.dataset.key] = 1; else delete map[e.target.dataset.key];
+    render();
+    return;
+  }
   var f = e.target.dataset.f;
   if (f === "campaign" || f === "adset") {
     setAccountRowsForDay(currentAccountId, S.day, S.rows);
     save();
     render();
   }
+});
+
+// ----- Chữ bị cắt "…": bấm vào để xem tên đầy đủ -----
+(function() {
+  var TRUNC = ".nm-main, .nm-tag, .drill-meta, .pth span, input.nm, .htab-lb small, .crumb-item .ct, .t-sub, .debt-name, #hier-heading, .side-info strong, .side-info small, .auth-info strong, .auth-info span, .acct-who strong, .acct-who small, .sync-msg, .mini-name, .hn, .sk b, .tg-name";
+  var tip = null;
+  function hide() { if (tip) { tip.remove(); tip = null; } }
+  function isCut(el) { return el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1; }
+  function fullText(el) {
+    var nb = el.closest(".nm-block"), t = (nb && nb.getAttribute("title")) || el.value || el.getAttribute("title") || el.textContent || "";
+    return String(t).replace(/\s+/g, " ").trim();
+  }
+  document.addEventListener("click", function(e) {
+    if (tip && tip.contains(e.target)) return;
+    var el = e.target && e.target.nodeType === 1 ? e.target : (e.target && e.target.parentElement), found = null;
+    for (var i = 0; el && el !== document.body && i < 5; i++, el = el.parentElement) {
+      if (el.tagName === "SELECT") break;
+      if (el.matches(TRUNC) && isCut(el)) { found = el; break; }
+    }
+    hide();
+    if (!found) return;
+    var text = fullText(found);
+    if (!text) return;
+    tip = document.createElement("div");
+    tip.id = "fulltip"; tip.className = "fulltip"; tip.setAttribute("role", "status");
+    tip.textContent = text;
+    document.body.appendChild(tip);
+    var r = found.getBoundingClientRect(), w = tip.offsetWidth || 300, h = tip.offsetHeight || 40;
+    var top = r.bottom + 6; if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 6);
+    tip.style.top = top + "px";
+    tip.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + "px";
+    // Thẻ Chiến dịch / Nhóm QC: bấm vào tên chỉ để xem tên, không mở cấp tiếp theo (dùng nút "Mở … ➔")
+    if (found.closest("[data-drill-camp],[data-drill-adset]")) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
+  document.addEventListener("keydown", function(e) { if (e.key === "Escape") hide(); });
+  window.addEventListener("scroll", hide, { passive: true, capture: true });
+  window.addEventListener("resize", hide);
+})();
+
+$("pick-bar").addEventListener("click", function(e) {
+  if (!e.target.closest("#pick-clear")) return;
+  pickCamp = {}; pickAdset = {};
+  render();
 });
 
 $("add").onclick = function() {
@@ -2804,17 +2967,13 @@ function debtFetch(acc, force) {
       renderDebt();
     });
 }
-function debtMinimized() { try { var v = localStorage.getItem("ads_debt_min_v1"); return v === null ? true : v === "1"; } catch (e) { return false; } }
 function renderDebt() {
   var box = $("debt-pop");
   if (!box) return;
   var accs = debtAccounts();
-  if (!debtToken() || !accs.length) { box.hidden = true; document.documentElement.classList.remove("has-debt"); return; }
+  var badge = $("side-debt");
+  if (!debtToken() || !accs.length) { box.hidden = true; if (badge) { badge.hidden = true; badge.textContent = ""; } return; }
   box.hidden = false;
-  document.documentElement.classList.add("has-debt");
-  var min = debtMinimized();
-  box.classList.toggle("is-min", min);
-  $("debt-pill").setAttribute("aria-expanded", min ? "false" : "true");
   var rows = accs.map(function(acc) {
     var c = debtCache[acc], fbLink = "https://www.facebook.com/ads/manager/billing/transactions/?act=" + encodeURIComponent(acc.replace(/^act_/, ""));
     if (!c) return '<li class="debt-row"><span class="debt-name">' + esc((typeof shortAcc === "function" && shortAcc(acc)) || acc) + '</span><b class="debt-amt is-loading">Đang tải…</b></li>';
@@ -2828,7 +2987,7 @@ function renderDebt() {
     '</li>';
   });
   $("debt-list").innerHTML = rows.join("");
-  // Số trên nút thu gọn: 1 TK → số dư của TK đó; nhiều TK cùng tiền tệ → tổng
+  // Huy hiệu ở nút "Tài khoản": 1 TK → số dư của TK đó; nhiều TK cùng tiền tệ → tổng
   var infos = accs.map(function(a) { return debtCache[a] && debtCache[a].info; }).filter(Boolean);
   var pill = "—";
   if (infos.length && infos.length === accs.length) {
@@ -2836,8 +2995,15 @@ function renderDebt() {
     if (infos.every(function(x) { return x.currency === cur; })) pill = debtMoney(infos.reduce(function(s, x) { return s + (Number(x.balance) || 0); }, 0), cur);
     else pill = infos.length + " TK";
   }
-  $("debt-pill-amt").textContent = pill;
-  box.classList.toggle("has-unpaid", infos.some(function(x) { return x.account_status === 3; }));
+  var unpaid = infos.some(function(x) { return x.account_status === 3; });
+  box.classList.toggle("has-unpaid", unpaid);
+  if (badge) {
+    var due = infos.some(function(x) { return (Number(x.balance) || 0) > 0; }) || unpaid;
+    badge.hidden = !(pill !== "—" && due);
+    badge.textContent = pill;
+    badge.classList.toggle("is-unpaid", unpaid);
+    badge.title = "Dư nợ quảng cáo — bấm Tài khoản để xem chi tiết";
+  }
   var last = accs.map(function(a) { return debtCache[a] && debtCache[a].at; }).filter(Boolean).sort().pop();
   var p = function(n) { return String(n).padStart(2, "0"); }, d = last ? new Date(last) : null;
   $("debt-at").textContent = d ? "Cập nhật lúc " + p(d.getHours()) + ":" + p(d.getMinutes()) : "";
@@ -2846,17 +3012,6 @@ function debtRefresh(force) {
   debtAccounts().forEach(function(a) { debtFetch(a, force); });
   renderDebt();
 }
-$("debt-pill").addEventListener("click", function() {
-  var min = !debtMinimized();
-  try { localStorage.setItem("ads_debt_min_v1", min ? "1" : "0"); } catch (e) {}
-  renderDebt();
-  if (!min) $("debt-min").focus({ preventScroll: true });
-});
-$("debt-min").addEventListener("click", function() {
-  try { localStorage.setItem("ads_debt_min_v1", "1"); } catch (e) {}
-  renderDebt();
-  $("debt-pill").focus({ preventScroll: true });
-});
 $("debt-refresh").addEventListener("click", function() { debtCache = {}; debtRefresh(true); });
 // Tự cập nhật mỗi 5 phút khi tab đang mở
 setInterval(function() { if (!document.hidden) debtRefresh(false); }, 5 * 60 * 1000);
@@ -3025,7 +3180,6 @@ document.addEventListener("click", function(e) {
   openAccount(b.id === "fb-badge"); // bấm nhãn trạng thái kết nối → con trỏ vào ô token
 });
 $("acct-close").addEventListener("click", closeAccount);
-$("acct-logout").addEventListener("click", function() { closeAccount(); $("logout-btn").click(); });
 $("acct-dialog").addEventListener("click", function(e) {
   if (e.target !== this) return; // bấm ra nền mờ ngoài khung → đóng
   var r = this.getBoundingClientRect();
@@ -3248,12 +3402,29 @@ function loadFbAdAccounts() {
       list.forEach(function(acc) {
         var id = acc.id || ("act_" + acc.account_id);
         var st = acc.account_status === 1 ? "Hoạt động" : (acc.account_status === 2 ? "Vô hiệu hóa" : (acc.account_status === 3 ? "Nợ" : "TT:" + acc.account_status));
-        var label = (acc.name || id) + " (" + acc.account_id + " - " + st + ")";
+        var label = (acc.name || id) + " (" + acc.account_id + (acc.account_status === 1 ? "" : " - " + st) + ")";
         var isSel = (fbCfg.accountId === id);
         if (isSel) selectedAccObj = { id: id, label: label };
         opts += '<option value="' + esc(id) + '"' + (isSel ? " selected" : "") + '>' + esc(label) + '</option>';
       });
       $("fb-acc-select").innerHTML = opts;
+      // Máy này chưa từng chọn TKQC (vd. điện thoại đăng nhập lần đầu): mở đúng TK mà máy khác đang xem
+      if (!selectedAccObj && !fbCfg.accountId && S.lastAcc) {
+        if (S.lastAcc === ALL_ACC) {
+          fbCfg.accountId = ALL_ACC; fbCfg.accountName = "Tất cả tài khoản";
+          selectedAccObj = { id: ALL_ACC, label: "Tất cả tài khoản" };
+        } else {
+          list.forEach(function(acc) {
+            var id = acc.id || ("act_" + acc.account_id);
+            if (id !== S.lastAcc) return;
+            var st2 = acc.account_status === 1 ? "" : " - " + (acc.account_status === 2 ? "Vô hiệu hóa" : (acc.account_status === 3 ? "Nợ" : "TT:" + acc.account_status));
+            var lb = (acc.name || id) + " (" + acc.account_id + st2 + ")";
+            selectedAccObj = { id: id, label: lb };
+            fbCfg.accountId = id; fbCfg.accountName = lb;
+          });
+        }
+        if (selectedAccObj) { $("fb-acc-select").value = selectedAccObj.id; saveFbCfg(); }
+      }
       if (!selectedAccObj && list[0] && fbCfg.accountId !== ALL_ACC) {
         var firstId = list[0].id || ("act_" + list[0].account_id);
         var firstLabel = (list[0].name || firstId) + " (" + list[0].account_id + ")";
@@ -3407,7 +3578,7 @@ function syncFbForSingleDay(targetDay, accOverride, done) {
       var adsetCnt = 0;
       camps.forEach(function(c) { adsetCnt += c.adsets.length; });
       setFbStatus("TK [" + accLabel + "] ngày " + dm(targetDay) + ": " + camps.length + " Chiến dịch ➔ " + adsetCnt + " Nhóm QC ➔ " + S.rows.length + " Quảng cáo.", "Đồng bộ thành công", "");
-      toast("Đã nạp " + camps.length + " Chiến dịch của TK " + acc + "!");
+      toast("Đã tải thành công tài khoản " + accShortName(accLabel));
     })
     .catch(function() {
       if (!accOverride) {
@@ -3475,7 +3646,7 @@ function syncFbForDateRange(accOverride, done) {
       render();
       renderViews();
       setFbStatus("Đã đồng bộ " + data.length + " bản ghi thuộc " + dayKeys.length + " ngày cho riêng TK " + acc + ".", "Đồng bộ thành công", "");
-      toast("Đã đồng bộ " + dayKeys.length + " ngày cho TK " + acc + "!");
+      toast("Đã tải thành công tài khoản " + accShortName(accountLabelFor(acc)) + " (" + dayKeys.length + " ngày)");
     })
     .catch(function() {
       setFbStatus("Lỗi mạng khi đồng bộ khoảng ngày.", "Lỗi mạng", "err");

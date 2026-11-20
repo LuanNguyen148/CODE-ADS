@@ -42,7 +42,8 @@
 - Không hiển thị đầy đủ token trong log hay ảnh chụp. Nếu người dùng gửi ảnh có lộ token, nhắc họ nên tạo token mới.
 - Email trong `ALLOWED_EMAILS` và tài khoản test là thông tin cá nhân — đừng chép vào file mã nguồn.
 - Proxy `fb-proxy` không được mở thêm đường dẫn hay thao tác ghi nào ngoài đổi trạng thái ACTIVE/PAUSED.
-- Đã khởi tạo git (chưa có commit đầu tiên). Chỉ commit khi người dùng yêu cầu.
+- Git: remote `origin` = github.com/LuanNguyen148/CODE-ADS, nhánh `main`. Chỉ commit/push khi người dùng yêu cầu.
+- CSS: lớp mới nhất là **v32** ở cuối `<style>` của `dashboard.html` (ghi đè bằng `body …` vì file `css/dashboard-christmas.css` nạp sau). Chữ vàng `#f1c96b` trên nền kem không đọc được → dùng nâu `#6b3f06`.
 - Hằng số phiên bản Graph API: `window.ADS_FB_API` trong `js/config.js` (có giá trị dự phòng trong từng file). Đổi phiên bản chỉ sửa ở đây.
 - Thư viện Supabase tải từ CDN có SRI `sha384` (trong `index.html` và `dashboard.html`). Nâng phiên bản thì phải tính lại mã.
 
@@ -56,10 +57,12 @@
 - Nhiều lỗi Graph được trả về nguyên văn: mã `#100` = trường không tồn tại; lỗi quyền có mã khác.
 
 ## 6. Tính năng đã chốt (không đổi nếu người dùng không yêu cầu)
-- **Tài khoản & token:** token đi liền với tài khoản, nhập khi đăng ký hoặc trong cửa sổ "Tài khoản". Không có ô token trên khung chính. Đăng xuất xóa token khỏi trình duyệt.
-- **Bật/Tắt quảng cáo:** hiện tất cả chiến dịch/nhóm/quảng cáo (kể cả chưa tiêu tiền), phân trang 20/50/100, công tắc gửi `POST status=ACTIVE|PAUSED`, thông báo có **Hoàn tác**.
+- **Tài khoản & token:** token đi liền với tài khoản, nhập khi đăng ký hoặc trong cửa sổ "Tài khoản". Không có ô token trên khung chính. Đăng xuất xóa token khỏi trình duyệt; nút **Đăng xuất chỉ ở menu trái**, cửa sổ Tài khoản không có.
+- **Bật/Tắt quảng cáo:** hiện tất cả chiến dịch/nhóm/quảng cáo (kể cả chưa tiêu tiền), phân trang 10/20/50/100 (mặc định 10), công tắc gửi `POST status=ACTIVE|PAUSED`, thông báo có **Hoàn tác**.
 - **Thông báo:** góc trên phải (máy tính), đáy màn hình (điện thoại), tối đa 3 thẻ, lỗi không tự tắt.
-- **Popup Dư nợ:** góc dưới phải, chỉ hiện `balance` + link thanh toán trên Facebook. Thu gọn được.
+- **Dư nợ:** nằm trong cửa sổ **Tài khoản** (`#debt-pop`), chỉ hiện `balance` + link thanh toán trên Facebook; nút "Tài khoản" ở menu trái có huy hiệu số dư (`#side-debt`) khi còn nợ. **Không làm popup nổi góc dưới phải** (bị huy hiệu "Powered by Netlify" che).
+- **Thông báo tải tài khoản:** "Đã tải thành công tài khoản <tên>" (tên bỏ phần "(mã số)" bằng `accShortName`).
+- **Chữ bị cắt "…":** bấm vào hiện khung `#fulltip` với tên đầy đủ (danh sách selector `TRUNC` trong `dashboard.html`); ở thẻ Chiến dịch/Nhóm QC bấm tên chỉ xem tên, mở cấp tiếp theo bằng nút "Mở … ➔". Ô chọn TKQC (`<select>`) dùng danh sách gốc của trình duyệt nên không áp dụng.
 - **Chọn ngày:** nút trên hàng tab; chọn 1 ngày hoặc khoảng Từ–Đến (tối đa 31 ngày), khoảng chỉ xem.
 - **Hàng điều khiển trên các tab:** ô chọn TKQC bên trái, nút đồng bộ bên phải. Đổi tab thì hàng này đi theo.
 - **Tiêu đề danh sách:** "1. Chiến dịch" / "2. Tất cả Nhóm quảng cáo" / "3. Tất cả Quảng cáo" — không kèm tên tài khoản dài.
@@ -67,9 +70,14 @@
 - **Đã bỏ hẳn:** tab Thanh toán (trang), ô nhập "Tên" (tên lấy từ tài khoản đăng nhập), nút "Dọn dữ liệu rác / 0đ", cột phải "Đồng bộ Facebook", mục "Kết nối Facebook" ở menu.
 
 - **Đồng bộ cloud (Supabase `ads_user_state`):** mọi lần đẩy bị giữ lại (`ADS_CLOUD` hold) cho tới khi trang đọc xong cloud. So sánh bằng mốc riêng `KEY-cloudts` (chỉ đổi khi nhận từ / đẩy lên cloud thành công), **không** dùng thời điểm `save()`. Máy mới lấy cloud; lỗi đọc cloud thì không đẩy gì; máy cũ chưa có mốc nhưng có nhiều SĐT/doanh số hơn cloud thì giữ máy và khôi phục cloud. Đã có bài thử `tests/cloudtest.js` (lỗi cũ: máy mới ghi đè dữ liệu nhập tay của máy khác).
+  - Sau khi nhận bản cloud và trước khi nạp lại trang, `window.ADS_RELOADING = true` và `save()` không làm gì (lỗi cũ: mạng chậm, danh sách TK Facebook về sau cloud → `save()` ghi đè bản vừa nhận bằng bản rỗng).
+  - TKQC đang xem được nhớ trong state là `S.lastAcc` (đồng bộ cloud). Máy chưa từng chọn TK (điện thoại đăng nhập lần đầu) mở đúng TK này thay vì TK đầu danh sách Facebook.
+- **Bật/Tắt:** mặc định 10 mục/trang (10/20/50/100, lưu `ads_tg_pagesize_v2`); bộ lọc "Tất cả" đưa mục ĐANG BẬT lên đầu.
+- **Đã thử rồi bỏ (người dùng thấy rườm rà):** thanh bộ lọc kiểu Ads Manager và hàng chỉ số hiển thị/tiếp cận/tần suất/nhấp/CTR/CPC/CPM. Đừng làm lại nếu không được yêu cầu.
+- **Chọn nhiều Chiến dịch / Nhóm QC (báo cáo ngày):** ô tick trên thẻ/dòng (`pickCamp`, `pickAdset`), chỉ là bộ lọc hiển thị + thanh tổng hợp `#pick-bar`, không ghi vào dữ liệu. Đi sâu bằng cách bấm thẻ thì ưu tiên chế độ đó.
 
 ## 7. Kiểm thử (bài thử nằm trong repo)
-- Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 12 bài).
+- Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 14 bài).
 - Bài thử dùng jsdom với dữ liệu giả. Đặt `ADS_LOCAL_SESSION = true` vì `supabase-client.js` không chạy trong jsdom.
 - Chụp ảnh thật: Playwright (`playwright-core`) + Microsoft Edge có sẵn trên máy (Python chưa cài). Thư mục skill webapp-testing không có `scripts/`.
 - Sau mỗi thay đổi: chạy `npm test`, kiểm tra cú pháp từng khối `<script>`, rồi mới báo xong và nêu kết quả.

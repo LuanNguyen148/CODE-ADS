@@ -1,4 +1,4 @@
-// jsdom: billing tab removed; bottom-right "Dư nợ" popup.
+// jsdom: dư nợ hiển thị trong mục Tài khoản (không còn popup nổi góc dưới phải, vì bị huy hiệu Netlify che).
 const { JSDOM, VirtualConsole } = require('jsdom');
 const fs = require('fs');
 const html = fs.readFileSync(process.argv[2], 'utf8');
@@ -16,7 +16,7 @@ async function open({ session = { email: 's@e.com', name: 'S', fbToken: 'EAAtok'
   const dom = new JSDOM(html, {
     url: 'http://localhost:5500/dashboard.html', runScripts: 'dangerously', pretendToBeVisual: true, virtualConsole: vc,
     beforeParse(w) {
-    w.ADS_LOCAL_SESSION = true; // giả lập phiên test local hợp lệ (supabase-client.js không chạy trong jsdom)
+      w.ADS_LOCAL_SESSION = true; // giả lập phiên test local hợp lệ (supabase-client.js không chạy trong jsdom)
       w.localStorage.setItem('ads_auth_session_v1', JSON.stringify(session));
       w.localStorage.setItem('ads_fb_config_v4', JSON.stringify(cfg));
       for (const k in extra) w.localStorage.setItem(k, extra[k]);
@@ -25,6 +25,8 @@ async function open({ session = { email: 's@e.com', name: 'S', fbToken: 'EAAtok'
       w.IntersectionObserver = class { observe() {} disconnect() {} };
       w.HTMLElement.prototype.scrollIntoView = function () {};
       w.scrollTo = () => {};
+      w.HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+      w.HTMLDialogElement.prototype.close = function () { this.open = false; };
       w.fetch = url => { url = String(url); gets.push(url); return Promise.resolve({ json: () => Promise.resolve(fb(url)) }); };
     },
   });
@@ -38,19 +40,20 @@ const T = (d, s) => { const e = d.querySelector(s); return e ? e.textContent.rep
 
   let { w, d, gets, errors } = await open();
   check(!d.getElementById('v-billing') && !d.querySelector('[data-side-tab="billing"],[data-mini-tab="billing"],#tab-billing'), 'đã gỡ tab Thanh toán (menu trái, thanh nổi, banner, trang)');
-  const pop = d.getElementById('debt-pop');
-  check(pop && !pop.hidden && pop.classList.contains('is-min'), 'popup Dư nợ hiện ở góc dưới phải, mặc định thu gọn (thiết kế mới)');
+  const pop = d.getElementById('debt-pop'), dlg = d.getElementById('acct-dialog');
+  check(pop && dlg.contains(pop) && !pop.hidden, 'dư nợ nằm trong mục Tài khoản');
+  check(!d.querySelector('aside.debt, #debt-pill, #debt-min, #debt-card'), 'đã bỏ popup nổi góc dưới phải (nút tròn, nút thu gọn)');
   check(/HAI 7 - 2026/.test(T(d, '.debt-name')) && /1\.970\.664\s*₫/.test(T(d, '.debt-amt')) && d.querySelector('.debt-amt.is-due'), 'hiện dư nợ 1.970.664 ₫ (tô đỏ vì > 0) của TK đang xem');
   const a = d.querySelector('.debt-pay');
   check(a && a.href === 'https://www.facebook.com/ads/manager/billing/transactions/?act=685960921048031' && a.target === '_blank', 'link "Thanh toán trên Facebook ↗" đúng TK');
-  console.log(gets.filter(u => /graph\.facebook\.com/.test(u)).map(u => { const x = new URL(u); return '   ' + x.pathname + ' fields=' + (x.searchParams.get('fields') || '').slice(0, 70); }).join('\n'));
   const fbGets = gets.filter(u => /graph\.facebook\.com\/v[\d.]+\/act_\d+\?/.test(u));
   check(fbGets.length === 1 && decodeURIComponent(fbGets[0]).includes('fields=name,account_id,currency,balance,account_status') && !/adspaymentcycle|next_bill_date|adtrust_dsl|activities/.test(fbGets.join()), 'chỉ 1 lần gọi Facebook, chỉ dùng trường có trong tài liệu');
-  check(/1\.970\.664/.test(T(d, '#debt-pill-amt')), 'nút thu gọn có sẵn số dư nợ');
-  d.getElementById('debt-min').click();
-  check(pop.classList.contains('is-min') && w.localStorage.getItem('ads_debt_min_v1') === '1' && d.getElementById('debt-pill').getAttribute('aria-expanded') === 'false', 'bấm "–" → thu gọn thành nút nhỏ, nhớ lựa chọn');
-  d.getElementById('debt-pill').click();
-  check(!pop.classList.contains('is-min') && w.localStorage.getItem('ads_debt_min_v1') === '0', 'bấm nút nhỏ → mở lại');
+  const badge = d.getElementById('side-debt');
+  check(badge && !badge.hidden && /1\.970\.664/.test(badge.textContent), 'nút "Tài khoản" ở menu trái có huy hiệu dư nợ 1.970.664');
+  d.querySelector('[data-open-account]').click();
+  check(dlg.open && /Dư nợ quảng cáo/.test(dlg.textContent), 'bấm "Tài khoản" → mở cửa sổ có phần Dư nợ quảng cáo');
+  d.getElementById('debt-refresh').click(); await wait(200);
+  check(gets.filter(u => /graph\.facebook\.com\/v[\d.]+\/act_\d+\?/.test(u)).length >= 2, 'nút ↻ tải lại dư nợ');
   check(errors.length === 0, 'không lỗi JavaScript' + (errors.length ? ' → ' + errors.slice(0, 2).join(' | ') : ''));
   w.close();
 
@@ -62,15 +65,15 @@ const T = (d, s) => { const e = d.querySelector(s); return e ? e.textContent.rep
   await wait(300);
   const rows = [...d.querySelectorAll('.debt-row')].map(r => r.textContent.replace(/\s+/g, ' '));
   check(rows.length === 2 && /1\.970\.664\s*₫/.test(rows[0]) && /50,00\s*US\$|US\$\s*50|50,00\s*\$/.test(rows[1]), 'chế độ Tất cả TK: mỗi TK một dòng; USD 5000 cent → 50 US$');
-  check(T(d, '#debt-pill-amt') === '2 TK', 'nhiều tiền tệ khác nhau → nút nhỏ ghi "2 TK" (không cộng lẫn)');
+  check(T(d, '#side-debt') === '2 TK', 'nhiều tiền tệ khác nhau → huy hiệu ghi "2 TK" (không cộng lẫn)');
   w.close();
 
   ({ w, d } = await open({ session: { email: 's@e.com', name: 'S' } }));
-  check(d.getElementById('debt-pop').hidden, 'TK chưa có Facebook token → ẩn popup');
+  check(d.getElementById('debt-pop').hidden && d.getElementById('side-debt').hidden, 'TK chưa có Facebook token → ẩn phần dư nợ và huy hiệu');
   w.close();
 
   ({ w, d } = await open({ width: 600 }));
-  check(d.getElementById('debt-pop').classList.contains('is-min') && d.documentElement.classList.contains('has-debt'), 'điện thoại: mặc định thu gọn thành nút nhỏ');
+  check(!d.querySelector('aside.debt') && !d.getElementById('side-debt').hidden, 'điện thoại: không có popup nổi, huy hiệu dư nợ ở nút Tài khoản');
   w.close();
 
   // Lần trước đang ở tab Thanh toán (đã bỏ) → về Báo cáo ngày, không lỗi
@@ -80,4 +83,5 @@ const T = (d, s) => { const e = d.querySelector(s); return e ? e.textContent.rep
   w.close();
 
   console.log(ok ? '\nALL PASS' : '\nSOME FAILED');
+  process.exit(ok ? 0 : 2);
 })();

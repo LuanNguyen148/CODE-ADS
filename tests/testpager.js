@@ -40,25 +40,31 @@ const clickPage = p => listeners['tg-pager:click']({ target: { closest: () => ({
   api.setLvl('ad'); api.renderToggleView(false);
   const pg = () => els['tg-pager'].innerHTML;
 
-  check(rows() === 20 && names()[0] === 'QC 01' && names()[19] === 'QC 20', 'trang 1: 20 mục (QC 01–20)');
-  check(!els['tg-pager'].hidden && /Hiển thị <b>1–20<\/b> \/ <b>45<\/b>/.test(pg()), 'thanh phân trang: "Hiển thị 1–20 / 45"');
-  check(/aria-label="Trang trước" disabled/.test(pg()) && /aria-label="Trang 3"/.test(pg()), 'nút ‹ bị khóa ở trang 1, có nút trang 3');
+  // Mặc định 10 mục/trang; ở bộ lọc "Tất cả", quảng cáo ĐANG BẬT đứng trước (45 QC: 23 bật = QC lẻ, 22 tắt = QC chẵn)
+  check(rows() === 10 && names()[0] === 'QC 01' && names()[9] === 'QC 19', 'trang 1: 10 mục, toàn quảng cáo đang bật (QC 01,03…19)');
+  check(!els['tg-pager'].hidden && pg().includes('Hiển thị <b>1–10</b> / <b>45</b>'), 'thanh phân trang: "Hiển thị 1–10 / 45"');
+  check(/aria-label="Trang trước" disabled/.test(pg()) && /aria-label="Trang 5"/.test(pg()), 'nút ‹ bị khóa ở trang 1, có 5 trang');
 
   clickPage(3);
-  check(rows() === 5 && names()[0] === 'QC 41', 'trang 3: 5 mục cuối (QC 41–45)');
+  check(names()[2] === 'QC 45' && names()[3] === 'QC 02', 'trang 3: quảng cáo bật cuối cùng (QC 45) rồi mới tới quảng cáo tắt (QC 02)');
+  clickPage(5);
+  check(rows() === 5 && names()[0] === 'QC 36', 'trang 5: 5 mục cuối (toàn quảng cáo tắt)');
   check(/aria-label="Trang sau" disabled/.test(pg()), 'nút › bị khóa ở trang cuối');
 
   clickPage(2); api.renderToggleView(false); // như sau khi bật/tắt một mục
   check(names()[0] === 'QC 21', 'vẽ lại (vd. sau khi bật/tắt) vẫn giữ trang 2');
 
   api.setFilter('ACTIVE'); api.renderToggleView(false);
-  check(names()[0] === 'QC 01' && /\/ <b>23<\/b>/.test(pg()), 'đổi bộ lọc "Đang chạy" → về trang 1, còn 23 mục');
+  check(names()[0] === 'QC 01' && pg().includes('/ <b>23</b>'), 'đổi bộ lọc "Đang chạy" → về trang 1, còn 23 mục');
 
+  api.setFilter('PAUSED'); api.renderToggleView(false);
+  check(names()[0] === 'QC 02' && pg().includes('/ <b>22</b>'), 'bộ lọc "Đã tắt": giữ thứ tự gốc, còn 22 mục');
+
+  api.setFilter('ACTIVE'); api.renderToggleView(false);
   listeners['tg-pager:change']({ target: { id: 'tg-pg-size', value: '50' } });
   check(rows() === 23 && els['tg-pager'].innerHTML.includes('Hiển thị <b>1–23</b>'), 'chọn 50 mục/trang → hiện đủ 23 mục');
-  check(store['ads_tg_pagesize_v1'] === '50', 'nhớ lựa chọn 50 mục/trang');
-
-  api.setFilter('all'); listeners['tg-pager:change']({ target: { id: 'tg-pg-size', value: '20' } });
+  check(store['ads_tg_pagesize_v2'] === '50', 'nhớ lựa chọn 50 mục/trang');
+  api.setFilter('all'); listeners['tg-pager:change']({ target: { id: 'tg-pg-size', value: '10' } });
   api.setLvl('campaign'); api.renderToggleView(false);
   check(els['tg-pager'].hidden === true, 'ít mục (1 chiến dịch) → ẩn thanh phân trang');
 

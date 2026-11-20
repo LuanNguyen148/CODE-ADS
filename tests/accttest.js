@@ -50,10 +50,9 @@ const wait = ms => new Promise(r => setTimeout(r, ms));
   d.getElementById('acct-close').click();
   t.querySelector('.nt-act').click();
   check(dlg.open && d.activeElement === input, 'bấm "Cập nhật token" → mở lại cửa sổ, con trỏ ở ô token');
-  // Đăng xuất từ cửa sổ
-  w.ADS_LOGOUT_POPUP = { open() { w.__logout = true; } };
-  d.getElementById('acct-logout').click();
-  check(!dlg.open && w.__logout === true, 'nút "Đăng xuất" trong cửa sổ → đóng cửa sổ, mở popup đăng xuất');
+  // Cửa sổ Tài khoản không còn nút Đăng xuất (đăng xuất ở menu trái)
+  check(!d.getElementById('acct-logout') && !/Đăng xuất/.test(dlg.textContent), 'cửa sổ Tài khoản đã bỏ nút "Đăng xuất"');
+  d.getElementById('acct-close').click();
   // Thẻ người dùng ở menu trái cũng mở được (bằng bàn phím)
   d.querySelector('#side .side-user').dispatchEvent(new w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
   check(dlg.open, 'thẻ người dùng ở menu trái: nhấn Enter cũng mở Tài khoản');

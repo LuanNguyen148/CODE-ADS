@@ -20,6 +20,8 @@ const TESTS = [
   { file: 'regtest.js', arg: ROOT },
   { file: 'testtoggle2.js', arg: DASH },
   { file: 'testpager.js', arg: DASH },
+  { file: 'picktest.js', arg: DASH },
+  { file: 'uxtest.js', arg: DASH },
   { file: 'cloudtest.js', arg: DASH },
   { file: 'testproxy2.js', arg: PROXY },
 ];
