@@ -670,8 +670,7 @@ pre:not([hidden]){animation:pop .3s ease both}
 .tg-card>.hier-top,#rangeCard>.hier-top{margin-bottom:14px}
 .acc-ctl{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 340px}
 .acc-sel{position:relative;display:flex;align-items:center;flex:0 1 480px;min-width:0;margin:0}
-.acc-ic{position:absolute;left:11px;font-size:15px;pointer-events:none}
-.acc-sel select{width:100%;min-width:0;font:inherit;font-size:14px;font-weight:700;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:8px 12px 8px 36px;min-height:40px;text-overflow:ellipsis;box-shadow:0 4px 12px -8px #54281d66}
+.acc-sel select{width:100%;min-width:0;font:inherit;font-size:14px;font-weight:700;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;min-height:40px;text-overflow:ellipsis;box-shadow:0 4px 12px -8px #54281d66}
 .acc-sel select:focus-visible{outline:2px solid #a31118;outline-offset:2px}
 button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight:700;min-height:30px}
 .sync-ctl{display:flex;align-items:center;gap:10px;min-width:0;flex:0 1 auto;margin-left:auto}
@@ -934,7 +933,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 </div></div>
 
 <div class="hier-nav" aria-label="Điều hướng phân cấp Chiến dịch - Nhóm quảng cáo - Quảng cáo">
-  <div class="hier-top"><div class="slot" id="hier-acc-slot"><div class="acc-ctl" id="acc-ctl"><label class="acc-sel" title="Đổi tài khoản sẽ tự tải dữ liệu riêng của tài khoản đó"><span class="acc-ic" aria-hidden="true">🏢</span><select id="fb-acc-select" aria-label="Tài khoản quảng cáo"><option value="">-- Đang tải danh sách tài khoản... --</option></select></label><button type="button" class="fb-badge" id="fb-badge" data-open-account title="Tài khoản &amp; Token Facebook">Đang kết nối</button></div></div><div class="slot" id="hier-sync-slot"><div class="sync-ctl" id="sync-ctl"><span class="sync-msg" id="fb-msg">Đang kết nối tới Facebook...</span><button type="button" class="btn-fb" id="fb-sync-btn" title="Lấy số liệu Facebook của ngày đang xem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span id="fb-sync-label">Lấy số liệu ngày này</span></button><button type="button" class="btn-fb" id="fb-sync-range" title="Đồng bộ nhiều ngày theo khoảng ngày đã chọn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span>Đồng bộ khoảng ngày</span></button></div></div></div>
+  <div class="hier-top"><div class="slot" id="hier-acc-slot"><div class="acc-ctl" id="acc-ctl"><label class="acc-sel" title="Đổi tài khoản sẽ tự tải dữ liệu riêng của tài khoản đó"><select id="fb-acc-select" aria-label="Tài khoản quảng cáo"><option value="">-- Đang tải danh sách tài khoản... --</option></select></label><button type="button" class="fb-badge" id="fb-badge" data-open-account title="Tài khoản &amp; Token Facebook">Đang kết nối</button></div></div><div class="slot" id="hier-sync-slot"><div class="sync-ctl" id="sync-ctl"><span class="sync-msg" id="fb-msg">Đang kết nối tới Facebook...</span><button type="button" class="btn-fb" id="fb-sync-btn" title="Lấy số liệu Facebook của ngày đang xem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span id="fb-sync-label">Lấy số liệu ngày này</span></button><button type="button" class="btn-fb" id="fb-sync-range" title="Đồng bộ nhiều ngày theo khoảng ngày đã chọn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span>Đồng bộ khoảng ngày</span></button></div></div></div>
   <div class="hier-tabs-row">
     <div class="hier-tabs" id="hier-tabs" role="tablist">
       <button type="button" class="htab active" data-htab="campaign" role="tab" aria-selected="true">
@@ -1084,7 +1083,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 
 <script integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=localdev1"></script>
-<script src="js/supabase-client.js?v=sync1"></script>
+<script src="js/supabase-client.js?v=remember1"></script>
 <script>
 (function(){
 var ADS_FB_API = window.ADS_FB_API || "https://graph.facebook.com/v21.0/";
@@ -1137,8 +1136,19 @@ if(window.ADS_LOCAL_SESSION){
   // Không khởi tạo được Supabase thật (mạng lỗi, CDN bị chặn, thiếu cấu hình...) và cũng không phải
   // phiên test local hợp lệ → không có gì để tin tưởng, không hiện dashboard. Trước đây hệ thống từng
   // "lọt" vào đây và vẫn hiện dashboard cho bất kỳ session giả nào trong localStorage — đã bỏ.
-  ADS_SIGNOUT_LOCAL();
-  location.replace("index.html");
+  // Nhưng KHÔNG xóa phiên: mạng chập chờn/CDN lỗi không có nghĩa là hết phiên (trước đây xóa phiên ở đây khiến
+  // người dùng đã tick "Ghi nhớ đăng nhập" vẫn phải nhập lại mật khẩu). Dashboard vẫn ẩn; chỉ hiện khung báo lỗi.
+  (function(){
+    var box=document.createElement("div");
+    box.id="ads-offline";box.setAttribute("role","alert");
+    box.style.cssText="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;background:#7a0912;font-family:system-ui,sans-serif";
+    box.innerHTML='<div style="max-width:420px;width:100%;background:#fff8ec;color:#3b1d14;border:1px solid #f1d6a6;border-radius:18px;padding:22px;text-align:center;box-shadow:0 18px 44px -14px #000a">'+
+      '<div style="font-size:40px" aria-hidden="true">🎄</div><h2 style="margin:6px 0 8px;font-size:20px">Chưa kết nối được máy chủ</h2>'+
+      '<p style="margin:0 0 16px;font-size:14px;line-height:1.5">Không tải được thư viện đăng nhập (mạng chập chờn hoặc bị trình chặn quảng cáo chặn). Phiên đăng nhập của bạn vẫn được giữ.</p>'+
+      '<button type="button" id="ads-offline-retry" style="min-height:44px;padding:8px 20px;border-radius:12px;border:1px solid #f1d6a6;background:linear-gradient(120deg,#a31118,#750812);color:#fff1d5;font-weight:800;font-size:15px;cursor:pointer">Tải lại trang</button></div>';
+    document.documentElement.appendChild(box);
+    document.getElementById("ads-offline-retry").addEventListener("click",function(){location.reload()});
+  })();
 }
 var S={who:user.name || "",day:"",t1:25,t2:35,rows:[],days:{},sf:"",st:"",tab:"day"};
 var $=function(i){return document.getElementById(i)};

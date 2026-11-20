@@ -18,6 +18,8 @@ const TESTS = [
   { file: 'pagetest.js', arg: DASH },
   { file: 'pagetest-token.js', arg: ROOT },
   { file: 'regtest.js', arg: ROOT },
+  { file: 'remembertest.js', arg: ROOT },
+  { file: 'offlinetest.js', arg: DASH },
   { file: 'testtoggle2.js', arg: DASH },
   { file: 'testpager.js', arg: DASH },
   { file: 'picktest.js', arg: DASH },

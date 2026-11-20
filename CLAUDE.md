@@ -20,7 +20,7 @@
 - `dashboard.html` — **file lớn (~3.200 dòng)** chứa CSS + JS inline. Các khối chính:
   - Script `<head>`: chỉ kiểm tra đăng nhập (không đặt code tính năng ở đây).
   - Script chính: dữ liệu theo ngày/tài khoản (`S`, `S.byAcc`), báo cáo, tích hợp Facebook, tab Bật/Tắt (`tgBuildHierarchy`, `renderToggleView`), phân trang, thông báo (`toast`), popup dư nợ, cửa sổ Tài khoản (`openAccount`), chọn ngày/khoảng ngày (`dpSet`, `VR()`).
-- `supabase/functions/fb-proxy/index.ts` — proxy Facebook: yêu cầu đăng nhập; mỗi tài khoản dùng **token của chính mình** (`user_metadata.fb_token`); token dự phòng `FB_ACCESS_TOKEN` chỉ cho email trong `ALLOWED_EMAILS`; POST chỉ đổi `status` ACTIVE/PAUSED.
+- `supabase/functions/fb-proxy/index.ts` — proxy Facebook: yêu cầu đăng nhập; mỗi tài khoản dùng **token của chính mình** (`user_metadata.fb_token`); token dự phòng `FB_ACCESS_TOKEN` chỉ cho email trong `ALLOWED_EMAILS`; POST `?path=` chỉ đổi `status` ACTIVE/PAUSED; mọi `access_token` trong phản hồi bị gỡ (`stripTokens`).
 - `image/` — logo `logo-adscgd.webp`, favicon, ảnh nền Giáng sinh (`.webp` đã thay `.jpg/.png` ở chỗ dùng). `logo-day/night.png` là logo cũ, không còn dùng.
 
 ## 3. Quy tắc làm việc (bắt buộc)
@@ -42,6 +42,7 @@
 - Không hiển thị đầy đủ token trong log hay ảnh chụp. Nếu người dùng gửi ảnh có lộ token, nhắc họ nên tạo token mới.
 - Email trong `ALLOWED_EMAILS` và tài khoản test là thông tin cá nhân — đừng chép vào file mã nguồn.
 - Proxy `fb-proxy` không được mở thêm đường dẫn hay thao tác ghi nào ngoài đổi trạng thái ACTIVE/PAUSED.
+- **Page Access Token không bao giờ trả về trình duyệt**: proxy gỡ mọi trường `access_token` trong phản hồi (`stripTokens`, đã triển khai từ phiên bản 13).
 - Git: remote `origin` = github.com/LuanNguyen148/CODE-ADS, nhánh `main`. Chỉ commit/push khi người dùng yêu cầu.
 - CSS: lớp mới nhất là **v32** ở cuối `<style>` của `dashboard.html` (ghi đè bằng `body …` vì file `css/dashboard-christmas.css` nạp sau). Chữ vàng `#f1c96b` trên nền kem không đọc được → dùng nâu `#6b3f06`.
 - Hằng số phiên bản Graph API: `window.ADS_FB_API` trong `js/config.js` (có giá trị dự phòng trong từng file). Đổi phiên bản chỉ sửa ở đây.
@@ -58,6 +59,8 @@
 
 ## 6. Tính năng đã chốt (không đổi nếu người dùng không yêu cầu)
 - **Tài khoản & token:** token đi liền với tài khoản, nhập khi đăng ký hoặc trong cửa sổ "Tài khoản". Không có ô token trên khung chính. Đăng xuất xóa token khỏi trình duyệt; nút **Đăng xuất chỉ ở menu trái**, cửa sổ Tài khoản không có.
+- **Ghi nhớ đăng nhập:** cờ `ads_remember_v1` ('0' = không ghi nhớ). Phiên Supabase lưu đúng theo cờ (`localStorage` hoặc `sessionStorage`, hàm `ADS_SB_REMEMBER` trong `supabase-client.js`, gọi ngay trước `signInWithPassword` / `signUp`). Trang đăng nhập **hỏi Supabase** (`getSession`) khi mở: còn phiên thì khôi phục cờ `ads_auth_session_v1` và vào thẳng dashboard. Lỗi cũ (thấy trong nhật ký Supabase): token vừa làm mới thành công mà vài giây sau người dùng vẫn phải nhập mật khẩu. Bài thử `tests/remembertest.js`.
+- **Dashboard không tải được thư viện Supabase** (mạng/CDN lỗi): **không xóa phiên**, chỉ hiện khung `#ads-offline` có nút "Tải lại trang", nội dung vẫn ẩn. Bài thử `tests/offlinetest.js`.
 - **Bật/Tắt quảng cáo:** hiện tất cả chiến dịch/nhóm/quảng cáo (kể cả chưa tiêu tiền), phân trang 10/20/50/100 (mặc định 10), công tắc gửi `POST status=ACTIVE|PAUSED`, thông báo có **Hoàn tác**.
 - **Thông báo:** góc trên phải (máy tính), đáy màn hình (điện thoại), tối đa 3 thẻ, lỗi không tự tắt.
 - **Dư nợ:** nằm trong cửa sổ **Tài khoản** (`#debt-pop`), chỉ hiện `balance` + link thanh toán trên Facebook; nút "Tài khoản" ở menu trái có huy hiệu số dư (`#side-debt`) khi còn nợ. **Không làm popup nổi góc dưới phải** (bị huy hiệu "Powered by Netlify" che).
@@ -75,9 +78,12 @@
 - **Bật/Tắt:** mặc định 10 mục/trang (10/20/50/100, lưu `ads_tg_pagesize_v2`); bộ lọc "Tất cả" đưa mục ĐANG BẬT lên đầu.
 - **Đã thử rồi bỏ (người dùng thấy rườm rà):** thanh bộ lọc kiểu Ads Manager và hàng chỉ số hiển thị/tiếp cận/tần suất/nhấp/CTR/CPC/CPM. Đừng làm lại nếu không được yêu cầu.
 - **Chọn nhiều Chiến dịch / Nhóm QC (báo cáo ngày):** ô tick trên thẻ/dòng (`pickCamp`, `pickAdset`), chỉ là bộ lọc hiển thị + thanh tổng hợp `#pick-bar`, không ghi vào dữ liệu. Đi sâu bằng cách bấm thẻ thì ưu tiên chế độ đó.
+- **Đã thử rồi bỏ (người dùng thấy rườm rà):** tab **Tin nhắn Fanpage** (đọc/trả lời Messenger, kiểu hộp thư Business Suite). Đã gỡ khỏi web và proxy. Ghi chú nếu làm lại: cần quyền `pages_show_list`, `pages_messaging`, `pages_read_engagement`; Page token phải ở server; trang tài liệu `saved_message_responses` đã 404.
 
 ## 7. Kiểm thử (bài thử nằm trong repo)
-- Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 14 bài).
+- Chạy toàn bộ: `npm test` (cần `npm install` một lần; runner `tests/run-all.js`, 17 bài).
+- Bài thử proxy chạy `index.ts` bằng Node sau khi gỡ chú thích kiểu TypeScript bằng regex → khi sửa proxy chỉ dùng chú thích kiểu đơn giản (`x: string`, `): unknown {`), không dùng `as`, generic phức tạp.
+- Lệnh shell (Bash) làm **mất dấu `\`** khi ghi code qua heredoc/node -e → sửa code có regex bằng công cụ Edit.
 - Bài thử dùng jsdom với dữ liệu giả. Đặt `ADS_LOCAL_SESSION = true` vì `supabase-client.js` không chạy trong jsdom.
 - Chụp ảnh thật: Playwright (`playwright-core`) + Microsoft Edge có sẵn trên máy (Python chưa cài). Thư mục skill webapp-testing không có `scripts/`.
 - Sau mỗi thay đổi: chạy `npm test`, kiểm tra cú pháp từng khối `<script>`, rồi mới báo xong và nêu kết quả.

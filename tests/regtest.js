@@ -23,7 +23,7 @@ function setup({ withSupabase, fbValid }) {
   w.popupMotion = { show() {}, hide: async () => true };
   w.fetch = async url => { calls.fb.push(String(url)); return { json: async () => fbValid ? { id: '42', name: 'Chủ shop' } : { error: { message: 'Invalid OAuth access token.' } } }; };
   w.location.assign = () => {};
-  if (withSupabase) w.sb = { auth: { signUp: async args => { calls.signUp.push(args); return { data: { session: { user: {} } }, error: null }; } } };
+  if (withSupabase) w.sb = { auth: { getSession: async () => ({ data: { session: null } }), signUp: async args => { calls.signUp.push(args); return { data: { session: { user: {} } }, error: null }; } } };
   w.eval(src);
   return { w, calls };
 }

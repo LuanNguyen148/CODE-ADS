@@ -10,9 +10,19 @@
     localSession=!!(s&&s.local&&window.ADS_IS_LOCAL_HOST);
   }catch(e){}
   window.ADS_LOCAL_SESSION=localSession;
-  if(!localSession&&cfg.url&&cfg.anonKey&&window.supabase&&window.supabase.createClient){
-    window.sb=window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true}});
-  }
+  // "Ghi nhớ đăng nhập": phiên Supabase lưu lâu dài (localStorage) khi có tick; không tick thì chỉ giữ trong
+  // phiên trình duyệt (sessionStorage) → đóng trình duyệt là đăng xuất. Lựa chọn nhớ ở ads_remember_v1.
+  var REMEMBER_KEY='ads_remember_v1';
+  function sbStorage(){try{return localStorage.getItem(REMEMBER_KEY)==='0'?window.sessionStorage:window.localStorage}catch(e){return undefined}}
+  var canSb=!localSession&&cfg.url&&cfg.anonKey&&window.supabase&&window.supabase.createClient;
+  function makeClient(){window.sb=window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true,storage:sbStorage()}})}
+  if(canSb)makeClient();
+  // Gọi ngay trước khi đăng nhập / đăng ký: đổi nơi lưu phiên theo ô "Ghi nhớ đăng nhập"
+  window.ADS_SB_REMEMBER=function(remember){
+    try{localStorage.setItem(REMEMBER_KEY,remember?'1':'0')}catch(e){}
+    if(!remember){try{Object.keys(localStorage).forEach(function(k){if(/^sb-.+-auth-token/.test(k))localStorage.removeItem(k)})}catch(e){}}
+    if(canSb)makeClient();
+  };
   var timer=null,pending=null;
   // Giữ mọi lần đẩy lên cloud cho tới khi trang biết cloud đang có gì (tránh máy mới ghi đè dữ liệu của máy khác)
   var hold=!!window.sb;

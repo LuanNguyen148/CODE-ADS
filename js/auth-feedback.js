@@ -35,6 +35,19 @@
     }
   }
 
+  // Phiên Supabase còn hạn (ví dụ đã tick "Ghi nhớ đăng nhập") → vào thẳng dashboard, không bắt nhập lại mật khẩu.
+  // Trước đây trang chỉ nhìn cờ ads_auth_session_v1 nên dù Supabase vẫn nhớ phiên, người dùng vẫn phải đăng nhập lại.
+  if (window.sb && !window.ADS_LOCAL_SESSION) {
+    window.sb.auth.getSession().then((r) => {
+      const u = r && r.data && r.data.session && r.data.session.user;
+      if (!u || !u.email) return;
+      let remember = true;
+      try { remember = localStorage.getItem('ads_remember_v1') !== '0'; } catch (e) {}
+      setSession({ name: (u.user_metadata && u.user_metadata.name) || u.email.split('@')[0], email: u.email }, remember);
+      window.location.replace('dashboard.html');
+    }).catch(() => {});
+  }
+
   const loading = document.getElementById('auth-loading-dialog');
   const error = document.getElementById('auth-error-dialog');
   const errorTitle = document.getElementById('auth-error-title');
@@ -85,6 +98,7 @@
         const chk = await checkFbToken(fbToken);
         if (!chk.ok) return sbFail('Token Facebook không hợp lệ', chk.msg);
         loadingTitle.textContent = 'Đang tạo tài khoản…';
+        if (window.ADS_SB_REMEMBER) window.ADS_SB_REMEMBER(true); // đăng ký xong được ghi nhớ đăng nhập
         const { data, error: err } = await window.sb.auth.signUp({ email, password, options: { data: { name, fb_token: fbToken } } });
         if (err) return sbFail('Đăng ký thất bại', err.message);
         if (!data.session) return sbFail('Kiểm tra email', 'Đã gửi email xác nhận. Hãy bấm liên kết trong email rồi đăng nhập.');
@@ -115,6 +129,7 @@
         const email = form.querySelector('#login-email').value.trim().toLowerCase();
         const password = form.querySelector('#login-password').value;
         const remember = form.querySelector('#login-remember')?.checked ?? false;
+        if (window.ADS_SB_REMEMBER) window.ADS_SB_REMEMBER(remember); // phiên Supabase lưu theo đúng lựa chọn ghi nhớ
         const { data, error: err } = await window.sb.auth.signInWithPassword({ email, password });
         if (err) return sbFail('Đăng nhập thất bại', settings.errorMessage || err.message);
         const u = data.user;

@@ -6,6 +6,7 @@
 //   2. Dùng token Facebook của chính người đó. Tài khoản cũ chưa có token riêng chỉ được dùng
 //      FB_ACCESS_TOKEN của server nếu email nằm trong ALLOWED_EMAILS.
 //   3. GET: chỉ đường dẫn dạng /v21.0/...  ·  POST: chỉ đổi trạng thái (status=ACTIVE|PAUSED) của một ID.
+//   4. Mọi trường access_token trong dữ liệu trả về đều bị gỡ (Page token không tới trình duyệt).
 //
 // Triển khai:
 //   npx supabase secrets set FB_ACCESS_TOKEN=<token>                 (tùy chọn: token dự phòng cho tài khoản cũ)
@@ -49,6 +50,28 @@ async function verifiedUser(req: Request): Promise<{ email: string; fbToken: str
   }
 }
 
+// Bỏ mọi trường access_token trong dữ liệu Facebook trả về (kể cả lồng nhau), để Page token không bao giờ tới trình duyệt
+function stripTokens(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map(stripTokens);
+  if (v && typeof v === "object") {
+    return Object.fromEntries(Object.entries(v).filter(([k]) => k !== "access_token").map(([k, x]) => [k, stripTokens(x)]));
+  }
+  return v;
+}
+
+const json = (status: number, body: unknown) =>
+  new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
+
+// Chuyển nguyên phản hồi Facebook (đã gỡ token) về trình duyệt
+async function relay(r: Response) {
+  const text = await r.text();
+  try {
+    return json(r.status, stripTokens(JSON.parse(text)));
+  } catch {
+    return new Response(text, { status: r.status, headers: { ...CORS, "Content-Type": "application/json" } });
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "GET" && req.method !== "POST") return fail(405, "Method không hỗ trợ");
@@ -85,9 +108,5 @@ Deno.serve(async (req) => {
   }
   u.searchParams.set("access_token", token);
 
-  const r = await fetch(u, init);
-  return new Response(await r.text(), {
-    status: r.status,
-    headers: { ...CORS, "Content-Type": "application/json" },
-  });
+  return relay(await fetch(u, init));
 });
