@@ -1,0 +1,54 @@
+name: Build iOS IPA (chưa ký)
+
+# Chạy tay: GitHub → tab Actions → "Build iOS IPA (chưa ký)" → Run workflow. Xong tải file adsCGD-unsigned.ipa ở mục Artifacts.
+# File này CHƯA KÝ: phải ký lại bằng Sideloadly / AltStore (Apple ID miễn phí, hết hạn sau 7 ngày) hoặc tài khoản Apple Developer.
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cài Capacitor (không ghi vào package.json của dự án)
+        run: npm install --no-save @capacitor/core@6 @capacitor/cli@6 @capacitor/ios@6 @capacitor/assets@3
+
+      - name: Gom web vào www/
+        run: node scripts/build-www.js
+
+      - name: Tạo dự án iOS và biểu tượng
+        run: |
+          npx cap add ios
+          mkdir -p assets
+          cp ios-assets/icon-1024.png assets/icon-only.png
+          npx capacitor-assets generate --ios --iconBackgroundColor '#830313'
+          npx cap sync ios
+
+      - name: Build (không ký)
+        run: |
+          xcodebuild archive \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
+
+      - name: Đóng gói .ipa
+        run: |
+          APP=$(ls -d "$RUNNER_TEMP"/App.xcarchive/Products/Applications/*.app | head -n 1)
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -qry adsCGD-unsigned.ipa Payload
+          ls -l adsCGD-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adsCGD-unsigned-ipa
+          path: adsCGD-unsigned.ipa
+          if-no-files-found: error

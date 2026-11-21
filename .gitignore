@@ -4,3 +4,7 @@ supabase/.temp/
 *.before-*.html
 _tmp-*.html
 .claude/
+
+www/
+ios/
+assets/

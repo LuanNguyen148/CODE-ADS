@@ -147,7 +147,7 @@ const upd = (id, chatId, type = 'private') => ({ update_id: id, message: { messa
   check(many.length >= 2 && many.every(x => x.length <= 4000) && many.join('\n\n').split('Chiến dịch dài').length - 1 === 60, 'rất nhiều chiến dịch → tách thành nhiều tin ≤ 4000 ký tự, đủ 60 chiến dịch, không cắt ngang khối');
   // đối chiếu với hàm báo cáo THẬT của web: cùng số liệu → cùng chữ
   {
-    const web = fs.readFileSync(require('path').join(__dirname, '..', 'dashboard.html'), 'utf8');
+    const web = fs.readFileSync(require('path').join(__dirname, '..', 'dashboard.html'), 'utf8').replace(/\r\n/g, '\n');
     const grab = n => { const m = web.match(new RegExp('function ' + n + '\\([^)]*\\)\\{[^\\n]*\\n')) || web.match(new RegExp('function ' + n + '\\([^)]*\\) \\{[\\s\\S]*?\\n\\}\\n')); return m ? m[0] : ''; };
     const code = ['sg', 'vn', 'rp', 'n', 'money', 'div', 'pm', 'calc', 'total', 'sblock'].map(grab).join('\n') + '\nreturn {rp, total, sblock, pm};';
     let W = null; try { W = new Function('S', code)({ t1: 25, t2: 35 }); } catch (e) { console.log('lỗi nạp hàm web: ' + e.message); }

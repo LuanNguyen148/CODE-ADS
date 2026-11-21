@@ -1,0 +1,14 @@
+{
+  "appId": "com.adscgd.app",
+  "appName": "adsCGD",
+  "webDir": "www",
+  "backgroundColor": "#830313",
+  "server": {
+    "hostname": "adscgd.app"
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#830313",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}
