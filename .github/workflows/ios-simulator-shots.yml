@@ -1,0 +1,77 @@
+name: iOS giả lập — chụp ảnh giao diện
+
+# Chạy tay: Actions → "iOS giả lập — chụp ảnh giao diện" → Run workflow (chọn nhánh ios).
+# Build bản thử cho iPhone GIẢ LẬP (WebKit thật của iOS), mở app với dữ liệu mẫu, chụp từng màn rồi đưa vào Artifacts (ios-screenshots).
+# Bản này dùng tên miền localhost + dữ liệu mẫu để vào thẳng dashboard — KHÔNG phải bản phát hành.
+on:
+  workflow_dispatch:
+
+jobs:
+  shots:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cài Capacitor
+        run: npm install --no-save @capacitor/core@6 @capacitor/cli@6 @capacitor/ios@6 @capacitor/status-bar@6 @capacitor/assets@3
+
+      - name: Gom web + dữ liệu mẫu (chỉ cho bản chụp ảnh)
+        run: |
+          node scripts/build-www.js
+          cp ios-ci/ci-seed.js www/ci-seed.js
+          sed -i '' 's#<head>#<head><script src="ci-seed.js"></script>#' www/index.html www/dashboard.html
+          node -e "const f='capacitor.config.json',c=require('./'+f);c.server.hostname='localhost';require('fs').writeFileSync(f,JSON.stringify(c,null,2))"
+
+      - name: Tạo dự án iOS
+        run: |
+          npx cap add ios
+          mkdir -p assets
+          cp ios-assets/icon-1024.png assets/icon-only.png
+          cp ios-assets/splash-2732.png assets/splash.png
+          cp ios-assets/splash-2732.png assets/splash-dark.png
+          npx capacitor-assets generate --ios --iconBackgroundColor '#830313' --splashBackgroundColor '#830313'
+          npx cap sync ios
+
+      - name: Build cho giả lập
+        run: |
+          xcodebuild build \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/dd" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Bật iPhone giả lập và mở app
+        run: |
+          UDID=$(xcrun simctl list devices available -j | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);const all=[];for(const k of Object.keys(j.devices))for(const d of j.devices[k])if(/^iPhone 1[5-9]( Pro)?$/.test(d.name))all.push(d);console.log((all[0]||{}).udid||'')})")
+          echo "Thiết bị: $UDID"
+          test -n "$UDID"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          APP=$(ls -d "$RUNNER_TEMP"/dd/Build/Products/Debug-iphonesimulator/App.app)
+          xcrun simctl install "$UDID" "$APP"
+          mkdir -p shots
+          xcrun simctl launch "$UDID" com.adscgd.app
+          # chụp theo lịch của ci-seed.js: mỗi màn cách nhau 6 giây
+          sleep 8;  xcrun simctl io "$UDID" screenshot shots/1-baocaongay.png
+          sleep 8;  xcrun simctl io "$UDID" screenshot shots/2-tongtheongay.png
+          sleep 6;  xcrun simctl io "$UDID" screenshot shots/3-batat.png
+          sleep 6;  xcrun simctl io "$UDID" screenshot shots/4-thongbao.png
+          sleep 6;  xcrun simctl io "$UDID" screenshot shots/5-caidat.png
+          sleep 6;  xcrun simctl io "$UDID" screenshot shots/6-giaodien-toi.png
+          sleep 6;  xcrun simctl io "$UDID" screenshot shots/7-baocaongay-toi.png
+          xcrun simctl spawn "$UDID" log show --last 2m --predicate 'process == "App"' --style compact > shots/log.txt || true
+          ls -l shots
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-screenshots
+          path: shots
+          if-no-files-found: warn

@@ -16,7 +16,7 @@ jobs:
           node-version: 20
 
       - name: Cài Capacitor (không ghi vào package.json của dự án)
-        run: npm install --no-save @capacitor/core@6 @capacitor/cli@6 @capacitor/ios@6 @capacitor/assets@3
+        run: npm install --no-save @capacitor/core@6 @capacitor/cli@6 @capacitor/ios@6 @capacitor/status-bar@6 @capacitor/assets@3
 
       - name: Gom web vào www/
         run: node scripts/build-www.js
@@ -26,7 +26,9 @@ jobs:
           npx cap add ios
           mkdir -p assets
           cp ios-assets/icon-1024.png assets/icon-only.png
-          npx capacitor-assets generate --ios --iconBackgroundColor '#830313'
+          cp ios-assets/splash-2732.png assets/splash.png
+          cp ios-assets/splash-2732.png assets/splash-dark.png
+          npx capacitor-assets generate --ios --iconBackgroundColor '#830313' --splashBackgroundColor '#830313'
           npx cap sync ios
 
       - name: Build (không ký)

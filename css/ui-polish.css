@@ -191,3 +191,17 @@ body .ap-dlg .ap-match input[type=radio],body .ap-dlg .ap-chk input[type=checkbo
 .tn-time-row select{font:inherit;font-size:16px;font-weight:700;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 12px;min-height:44px;min-width:76px}
 .tn-time-row #tn-ap{min-width:84px}
 .tn-colon{font-size:18px;font-weight:800}
+
+/* ===== Điện thoại cảm ứng (iPhone / ứng dụng iOS): vùng chạm ≥ 44px, ô nhập ≥ 16px (iOS tự phóng to khi bấm ô nhỏ hơn), bỏ khung chọn chữ ===== */
+@media (hover:none) and (pointer:coarse){
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  button,a,select,summary,label,[role=tab],[role=radio]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  button,[role=tab],[role=radio],.tabs,.side,.fab-menu{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+  body input:not([type=checkbox]):not([type=radio]):not([type=range]),body select,body textarea{font-size:16px !important}
+  body .tabs button,body .pill-tabs button,body .set-seg button,body .tg-pills button,body .hier-tabs button{min-height:44px}
+  body .ap-ghost,body .ap-danger,body .pw-btn,body .tg-refresh{min-height:44px}
+  body .ap-chk,body .set-switch,body .login-remember,body .remember-row label{min-height:44px;display:inline-flex;align-items:center}
+  body .password-toggle{min-width:44px;min-height:44px}
+  body .recovery-open{min-height:44px}
+  body input[type=checkbox],body input[type=radio]{width:22px;height:22px}
+}

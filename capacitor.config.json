@@ -9,6 +9,12 @@
   "ios": {
     "contentInset": "always",
     "backgroundColor": "#830313",
-    "limitsNavigationsToAppBoundDomains": false
+    "limitsNavigationsToAppBoundDomains": false,
+    "preferredContentMode": "mobile"
+  },
+  "plugins": {
+    "StatusBar": {
+      "style": "DARK"
+    }
   }
 }
