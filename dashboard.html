@@ -1101,7 +1101,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
 <link rel="stylesheet" href="css/dashboard-stats.css?v=8">
 <link rel="stylesheet" href="css/logout-popup.css?v=2">
-<link rel="stylesheet" href="css/ui-polish.css?v=17">
+<link rel="stylesheet" href="css/ui-polish.css?v=18">
 </head>
 <body>
 <div class="xmas-scene" aria-hidden="true"><span class="xmas-bg xmas-bg-day"></span><span class="xmas-bg xmas-bg-night"></span><span class="xmas-wash"></span><canvas id="xmas-snow"></canvas></div>
@@ -1135,7 +1135,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 </aside>
 <div class="side-scrim" id="side-scrim" hidden></div>
 <button type="button" class="fab-menu" id="fab-menu" aria-label="Mở menu (kéo để di chuyển)" aria-controls="side" aria-expanded="false" title="Mở menu — giữ và kéo để di chuyển"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-<div class="wrap">
+<div class="wrap" role="main">
 <div class="auth-bar" aria-label="Thông tin tài khoản">
   <div class="auth-user">
     <button type="button" class="side-open" id="side-open" aria-label="Mở menu" aria-controls="side" aria-expanded="false" title="Mở menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1290,7 +1290,7 @@ td .pick{margin-right:8px;vertical-align:middle}
       <button type="button" data-lvl="adset">Nhóm QC <span class="cnt" id="tg-cnt-adset">0</span></button>
       <button type="button" data-lvl="ad">Quảng cáo <span class="cnt" id="tg-cnt-ad">0</span></button>
     </div>
-    <input class="tg-search" id="tg-search" type="search" placeholder="Tìm tên chiến dịch / quảng cáo..." autocomplete="off">
+    <input class="tg-search" id="tg-search" type="search" placeholder="Tìm tên chiến dịch / quảng cáo..." aria-label="Tìm chiến dịch hoặc quảng cáo" autocomplete="off">
   </div>
   <div class="tg-crumb" id="tg-crumb"></div>
   <div class="tg-list" id="tg-list"></div>
@@ -4617,6 +4617,35 @@ debtRefresh(false);
   });
   if (desktop.addEventListener) desktop.addEventListener("change", syncMode); else desktop.addListener(syncMode);
   syncMode();
+
+  // Gạt ngón tay từ trái sang phải → mở menu chức năng; gạt từ phải sang trái khi menu đang mở → đóng (chỉ điện thoại / máy tính bảng)
+  (function() {
+    var sx = 0, sy = 0, mode = null, MIN = 70;
+    function hScroll(el) { // chạm bắt đầu trong vùng tự cuộn ngang (bảng, dải tab) thì để nó cuộn, không mở menu
+      for (; el && el !== document.body; el = el.parentElement) {
+        var cs = getComputedStyle(el), ox = cs.overflowX;
+        if ((ox === "auto" || ox === "scroll") && el.scrollWidth > el.clientWidth + 2) return true;
+      }
+      return false;
+    }
+    document.addEventListener("touchstart", function(e) {
+      mode = null;
+      if (desktop.matches || !e.touches || e.touches.length !== 1 || document.querySelector("dialog[open]")) return;
+      var t = e.touches[0], el = e.target, open = side.classList.contains("open");
+      if (el && el.closest && el.closest("input,select,textarea,[contenteditable],#fab-menu")) return;
+      if (!open && hScroll(el)) return;
+      mode = open ? "close" : "open"; sx = t.clientX; sy = t.clientY;
+    }, { passive: true });
+    document.addEventListener("touchend", function(e) {
+      var m = mode; mode = null;
+      if (!m || !e.changedTouches || !e.changedTouches.length) return;
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dy) > Math.abs(dx) * 0.5) return; // gạt gần như nằm ngang mới tính
+      if (m === "open" && dx >= MIN) { setOpen(true); syncMode(); }
+      else if (m === "close" && dx <= -MIN) { setOpen(false); syncMode(); }
+    }, { passive: true });
+    document.addEventListener("touchcancel", function() { mode = null; }, { passive: true });
+  })();
 
   var viewOf = { day: "v-day", days: "rangeCard", toggle: "v-toggle", notify: "v-notify", settings: "v-settings" };
   side.addEventListener("click", function(e){

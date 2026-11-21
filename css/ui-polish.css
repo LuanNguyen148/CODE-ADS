@@ -205,3 +205,10 @@ body .ap-dlg .ap-match input[type=radio],body .ap-dlg .ap-chk input[type=checkbo
   body .recovery-open{min-height:44px}
   body input[type=checkbox],body input[type=radio]{width:22px;height:22px}
 }
+
+/* ===== Độ tương phản (WCAG 1.4.3, ≥ 4.5:1) — rà soát bằng skill accessibility-review ===== */
+:root:not([data-scene="night"]){--n:#6b5143;--g:#166534}
+:root:not([data-scene="night"]) .k .kd.up,:root:not([data-scene="night"]) .k .kdv.up{color:#166534}
+:root:not([data-scene="night"]) .tbl tr[data-g=g] .pill,:root:not([data-scene="night"]) .spill[data-g=g]{background:#166534}
+:root[data-scene="night"] .spill[data-g=g],:root[data-scene="night"] .tbl tr[data-g=g] .pill{background:#12803f}
+:root[data-scene="night"] .spill[data-g=r],:root[data-scene="night"] .tbl tr[data-g=r] .pill{background:#c9263c}

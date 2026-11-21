@@ -35,6 +35,7 @@ const TESTS = [
   { file: 'splitdatetest.js', arg: DASH },
   { file: 'ipaconfigtest.js', arg: DASH },
   { file: 'iosoptimtest.js', arg: DASH },
+  { file: 'swipetest.js', arg: DASH },
   { file: 'numfmttest.js', arg: DASH },
   { file: 'fabtest.js', arg: DASH },
   { file: 'cleanurltest.js', arg: DASH },

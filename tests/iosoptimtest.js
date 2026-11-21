@@ -23,5 +23,10 @@ check(/ads_auth_session_v1/.test(seed) && /local: true/.test(seed) && !/EAA[A-Za
 const css = read('css/ui-polish.css');
 check(/@media \(hover:none\) and \(pointer:coarse\)/.test(css) && /font-size:16px !important/.test(css) && /min-height:44px/.test(css), 'CSS cảm ứng: ô nhập ≥ 16px (iOS không tự phóng to) và vùng chạm ≥ 44px');
 check(/-webkit-touch-callout:none/.test(css) && /touch-action:manipulation/.test(css), 'tắt bảng gọi nhanh khi giữ nút và chờ chạm đúp (cảm giác như app)');
+// ----- rà soát khả năng truy cập (skill accessibility-review) -----
+const dash = read('dashboard.html');
+check(/id="tg-search"[^>]*aria-label="[^"]+"/.test(dash), 'ô tìm kiếm ở tab Bật/Tắt có nhãn cho trình đọc màn hình (aria-label)');
+check(/<div class="wrap" role="main">/.test(dash), 'dashboard có vùng chính role="main" (điều hướng bằng VoiceOver)');
+check(/--n:#6b5143;--g:#166534/.test(css) && /\.spill\[data-g=g\][^}]*#12803f/.test(css) && /\.spill\[data-g=r\][^}]*#c9263c/.test(css), 'màu nhãn đánh giá / chữ phụ đủ tương phản ≥ 4.5:1 (sáng: nâu #6b5143, xanh #166534; tối: xanh #12803f, đỏ #c9263c)');
 console.log(ok ? '\nALL PASS' : '\nSOME FAILED');
 process.exit(ok ? 0 : 2);
