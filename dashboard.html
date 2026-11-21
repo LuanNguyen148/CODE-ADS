@@ -666,8 +666,8 @@ button.fb-badge{flex:none;cursor:pointer;font:inherit;font-size:12px;font-weight
 .sync-ctl{display:flex;align-items:center;gap:10px;min-width:0;flex:0 1 auto;margin-left:auto}
 .sync-msg{font-size:12.5px;color:var(--mu);max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sync-ctl .btn-fb{min-height:40px;padding:8px 14px}
-:root:not([data-tab="days"]):not([data-tab="ads"]) #fb-sync-range{display:none}
-:root[data-tab="days"] #fb-sync-btn,:root[data-tab="ads"] #fb-sync-btn{display:none}
+:root:not([data-tab="days"]) #fb-sync-range{display:none}
+:root[data-tab="days"] #fb-sync-btn{display:none}
 .gc em[hidden]{display:none}
 @media (max-width:760px){
   .hier-top{flex-direction:column;align-items:stretch}
@@ -1099,9 +1099,9 @@ td .pick{margin-right:8px;vertical-align:middle}
 </style>
 <link rel="stylesheet" href="css/fonts.css?v=woff2a">
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
-<link rel="stylesheet" href="css/dashboard-stats.css?v=6">
+<link rel="stylesheet" href="css/dashboard-stats.css?v=8">
 <link rel="stylesheet" href="css/logout-popup.css?v=2">
-<link rel="stylesheet" href="css/ui-polish.css?v=1">
+<link rel="stylesheet" href="css/ui-polish.css?v=16">
 </head>
 <body>
 <div class="xmas-scene" aria-hidden="true"><span class="xmas-bg xmas-bg-day"></span><span class="xmas-bg xmas-bg-night"></span><span class="xmas-wash"></span><canvas id="xmas-snow"></canvas></div>
@@ -1121,9 +1121,9 @@ td .pick{margin-right:8px;vertical-align:middle}
     <button type="button" data-side-tab="day" title="Báo cáo ngày"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4M8 14h3"/></svg><span>Báo cáo ngày</span></button>
     <p class="side-sec">Thống kê</p>
     <button type="button" data-side-tab="days" title="Thống kê tổng theo ngày"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/></svg><span>Tổng theo ngày</span></button>
-    <button type="button" data-side-tab="ads" title="Thống kê tổng theo bài"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Tổng theo bài</span></button>
     <p class="side-sec">Quản lý</p>
     <button type="button" data-side-tab="toggle" title="Bật / Tắt quảng cáo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="5"/><circle cx="16" cy="12" r="3"/></svg><span>Bật / Tắt quảng cáo</span></button>
+    <button type="button" data-side-tab="notify" title="Thông báo Telegram: báo cáo hằng ngày, báo khi tự tắt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>Thông báo</span></button>
     <p class="side-sec">Hệ thống</p>
     <button type="button" data-side-tab="settings" title="Cài đặt giao diện, mật khẩu"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Cài đặt</span></button>
   </nav>
@@ -1150,7 +1150,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 </div>
 
 <div class="top">
-<div class="banner" data-ph="day"><div class="stars"></div><div class="clock" aria-label="Ngày giờ hiện tại"><svg class="orb" viewBox="0 0 44 44" aria-hidden="true"><g class="sun"><g class="rays"><line x1="22" y1="3" x2="22" y2="8"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(45 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(90 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(135 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(180 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(225 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(270 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(315 22 22)"/></g><circle class="disc" cx="22" cy="22" r="9"/></g><g class="moon"><mask id="mk"><rect width="44" height="44" fill="#fff"/><circle cx="30" cy="16" r="10" fill="#000"/></mask><circle cx="21" cy="23" r="12" fill="#fff6c8" mask="url(#mk)"/></g></svg><div class="ct"><small id="ckg">Xin chào</small><b id="ck">--:--:--</b><span id="cd"></span></div></div><div class="bt"><h1>Đánh giá chỉ số Ads</h1><p>Theo dõi mess, số điện thoại, doanh số và CPQC từng bài trên một màn hình.</p><div class="tabs" id="tabs" role="tablist" aria-label="Chọn chức năng"><button type="button" role="tab" id="tab-day" data-tab="day" aria-selected="true" aria-controls="v-day">Báo cáo ngày</button><button type="button" role="tab" id="tab-days" data-tab="days" aria-selected="false" aria-controls="v-days" tabindex="-1">Thống kê tổng theo ngày</button><button type="button" role="tab" id="tab-ads" data-tab="ads" aria-selected="false" aria-controls="v-ads" tabindex="-1">Thống kê tổng theo bài</button><button type="button" role="tab" id="tab-toggle" data-tab="toggle" aria-selected="false" aria-controls="v-toggle" tabindex="-1">Bật / Tắt quảng cáo</button><button type="button" role="tab" id="tab-settings" data-tab="settings" aria-selected="false" aria-controls="v-settings" tabindex="-1">Cài đặt</button></div></div><svg class="deco" viewBox="0 0 220 110" aria-hidden="true"><rect x="10" y="80" width="28" height="30" rx="6" style="animation-delay:.1s"/><rect x="50" y="62" width="28" height="48" rx="6" style="animation-delay:.2s"/><rect x="90" y="70" width="28" height="40" rx="6" style="animation-delay:.3s"/><rect x="130" y="40" width="28" height="70" rx="6" style="animation-delay:.4s"/><rect class="hi" x="170" y="18" width="28" height="92" rx="6" style="animation-delay:.5s"/><polyline class="ln" points="24,66 64,46 104,54 144,26 184,8"/><circle cx="24" cy="66" r="4"/><circle cx="64" cy="46" r="4"/><circle cx="104" cy="54" r="4"/><circle cx="144" cy="26" r="4"/><circle cx="184" cy="8" r="5"/></svg></div>
+<div class="banner" data-ph="day"><div class="stars"></div><div class="clock" aria-label="Ngày giờ hiện tại"><svg class="orb" viewBox="0 0 44 44" aria-hidden="true"><g class="sun"><g class="rays"><line x1="22" y1="3" x2="22" y2="8"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(45 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(90 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(135 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(180 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(225 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(270 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(315 22 22)"/></g><circle class="disc" cx="22" cy="22" r="9"/></g><g class="moon"><mask id="mk"><rect width="44" height="44" fill="#fff"/><circle cx="30" cy="16" r="10" fill="#000"/></mask><circle cx="21" cy="23" r="12" fill="#fff6c8" mask="url(#mk)"/></g></svg><div class="ct"><small id="ckg">Xin chào</small><b id="ck">--:--:--</b><span id="cd"></span></div></div><div class="bt"><h1>Đánh giá chỉ số Ads</h1><p>Theo dõi mess, số điện thoại, doanh số và CPQC từng bài trên một màn hình.</p><div class="tabs" id="tabs" role="tablist" aria-label="Chọn chức năng"><button type="button" role="tab" id="tab-day" data-tab="day" aria-selected="true" aria-controls="v-day">Báo cáo ngày</button><button type="button" role="tab" id="tab-days" data-tab="days" aria-selected="false" aria-controls="v-days" tabindex="-1">Thống kê tổng theo ngày</button><button type="button" role="tab" id="tab-toggle" data-tab="toggle" aria-selected="false" aria-controls="v-toggle" tabindex="-1">Bật / Tắt quảng cáo</button><button type="button" role="tab" id="tab-notify" data-tab="notify" aria-selected="false" aria-controls="v-notify" tabindex="-1">Thông báo</button><button type="button" role="tab" id="tab-settings" data-tab="settings" aria-selected="false" aria-controls="v-settings" tabindex="-1">Cài đặt</button></div></div><svg class="deco" viewBox="0 0 220 110" aria-hidden="true"><rect x="10" y="80" width="28" height="30" rx="6" style="animation-delay:.1s"/><rect x="50" y="62" width="28" height="48" rx="6" style="animation-delay:.2s"/><rect x="90" y="70" width="28" height="40" rx="6" style="animation-delay:.3s"/><rect x="130" y="40" width="28" height="70" rx="6" style="animation-delay:.4s"/><rect class="hi" x="170" y="18" width="28" height="92" rx="6" style="animation-delay:.5s"/><polyline class="ln" points="24,66 64,46 104,54 144,26 184,8"/><circle cx="24" cy="66" r="4"/><circle cx="64" cy="46" r="4"/><circle cx="104" cy="54" r="4"/><circle cx="144" cy="26" r="4"/><circle cx="184" cy="8" r="5"/></svg></div>
 <div class="day-pick" id="metaDay">
   <button type="button" class="dp-btn" id="dp-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="dp-pop">
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
@@ -1190,10 +1190,10 @@ td .pick{margin-right:8px;vertical-align:middle}
 
 <div class="bar"><h2 id="hier-heading">1. Danh sách Chiến dịch (Bấm vào Chiến dịch để xem Nhóm QC)</h2>
 <div class="meta">
-<label title="CPQC nhỏ hơn hoặc bằng mức này được tính là Tốt (xanh)">CPQC tốt ≤ (%)<input id="t1" type="number" inputmode="decimal" min="0" class="in-pct" aria-describedby="thr-hint"></label>
-<label title="CPQC nhỏ hơn hoặc bằng mức này (nhưng cao hơn mức Tốt) là Theo dõi (vàng)">Theo dõi ≤ (%)<input id="t2" type="number" inputmode="decimal" min="0" class="in-pct" aria-describedby="thr-hint"></label>
+<label title="CPQC nhỏ hơn hoặc bằng mức này được tính là Tốt (xanh)">CPQC tốt ≤ (%)<input id="t1" type="number" inputmode="decimal" min="0" class="in-pct"></label>
+<label title="CPQC nhỏ hơn hoặc bằng mức này (nhưng cao hơn mức Tốt) là Theo dõi (vàng)">Theo dõi ≤ (%)<input id="t2" type="number" inputmode="decimal" min="0" class="in-pct"></label>
 </div>
-<p class="thr-hint" id="thr-hint">Màu CPQC: ≤ mức tốt → <b class="g">Tốt</b> · ≤ mức theo dõi → <b class="y">Theo dõi</b> · cao hơn → <b class="r">Cắt / sửa</b>.</p></div>
+</div>
 
 <div class="hier-nav" aria-label="Điều hướng phân cấp Chiến dịch - Nhóm quảng cáo - Quảng cáo">
   <div class="hier-top"><div class="slot" id="hier-acc-slot"><div class="acc-ctl" id="acc-ctl"><label class="acc-sel" title="Đổi tài khoản sẽ tự tải dữ liệu riêng của tài khoản đó"><select id="fb-acc-select" aria-label="Tài khoản quảng cáo"><option value="">-- Đang tải danh sách tài khoản... --</option></select></label><button type="button" class="fb-badge" id="fb-badge" data-open-account title="Tài khoản &amp; Token Facebook">Đang kết nối</button></div></div><div class="slot" id="hier-sync-slot"><div class="sync-ctl" id="sync-ctl"><span class="sync-msg" id="fb-msg">Đang kết nối tới Facebook...</span><button type="button" class="btn-fb" id="fb-sync-btn" title="Lấy số liệu Facebook của ngày đang xem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span id="fb-sync-label">Lấy số liệu ngày này</span></button><button type="button" class="btn-fb" id="fb-sync-range" title="Đồng bộ nhiều ngày theo khoảng ngày đã chọn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg><span>Đồng bộ khoảng ngày</span></button></div></div></div>
@@ -1253,8 +1253,6 @@ td .pick{margin-right:8px;vertical-align:middle}
 <section class="rep stats" id="rangeCard" aria-label="Chọn khoảng ngày" hidden>
 <div class="hier-top"><div class="slot" id="rng-acc-slot"></div><div class="slot" id="rng-sync-slot"></div></div>
 <div class="srange"><div class="date-slot" id="rng-date-slot"></div></div>
-<p class="sub" id="sinfo"></p>
-<p class="hint2">Dùng chung bộ chọn ngày với Báo cáo ngày — chọn ở đâu, các tab đều đổi theo. Xem tối đa 31 ngày.</p>
 </section>
 
 <section class="rep stats view" id="v-days" role="tabpanel" aria-labelledby="tab-days" hidden>
@@ -1267,15 +1265,6 @@ td .pick{margin-right:8px;vertical-align:middle}
 <div class="btns"><button class="pri" id="scopy" type="button">Sao chép thống kê</button></div>
 </section>
 
-<section class="rep stats view" id="v-ads" role="tabpanel" aria-labelledby="tab-ads" hidden>
-<h2>Thống kê tổng theo bài</h2>
-<p class="hint2">Các bài trùng tên được gộp lại trong khoảng ngày đã chọn. Bấm tiêu đề cột để sắp xếp.</p>
-<div class="kp skp" id="akp"></div>
-<h3 class="subh">CPQC từng bài</h3>
-<div class="hbars" id="abars"></div>
-<div class="tw"><table id="atab"><thead><tr><th data-k="name"><button type="button" class="sortb" data-k="name">Tên bài</button></th><th data-k="days"><button type="button" class="sortb" data-k="days">Ngày chạy</button></th><th data-k="s"><button type="button" class="sortb" data-k="s">Tiền chạy</button></th><th data-k="m"><button type="button" class="sortb" data-k="m">Mess</button></th><th data-k="gm"><button type="button" class="sortb" data-k="gm">Giá mess</button></th><th data-k="p"><button type="button" class="sortb" data-k="p">Số</button></th><th data-k="gp"><button type="button" class="sortb" data-k="gp">Giá số</button></th><th data-k="d"><button type="button" class="sortb" data-k="d">Doanh số</button></th><th data-k="cp"><button type="button" class="sortb" data-k="cp">CPQC</button></th></tr></thead><tbody></tbody></table></div>
-<div class="btns"><button class="pri" id="acopy" type="button">Sao chép thống kê</button></div>
-</section>
 
 <section class="view tg-card" id="v-toggle" role="tabpanel" aria-labelledby="tab-toggle" hidden>
   <div class="hier-top"><div class="slot" id="tg-acc-slot"></div><div class="slot" id="tg-sync-slot"></div></div>
@@ -1285,15 +1274,16 @@ td .pick{margin-right:8px;vertical-align:middle}
       <div class="tg-sub" id="tg-sub">Tất cả chiến dịch, nhóm QC, quảng cáo · Trạng thái đồng bộ trực tiếp Facebook Ads</div>
     </div>
     <div class="tg-right">
-      <div class="date-slot" id="tg-date-slot"></div>
       <div class="tg-pills" id="tg-st-filter" role="group" aria-label="Lọc trạng thái">
         <button type="button" data-st="all" class="on">Tất cả</button>
         <button type="button" data-st="ACTIVE">Đang chạy</button>
         <button type="button" data-st="PAUSED">Tạm dừng</button>
       </div>
       <button type="button" class="tg-refresh" id="tg-refresh-btn" title="Lấy trạng thái bật/tắt mới nhất từ Facebook">↻ Làm mới trạng thái</button>
+      <button type="button" class="tg-refresh" id="tg-log-btn" title="Các mục đã được tự tắt (hoặc sẽ bị tắt khi chạy thử)">⏱ Nhật ký tự tắt</button>
     </div>
   </div>
+  <p class="tg-ap-sum" id="tg-ap-sum" role="status" data-level="ok" hidden></p>
   <div class="tg-bar">
     <div class="tg-pills" id="tg-lvl-tabs" role="tablist" aria-label="Cấp độ hiển thị">
       <button type="button" data-lvl="campaign" class="on">Chiến dịch <span class="cnt" id="tg-cnt-camp">0</span></button>
@@ -1307,13 +1297,43 @@ td .pick{margin-right:8px;vertical-align:middle}
   <nav class="tg-pager" id="tg-pager" aria-label="Phân trang danh sách" hidden></nav>
 </section>
 
+<section class="view set-card" id="v-notify" role="tabpanel" aria-labelledby="tab-notify" hidden>
+  <div class="set-head">
+    <span class="set-av" aria-hidden="true">🔔</span>
+    <div class="set-who"><h2>Thông báo</h2></div>
+  </div>
+  <div class="set-sec" id="tn-sec-report">
+    <h3>1. Báo cáo hằng ngày</h3>
+    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-report"><span>Gửi báo cáo hằng ngày</span></label>
+    <div class="tn-time-row">
+      <label for="tn-hh">Gửi lúc</label>
+      <select id="tn-hh" aria-label="Giờ"><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+      <span class="tn-colon" aria-hidden="true">:</span>
+      <select id="tn-mm" aria-label="Phút"><option value="00">00</option><option value="05">05</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option><option value="35">35</option><option value="40">40</option><option value="45">45</option><option value="50">50</option><option value="55">55</option></select>
+      <select id="tn-ap" aria-label="Sáng hoặc chiều"><option value="AM">AM</option><option value="PM">PM</option></select>
+      <input id="tn-time" type="hidden" value="20:00">
+    </div>
+    <div class="ap-actions"><button type="button" class="ap-ghost" id="tn-report-now">Gửi thử báo cáo ngay</button></div>
+  </div>
+  <div class="set-sec" id="tn-sec-alerts">
+    <h3>2. Báo ngay khi có sự việc</h3>
+    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-paused" checked><span>Báo khi một mục bị tự tắt (kèm lý do)</span></label>
+    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-problem" checked><span>Báo sự cố (token hết hạn, không tắt được)</span></label>
+    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-dry"><span>Báo cả khi chạy thử</span></label>
+  </div>
+  <div class="set-sec tn-foot">
+    <div class="ap-actions"><button type="button" class="pw-btn" id="tn-prefs-save">Lưu cài đặt thông báo</button></div>
+    <p class="pw-err" id="tn-err" role="alert" hidden></p>
+  </div>
+</section>
+
 <section class="view set-card" id="v-settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
   <div class="set-head">
     <span class="set-av" id="set-av" aria-hidden="true">U</span>
     <div class="set-who"><h2>Cài đặt</h2><strong id="set-name"></strong><small id="set-email"></small></div>
     <div class="pill-tabs" id="set-tabs" role="tablist" aria-label="Nhóm cài đặt">
       <button type="button" role="tab" id="set-tab-look" data-set-tab="look" aria-selected="true" aria-controls="set-pane-look">Giao diện</button>
-      <button type="button" role="tab" id="set-tab-fx" data-set-tab="fx" aria-selected="false" aria-controls="set-pane-fx" tabindex="-1">Hiệu ứng</button>
+      <button type="button" role="tab" id="set-tab-tg" data-set-tab="tg" aria-selected="false" aria-controls="set-pane-tg" tabindex="-1">Telegram</button>
       <button type="button" role="tab" id="set-tab-pw" data-set-tab="pw" aria-selected="false" aria-controls="set-pane-pw" tabindex="-1">Mật khẩu</button>
     </div>
   </div>
@@ -1325,11 +1345,29 @@ td .pick{margin-right:8px;vertical-align:middle}
       <button type="button" role="radio" data-theme="day" aria-checked="false">Sáng</button>
       <button type="button" role="radio" data-theme="night" aria-checked="false">Tối</button>
     </div>
-  </div>
-  <div class="set-sec pane-off" id="set-pane-fx" data-set-pane="fx" role="tabpanel" aria-labelledby="set-tab-fx">
-    <h3>Hiệu ứng Giáng sinh</h3>
+    <h3 class="set-sub">Hiệu ứng Giáng sinh</h3>
     <label class="set-switch"><input type="checkbox" id="set-snow" checked><span class="set-track" aria-hidden="true"></span><span>Tuyết rơi</span></label>
     <p class="set-help">Tắt nếu máy chậm hoặc muốn tiết kiệm pin.</p>
+  </div>
+  <div class="set-sec pane-off" id="set-pane-tg" data-set-pane="tg" role="tabpanel" aria-labelledby="set-tab-tg">
+    <h3>Kết nối Telegram</h3>
+    <p class="ap-note" id="tn-note" hidden></p>
+    <div class="ap-status" id="tn-state" aria-live="polite" data-level="warn">Chưa kết nối Telegram.</div>
+    <ol class="tn-steps">
+      <li>Trong Telegram, tìm <b>@BotFather</b> → gửi <b>/newbot</b> → đặt tên → copy <b>mã bot</b> (dạng <code>123456789:AAE…</code>).</li>
+      <li>Dán mã bot vào ô dưới, bấm <b>Lưu mã bot</b>. Mã được cất kín, web không hiện lại.</li>
+      <li>Mở bot vừa tạo trong Telegram, bấm <b>Start</b>, rồi quay lại đây bấm <b>Kết nối</b>.</li>
+    </ol>
+    <div class="tn-token-row">
+      <input id="tn-token" type="password" autocomplete="off" spellcheck="false" placeholder="Dán mã bot (dạng 123456789:AAE…)" aria-label="Mã bot Telegram">
+      <button type="button" class="pw-btn" id="tn-save">Lưu mã bot</button>
+    </div>
+    <div class="ap-actions">
+      <button type="button" class="pw-btn" id="tn-link">Kết nối</button>
+      <button type="button" class="ap-ghost" id="tn-test">Gửi tin thử</button>
+      <button type="button" class="ap-danger" id="tn-remove" hidden>Xóa kết nối</button>
+    </div>
+    <p class="pw-err" id="tn-err-tg" role="alert" hidden></p>
   </div>
   <div class="set-sec pane-off" id="set-pane-pw" data-set-pane="pw" role="tabpanel" aria-labelledby="set-tab-pw">
     <h3>Đổi mật khẩu</h3>
@@ -1353,6 +1391,48 @@ td .pick{margin-right:8px;vertical-align:middle}
   </div>
 </dialog>
 <div class="nt-stack" id="nt-stack" aria-live="polite" aria-relevant="additions"></div>
+<!-- Tự tắt: popup cài điều kiện cho TỪNG chiến dịch / nhóm QC / quảng cáo đang bật (mở từ biểu tượng ⏱ ở tab Bật/Tắt) -->
+<dialog class="acct ap-dlg" id="ap-dialog" aria-labelledby="ap-title">
+  <div class="acct-head">
+    <span class="acct-avatar" aria-hidden="true">⏱</span>
+    <div class="acct-who"><h2 id="ap-level">Chiến dịch</h2><strong id="ap-title">Tự tắt</strong><small id="ap-sub">Tự tắt khi chạy tốn tiền mà không ra kết quả</small></div>
+    <button type="button" class="acct-x" id="ap-close" aria-label="Đóng">✕</button>
+  </div>
+  <div class="acct-sec ap-body">
+    <p class="ap-note" id="ap-note" hidden></p>
+    <label class="set-switch"><input type="checkbox" id="ap-enabled" checked><span class="set-track" aria-hidden="true"></span><span>Tự tắt khi đạt điều kiện</span></label>
+    <div class="ap-rows">
+      <label class="ap-row"><span>Số tiền chạy hôm nay ≥</span><input id="ap-spend" type="text" inputmode="decimal" autocomplete="off" placeholder="200000 hoặc 200k"></label>
+      <div class="ap-row"><label class="ap-chk"><input type="checkbox" id="ap-use-mess" checked><span>Số mess ≤</span></label><input id="ap-mess" type="text" inputmode="numeric" autocomplete="off" value="0" aria-label="Số mess tối đa"></div>
+      <div class="ap-row"><label class="ap-chk"><input type="checkbox" id="ap-use-phone"><span>Số điện thoại ≤</span></label><input id="ap-phone" type="text" inputmode="numeric" autocomplete="off" value="0" disabled aria-label="Số điện thoại tối đa"></div>
+      <p class="ap-hint" id="ap-phone-note">Số điện thoại do bạn nhập tay ở Báo cáo ngày — chưa nhập thì tính là 0 (nên bỏ tick nếu bạn nhập số cuối ngày).</p>
+      <fieldset class="ap-match" id="ap-match-wrap" hidden>
+        <legend>Khi xét cả mess và số điện thoại</legend>
+        <label><input type="radio" name="ap-match" value="all" checked> Cả hai cùng đúng (VÀ)</label>
+        <label><input type="radio" name="ap-match" value="any"> Một trong hai đúng (HOẶC)</label>
+      </fieldset>
+    </div>
+    <p class="ap-summary" id="ap-summary"></p>
+    <label class="set-switch"><input type="checkbox" id="ap-dry" checked><span class="set-track" aria-hidden="true"></span><span>Chạy thử (chỉ ghi nhật ký, chưa tắt thật)</span></label>
+    <p class="pw-err" id="ap-err" role="alert" hidden></p>
+    <div class="ap-status" id="ap-status" aria-live="polite" data-level="ok"></div>
+    <div class="ap-actions">
+      <button type="button" class="pw-btn" id="ap-save">Lưu</button>
+      <button type="button" class="ap-ghost" id="ap-cancel">Hủy</button>
+      <button type="button" class="ap-danger" id="ap-del" hidden>Xóa quy tắc</button>
+    </div>
+  </div>
+</dialog>
+<dialog class="acct ap-dlg ap-logdlg" id="ap-log-dialog" aria-labelledby="ap-log-title">
+  <div class="acct-head">
+    <span class="acct-avatar" aria-hidden="true">⏱</span>
+    <div class="acct-who"><h2>Tự tắt</h2><strong id="ap-log-title">Nhật ký tự tắt</strong><small>20 lần gần nhất</small></div>
+    <button type="button" class="acct-x" id="ap-log-close" aria-label="Đóng">✕</button>
+  </div>
+  <div class="acct-sec">
+    <div class="ap-tw"><table class="ap-table"><thead><tr><th>Thời gian</th><th>Mục</th><th>Chi tiêu</th><th>Kết quả</th></tr></thead><tbody id="ap-log"></tbody></table></div>
+  </div>
+</dialog>
 <dialog class="acct" id="acct-dialog" aria-labelledby="acct-title">
   <div class="acct-head">
     <span class="acct-avatar" id="acct-avatar" aria-hidden="true">U</span>
@@ -1383,7 +1463,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 
 <script integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=localdev1"></script>
-<script src="js/supabase-client.js?v=remember1"></script>
+<script src="js/supabase-client.js?v=fn1"></script>
 <script>
 (function(){
 var ADS_FB_API = window.ADS_FB_API || "https://graph.facebook.com/v21.0/";
@@ -1679,8 +1759,8 @@ function tgBuildHierarchy() {
       a.items.push(it); a.itemMap[String(x.id)] = it;
     });
   });
-  // Ghép số liệu báo cáo ngày (và các dòng nhập tay chưa có trên Facebook)
-  (VR() || []).forEach(function(r, idx) {
+  // Ghép số liệu báo cáo của HÔM NAY (tab Bật/Tắt không lọc theo ngày; không phụ thuộc ngày/khoảng đang xem ở tab khác)
+  (dpAggregate(dpToday(), dpToday()) || []).forEach(function(r, idx) {
     var cName = String(r.campaign || "").trim() || "Chiến dịch chưa đặt tên";
     var aName = String(r.adset || "").trim() || "Nhóm QC chưa đặt tên";
     var c = cMap[String(r.campaign_id || "")] || campOf(r.campaign_id, cName, r.accountId);
@@ -1695,9 +1775,10 @@ function tgBuildHierarchy() {
 
 function renderToggleView(autoFetch) {
   dpRangeRows = null;
+  if (autoFetch && typeof apLoadRules === "function") apLoadRules();
   var subEl = $("tg-sub");
   if (subEl) {
-    subEl.textContent = "Tất cả mục trong TK: " + (currentAccountName || currentAccountId || "Chưa chọn") + " · Chi tiêu " + (dpRange ? "từ " + dm(dpRange.from) + " đến " + dm(dpRange.to) : "ngày " + dm(S.day));
+    subEl.textContent = "Tất cả mục trong TK: " + (currentAccountName || currentAccountId || "Chưa chọn") + " · Chi tiêu hôm nay";
   }
   if (autoFetch) {
     if (isAll()) {
@@ -1873,7 +1954,7 @@ function renderToggleView(autoFetch) {
         '<span>Mess: <b>' + money(item.t.m) + '</b></span>' +
         '<span class="spill" data-g="' + g[0] + '">' + pct(item.t.cp) + '</span>' +
       '</div>' +
-      '<div class="tg-act">' +
+      '<div class="tg-act">' + (typeof apIconHTML === "function" ? apIconHTML(item, isOn) : "") +
         '<span class="tg-st ' + stCls + '">' + stText + '</span>' +
         '<label class="tg-sw" title="' + (item.id ? (isOn ? "Bấm để Tạm dừng" : "Bấm để Bật chạy") : "Mục nhập thủ công chưa có ID Facebook") + '">' +
           '<input type="checkbox" role="switch" aria-label="' + esc((isOn ? "Tạm dừng " : "Bật chạy ") + item.name) + '" data-tg-id="' + esc(item.id) + '"' + (isOn ? " checked" : "") + ((!item.id || isBusy) ? " disabled" : "") + '>' +
@@ -3197,6 +3278,7 @@ $("list").addEventListener("change", function(e) {
     document.querySelectorAll("[data-set-tab]").forEach(function(b) { var on = b.dataset.setTab === k; b.setAttribute("aria-selected", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
     document.querySelectorAll("[data-set-pane]").forEach(function(p) { p.classList.toggle("pane-off", p.dataset.setPane !== k); });
   }
+  window.ADS_SET_TAB = selectSetTab;
   $("set-tabs").addEventListener("click", function(e) { var b = e.target.closest("[data-set-tab]"); if (b) selectSetTab(b.dataset.setTab); });
   $("set-tabs").addEventListener("keydown", function(e) {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
@@ -3367,8 +3449,6 @@ function renderStats(){
   $("stab").querySelector("tbody").innerHTML=rows.length?rows.map(function(x){var gg=gr(x.t.cp)[0];
     return'<tr data-d="'+x.d+'" title="Bấm để mở ngày này"><td>'+dm(x.d)+'</td><td>'+fd(x.t.s)+'</td><td>'+money(x.t.m)+'</td><td>'+money(x.t.p)+'</td><td>'+fd(x.t.d)+'</td><td><span class="spill" data-g="'+gg+'">'+pct(x.t.cp)+'</span></td></tr>'}).join(""):'<tr><td colspan="6" class="sempty">Chưa có dữ liệu trong khoảng ngày này.</td></tr>';
 }
-var AS={k:"s",dir:-1};
-function renderRange(){var D=statsData();$("sinfo").textContent=D.n+" ngày được chọn · "+D.k+" ngày có dữ liệu"}
 // Tab Thống kê dùng chung bộ chọn ngày với Báo cáo ngày: khoảng ngày = khoảng đang chọn (hoặc đúng 1 ngày đang xem)
 function statsSyncRange(){S.sf=dpRange?dpRange.from:S.day;S.st=dpRange?dpRange.to:S.day}
 // ================= POPUP DƯ NỢ (góc dưới phải) =================
@@ -3568,7 +3648,7 @@ function dpSet(from, to) {
     if (from !== S.day) gotoDay(from); else { render(); renderViews(); }
   } else {
     dpRange = { from: from, to: to }; dpRangeRows = null;
-    S.sf = from; S.st = to; // dùng chung cho tab Thống kê
+    if (S.tab === "days") { S.sf = from; S.st = to; } // khoảng RIÊNG của tab Tổng theo ngày (chọn ở Báo cáo ngày không đổi nó)
     if (to !== S.day) gotoDay(to); else { render(); renderViews(); }
     // còn ngày chưa có số liệu của TK này → lấy cả khoảng từ Facebook
     if (currentAccountId && !isAll() && typeof syncFbForDateRange === "function") {
@@ -3578,7 +3658,7 @@ function dpSet(from, to) {
     }
   }
   dpSync();
-  if (S.tab === "days" || S.tab === "ads") renderViews(); // tab Thống kê vẽ lại theo khoảng ngày vừa chọn
+  if (S.tab === "days") renderViews(); // tab Thống kê vẽ lại theo khoảng ngày vừa chọn
   dpClose(true);
   return true;
 }
@@ -3638,50 +3718,364 @@ $("acct-dialog").addEventListener("click", function(e) {
   var r = this.getBoundingClientRect();
   if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeAccount();
 });
+// ===== Tab Bật/Tắt → biểu tượng ⏱ "Tự tắt" trên mục ĐANG BẬT: bấm mở popup cài điều kiện cho TỪNG mục =====
+// Quy tắc lưu ở ads_autopause_rules; việc tắt thật chạy ngầm trên máy chủ (hàm fb-autopause, mỗi 15 phút, kể cả khi tắt web).
+// Điều kiện: chi tiêu hôm nay ≥ ngưỡng VÀ/HOẶC (mess ≤ N, số điện thoại ≤ M). Mặc định CHẠY THỬ (chỉ ghi nhật ký).
+(function() {
+  var LV = { campaign: "Chiến dịch", adset: "Nhóm quảng cáo", ad: "Quảng cáo" };
+  var LVS = { campaign: "Chiến dịch", adset: "Nhóm QC", ad: "Quảng cáo" };
+  var ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.6 1.6M9.5 2.8h5M12 2.8v3.2"/></svg>';
+  var rules = {}, items = {}, logs = [], cur = null, saving = false;
+  var st = { loaded: false, loading: false, missing: false, at: 0 };
+  function usable() { return !!window.sb && !window.ADS_LOCAL_SESSION; }
+  function dlgOpen(d) { try { if (typeof d.showModal === "function") d.showModal(); } catch (e) {} if (!d.hasAttribute("open")) d.setAttribute("open", ""); }
+  function dlgClose(d) { try { if (typeof d.close === "function") d.close(); } catch (e) {} d.removeAttribute("open"); }
+  function missing(e) { return !!e && (e.code === "PGRST205" || e.code === "42P01" || /schema cache|does not exist/i.test(String(e.message || ""))); }
+  function ago(iso) {
+    var t = new Date(iso).getTime(); if (!isFinite(t)) return "";
+    var m = Math.max(0, Math.round((Date.now() - t) / 60000));
+    if (m < 1) return "vừa xong"; if (m < 60) return m + " phút trước";
+    var h = Math.round(m / 60); if (h < 24) return h + " giờ trước";
+    return Math.round(h / 24) + " ngày trước";
+  }
+  function when(iso) { var d = new Date(iso); if (!isFinite(d.getTime())) return ""; var p = function(n) { return (n < 10 ? "0" : "") + n; }; return p(d.getHours()) + ":" + p(d.getMinutes()) + " " + p(d.getDate()) + "/" + p(d.getMonth() + 1); }
+  function stateOf(r) { return !r ? "none" : !r.enabled ? "off" : r.dry_run ? "try" : "on"; }
+  var TIP = { none: "Chưa cài tự tắt — bấm để cài", off: "Quy tắc tự tắt đang TẮT — bấm để xem", try: "Tự tắt đang CHẠY THỬ (chỉ ghi nhật ký) — bấm để sửa", on: "Đang TỰ TẮT khi đạt điều kiện — bấm để sửa" };
+
+  // ----- biểu tượng trên từng dòng của danh sách Bật/Tắt (gọi từ bộ vẽ danh sách) -----
+  window.apIconHTML = function(item, isOn) {
+    if (!isOn || !item || !item.id) return '<span class="tg-auto tg-auto-ghost" aria-hidden="true"></span>';
+    var acc = item.accId || (typeof isAll === "function" && isAll() ? "" : (typeof currentAccountId !== "undefined" ? currentAccountId : ""));
+    items[String(item.id)] = { lvl: item.lvl, id: String(item.id), name: item.name || String(item.id), acc: acc ? normAcc(acc) : "" };
+    var s = stateOf(rules[String(item.id)]);
+    return '<button type="button" class="tg-auto" data-ap-open="' + esc(item.id) + '" data-st="' + s + '" title="' + esc(TIP[s]) + '" aria-label="' + esc("Tự tắt: " + (item.name || "") + " — " + TIP[s]) + '">' + ICON + '</button>';
+  };
+
+  // ----- tải quy tắc + dòng tóm tắt đầu danh sách -----
+  function summary() {
+    var el = $("tg-ap-sum"); if (!el) return;
+    var list = Object.keys(rules).map(function(k) { return rules[k]; }).filter(function(r) { return r.enabled; });
+    if (!usable() || st.missing || !list.length) { el.hidden = true; return; }
+    var bad = list.filter(function(r) { return r.last_status && r.last_status !== "ok"; });
+    var tok = bad.filter(function(r) { return r.last_status === "token_error" || r.last_status === "no_token"; });
+    var dry = list.filter(function(r) { return r.dry_run; }).length;
+    el.hidden = false;
+    if (tok.length) { el.dataset.level = "bad"; el.textContent = "⚠ Tự tắt KHÔNG chạy được ở " + tok.length + " quy tắc: token Facebook đã hết hạn hoặc bị từ chối. Hãy dán token mới ở mục Tài khoản."; }
+    else if (bad.length) { el.dataset.level = "bad"; el.textContent = "⚠ " + bad.length + " quy tắc tự tắt bị lỗi ở lần chạy gần nhất — bấm biểu tượng ⏱ của mục đó để xem lý do."; }
+    else { el.dataset.level = "ok"; el.textContent = "⏱ " + list.length + " quy tắc tự tắt đang bật" + (dry ? " (" + dry + " đang chạy thử)" : "") + " — máy chủ kiểm tra mỗi 15 phút, kể cả khi bạn tắt web."; }
+  }
+  window.apLoadRules = function(force) {
+    if (!usable() || st.loading) return;
+    if (st.loaded && !force && Date.now() - st.at < 60000) return;
+    st.loading = true;
+    return window.sb.from("ads_autopause_rules").select("*").then(function(res) {
+      st.loading = false; st.at = Date.now();
+      if (res && res.error) { st.missing = missing(res.error); st.loaded = true; rules = {}; summary(); if (typeof renderToggleView === "function" && S.tab === "toggle") renderToggleView(false); return; }
+      st.missing = false; st.loaded = true; rules = {};
+      ((res && res.data) || []).forEach(function(r) { rules[String(r.object_id)] = r; });
+      summary();
+      if (typeof renderToggleView === "function" && S.tab === "toggle") renderToggleView(false);
+      if ($("ap-dialog").hasAttribute("open") && cur) fillPop();
+    }).catch(function() { st.loading = false; });
+  };
+
+  // ----- popup cài đặt cho một mục -----
+  var CTRL = ["ap-enabled", "ap-spend", "ap-use-mess", "ap-mess", "ap-use-phone", "ap-phone", "ap-dry", "ap-save", "ap-del"];
+  function showErr(m) { var e = $("ap-err"); e.textContent = m || ""; e.hidden = !m; }
+  function numTxt(v) { return String(Math.round(Number(v) || 0)); }
+  function sumText() {
+    var spend = pm($("ap-spend").value), um = $("ap-use-mess").checked, up = $("ap-use-phone").checked;
+    var head = "Tự tắt khi hôm nay: chi ≥ " + (spend > 0 ? moneyShow(String(Math.round(spend))) : "…") + " đ";
+    var c = [];
+    if (um) c.push("mess ≤ " + ($("ap-mess").value.trim() || "…"));
+    if (up) c.push("SĐT ≤ " + ($("ap-phone").value.trim() || "…"));
+    if (!c.length) return head + " (không xét mess / số điện thoại: tắt ngay khi chi đạt ngưỡng)";
+    if (c.length === 1) return head + " VÀ " + c[0];
+    var any = document.querySelector('#ap-match-wrap input[value="any"]').checked;
+    return head + " VÀ (" + c.join(any ? " HOẶC " : " VÀ ") + ")";
+  }
+  function syncForm() {
+    var um = $("ap-use-mess").checked, up = $("ap-use-phone").checked, lockAll = !!$("ap-save").dataset.locked;
+    $("ap-mess").disabled = lockAll || !um; $("ap-phone").disabled = lockAll || !up;
+    $("ap-match-wrap").hidden = !(um && up);
+    $("ap-summary").textContent = sumText();
+  }
+  function popStatus(r) {
+    var el = $("ap-status"), lvl = "ok", txt;
+    if (!r) txt = "Quy tắc mới có hiệu lực ở lần chạy kế tiếp của máy chủ (mỗi 15 phút).";
+    else if (!r.last_run_at) { txt = "Chưa chạy lần nào — máy chủ chưa tới giờ kiểm tra hoặc lịch chạy chưa được bật."; lvl = "warn"; }
+    else {
+      var s = r.last_status, w = "Lần chạy gần nhất " + ago(r.last_run_at) + ": ";
+      if (s === "token_error") { txt = w + "token Facebook đã hết hạn hoặc bị từ chối — tự tắt KHÔNG hoạt động. Hãy dán token mới ở mục Tài khoản."; lvl = "bad"; }
+      else if (s === "no_token") { txt = w + "tài khoản chưa có token Facebook. Hãy dán token ở mục Tài khoản."; lvl = "bad"; }
+      else if (s === "bad_rule") { txt = w + "quy tắc không hợp lệ (kiểm tra lại ngưỡng)."; lvl = "bad"; }
+      else if (s && s !== "ok") { txt = w + "có lỗi" + (r.last_error ? " (" + r.last_error + ")" : "") + "."; lvl = "bad"; }
+      else {
+        var nums = [];
+        if (r.last_spend != null) nums.push("chi " + fd(Number(r.last_spend)));
+        if (r.last_mess != null) nums.push("mess " + r.last_mess);
+        if (r.last_phone != null) nums.push("SĐT " + r.last_phone);
+        txt = w + "bình thường" + (nums.length ? " — " + nums.join(" · ") : "") + ".";
+      }
+    }
+    el.textContent = txt; el.dataset.level = lvl;
+  }
+  function fillPop() {
+    var it = cur, r = rules[it.id];
+    $("ap-level").textContent = LV[it.lvl] || "Mục";
+    $("ap-title").textContent = it.name;
+    $("ap-enabled").checked = r ? !!r.enabled : true;
+    $("ap-spend").value = moneyShow(String(r ? r.spend_threshold : 200000));
+    $("ap-use-mess").checked = r ? !!r.use_mess : true;
+    $("ap-mess").value = numTxt(r ? r.mess_max : 0);
+    $("ap-use-phone").checked = r ? !!r.use_phone : false;
+    $("ap-phone").value = numTxt(r ? r.phone_max : 0);
+    var any = document.querySelector('#ap-match-wrap input[value="' + (r && r.match_mode === "any" ? "any" : "all") + '"]'); if (any) any.checked = true;
+    $("ap-dry").checked = r ? !!r.dry_run : true;
+    $("ap-del").hidden = !r;
+    // khóa khi không dùng được (tài khoản test local / bảng chưa tạo / chưa chọn tài khoản)
+    var note = "";
+    if (window.ADS_LOCAL_SESSION || !window.sb) note = "Tài khoản test local không có dữ liệu trên máy chủ Supabase nên không dùng được tự tắt.";
+    else if (st.missing) note = "Chế độ tự tắt chưa được kích hoạt trên máy chủ (chưa tạo bảng và lịch chạy ngầm), nên chưa dùng được.";
+    else if (!it.acc) note = "Hãy chọn một tài khoản quảng cáo cụ thể (không phải “Tất cả”) rồi mở lại.";
+    $("ap-note").textContent = note; $("ap-note").hidden = !note;
+    CTRL.forEach(function(id) { $(id).disabled = !!note; });
+    $("ap-save").dataset.locked = note ? "1" : "";
+    if (note) $("ap-save").dataset.locked = "1"; else delete $("ap-save").dataset.locked;
+    popStatus(r); syncForm(); showErr("");
+  }
+  function openPop(id) {
+    cur = items[String(id)]; if (!cur) return;
+    fillPop(); dlgOpen($("ap-dialog"));
+    if (usable() && !st.loaded) window.apLoadRules();
+  }
+  function collect() {
+    var spend = pm($("ap-spend").value);
+    if (!(spend > 0)) return { error: "Số tiền chạy không hợp lệ: nhập số lớn hơn 0 (ví dụ 200000 hoặc 200k)." };
+    var um = $("ap-use-mess").checked, up = $("ap-use-phone").checked, mm = $("ap-mess").value.trim(), pp = $("ap-phone").value.trim();
+    if (um && !/^\d+$/.test(mm)) return { error: "Số mess phải là số nguyên từ 0 trở lên." };
+    if (up && !/^\d+$/.test(pp)) return { error: "Số điện thoại phải là số nguyên từ 0 trở lên." };
+    var any = document.querySelector('#ap-match-wrap input[value="any"]').checked;
+    return { row: {
+      account_id: cur.acc, level: cur.lvl, object_id: cur.id, object_name: cur.name,
+      enabled: $("ap-enabled").checked, dry_run: $("ap-dry").checked, spend_threshold: spend,
+      use_mess: um, mess_max: um ? parseInt(mm, 10) : 0, use_phone: up, phone_max: up ? parseInt(pp, 10) : 0,
+      match_mode: (um && up && any) ? "any" : "all", updated_at: new Date().toISOString()
+    } };
+  }
+  function save() {
+    if (saving || !cur || $("ap-save").dataset.locked) return;
+    var c = collect();
+    if (c.error) { showErr(c.error); return; }
+    var prev = rules[cur.id], wasReal = !!(prev && prev.enabled && !prev.dry_run);
+    if (c.row.enabled && !c.row.dry_run && !wasReal && !window.confirm("Chế độ THẬT sẽ TỰ ĐỘNG TẠM DỪNG “" + cur.name + "” khi: " + sumText().replace(/^Tự tắt khi hôm nay: /, "") + " — kể cả khi bạn tắt web.\n\nBạn đã chạy thử và muốn tiếp tục?")) return;
+    showErr(""); saving = true;
+    window.sb.auth.getSession().then(function(s) {
+      var u = s && s.data && s.data.session && s.data.session.user;
+      if (!u) throw new Error("Phiên đăng nhập đã hết — hãy tải lại trang.");
+      c.row.user_id = u.id;
+      return window.sb.from("ads_autopause_rules").upsert(c.row, { onConflict: "user_id,object_id" });
+    }).then(function(res) {
+      saving = false;
+      if (res && res.error) { showErr("Không lưu được: " + res.error.message); return; }
+      var nm = cur.name; dlgClose($("ap-dialog"));
+      toast((c.row.enabled ? (c.row.dry_run ? "Đã lưu tự tắt (chạy thử) cho “" : "Đã lưu tự tắt cho “") : "Đã lưu (quy tắc đang tắt) cho “") + nm + "”", { type: "success" });
+      return window.apLoadRules(true);
+    }).catch(function(e) { saving = false; showErr("Không lưu được: " + (e && e.message ? e.message : "lỗi kết nối")); });
+  }
+  function del() {
+    if (saving || !cur || $("ap-save").dataset.locked) return;
+    saving = true;
+    window.sb.from("ads_autopause_rules").delete().eq("object_id", cur.id).then(function(res) {
+      saving = false;
+      if (res && res.error) { showErr("Không xóa được: " + res.error.message); return; }
+      var nm = cur.name; dlgClose($("ap-dialog")); toast("Đã xóa quy tắc tự tắt của “" + nm + "”");
+      return window.apLoadRules(true);
+    }).catch(function() { saving = false; showErr("Không xóa được: lỗi kết nối"); });
+  }
+  ["ap-spend", "ap-mess", "ap-phone"].forEach(function(id) { $(id).addEventListener("input", syncForm); });
+  ["ap-use-mess", "ap-use-phone"].forEach(function(id) { $(id).addEventListener("change", syncForm); });
+  document.querySelectorAll('#ap-match-wrap input').forEach(function(i) { i.addEventListener("change", syncForm); });
+  $("ap-save").addEventListener("click", save);
+  $("ap-del").addEventListener("click", del);
+  $("ap-cancel").addEventListener("click", function() { dlgClose($("ap-dialog")); });
+  $("ap-close").addEventListener("click", function() { dlgClose($("ap-dialog")); });
+  $("tg-list").addEventListener("click", function(e) { var b = e.target.closest("[data-ap-open]"); if (b) { e.stopPropagation(); openPop(b.dataset.apOpen); } });
+
+  // ----- nhật ký + Bật lại -----
+  function renderLog() {
+    $("ap-log").innerHTML = logs.length ? logs.map(function(x) {
+      var res, cls = "";
+      if (x.action === "paused") res = x.restored_at ? "Đã bật lại" : 'Đã tắt <button type="button" class="ap-restore" data-ap-restore="' + esc(x.id) + '">Bật lại</button>';
+      else if (x.action === "would_pause") { res = "Sẽ tắt (chạy thử)"; cls = "ap-try"; }
+      else { res = "Lỗi" + (x.note ? " — " + esc(x.note) : ""); cls = "ap-bad"; }
+      return '<tr class="' + cls + '"><td>' + esc(when(x.at)) + '</td><td>' + esc(x.object_name || x.object_id) + ' <small class="ap-lv">' + esc(LVS[x.level] || "") + '</small></td><td>' + esc(fd(Number(x.spend))) + '</td><td>' + res + '</td></tr>';
+    }).join("") : '<tr><td colspan="4" class="ap-empty">Chưa có mục nào bị tắt (hoặc sẽ bị tắt khi chạy thử).</td></tr>';
+  }
+  $("tg-log-btn").addEventListener("click", function() {
+    if (!usable()) { toast(window.ADS_LOCAL_SESSION ? "Tài khoản test local không có nhật ký trên máy chủ." : "Chưa kết nối Supabase."); return; }
+    window.sb.from("ads_autopause_log").select("*").order("at", { ascending: false }).limit(20).then(function(res) {
+      if (res && res.error) { toast(missing(res.error) ? "Chế độ tự tắt chưa được kích hoạt trên máy chủ." : "Không tải được nhật ký: " + res.error.message); return; }
+      logs = (res && res.data) || []; renderLog(); dlgOpen($("ap-log-dialog"));
+    }).catch(function() { toast("Không tải được nhật ký (lỗi kết nối)."); });
+  });
+  $("ap-log-close").addEventListener("click", function() { dlgClose($("ap-log-dialog")); });
+  $("ap-log").addEventListener("click", function(e) {
+    var b = e.target.closest("[data-ap-restore]"); if (!b) return;
+    var row = logs.filter(function(x) { return String(x.id) === String(b.dataset.apRestore); })[0];
+    var tk = String((typeof fbCfg !== "undefined" && fbCfg && fbCfg.token) || "").trim();
+    if (!row) return;
+    if (!tk) { toast("Chưa có token Facebook — dán token ở mục Tài khoản rồi thử lại."); return; }
+    b.disabled = true;
+    var url = ADS_FB_API + encodeURIComponent(row.object_id) + "?access_token=" + encodeURIComponent(tk);
+    var opts = { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "status=ACTIVE" };
+    (window.ADS_CLOUD ? ADS_CLOUD.fb(url, opts) : fetch(url, opts)).then(function(r) { return r.json(); }).then(function(res) {
+      if (res && res.error) { toast("Lỗi Facebook: " + res.error.message); b.disabled = false; return; }
+      var now = new Date().toISOString();
+      if (typeof fbStatusCache !== "undefined") fbStatusCache[String(row.object_id)] = { status: "ACTIVE", eff: "ACTIVE" };
+      return window.sb.from("ads_autopause_log").update({ restored_at: now }).eq("id", row.id).then(function() {
+        row.restored_at = now; renderLog();
+        toast("Đã bật lại “" + (row.object_name || row.object_id) + "”", { type: "success" });
+        if (typeof renderToggleView === "function" && S.tab === "toggle") renderToggleView(false);
+      });
+    }).catch(function() { toast("Lỗi kết nối khi bật lại"); b.disabled = false; });
+  });
+})();
+
+// ===== Tab "Thông báo": Telegram (báo cáo hằng ngày + báo khi tự tắt kèm lý do) — gửi từ máy chủ, kể cả khi tắt web =====
+// Mã bot Telegram chỉ GHI được (không đọc lại): web chỉ thấy has_bot + chat ID. Ghi mã bot / cài đặt đều qua HÀM Postgres (save_telegram_bot, save_notify_prefs);
+// kết nối (tìm chat ID), gửi thử, gửi thử báo cáo qua hàm autopause-notify.
+(function() {
+  var COLS = "user_id,telegram_chat_id,has_bot,notify_paused,notify_problem,notify_dry,report_enabled,report_time,last_report_date,last_notify_at,last_notify_error";
+  var CTRL = ["tn-token", "tn-save", "tn-link", "tn-test", "tn-paused", "tn-problem", "tn-dry", "tn-remove", "tn-report", "tn-time", "tn-hh", "tn-mm", "tn-ap", "tn-report-now", "tn-prefs-save"];
+  var cfg = null, locked = false, busy = false, loaded = false;
+  function usable() { return !!window.sb && !window.ADS_LOCAL_SESSION; }
+  function showErr(m) { ["tn-err", "tn-err-tg"].forEach(function(id) { var e = $(id); e.textContent = m || ""; e.hidden = !m; }); }
+  function missing(e) { return !!e && (e.code === "PGRST205" || e.code === "42P01" || e.code === "42703" || /schema cache|does not exist|Could not find/i.test(String(e.message || ""))); }
+  function lock(msg) { locked = true; CTRL.forEach(function(id) { $(id).disabled = true; }); $("tn-note").textContent = msg; $("tn-note").hidden = !msg; }
+  // Giờ báo cáo hiển thị dạng 12 giờ AM/PM, nhưng giá trị lưu luôn là HH:MM 24 giờ (ô ẩn #tn-time)
+  function setTimeUI(v) {
+    var p = String(v).split(":"), H = parseInt(p[0], 10), M = p[1], h12 = H % 12 === 0 ? 12 : H % 12;
+    var mm = $("tn-mm"); if (![].some.call(mm.options, function(o) { return o.value === M; })) { var o = document.createElement("option"); o.value = M; o.textContent = M; mm.appendChild(o); }
+    $("tn-hh").value = String(h12); mm.value = M; $("tn-ap").value = H >= 12 ? "PM" : "AM"; $("tn-time").value = v;
+  }
+  function readTimeUI() {
+    var h12 = parseInt($("tn-hh").value, 10), pm = $("tn-ap").value === "PM", H = (h12 % 12) + (pm ? 12 : 0);
+    $("tn-time").value = (H < 10 ? "0" : "") + H + ":" + $("tn-mm").value;
+  }
+  ["tn-hh", "tn-mm", "tn-ap"].forEach(function(id) { $(id).addEventListener("change", readTimeUI); });
+  function timeOk(v) { return /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(String(v || "")); }
+  function render() {
+    var hasBot = !!(cfg && cfg.has_bot), chat = cfg && cfg.telegram_chat_id, el = $("tn-state"), lvl = "warn", txt;
+    if (!hasBot) txt = "Chưa kết nối Telegram.";
+    else if (!chat) txt = "Đã lưu mã bot, chưa kết nối chat — mở bot trong Telegram, bấm Start rồi bấm Kết nối.";
+    else {
+      var tail = String(chat).slice(-4);
+      if (cfg.last_notify_error) { lvl = "bad"; txt = "⚠ Đã kết nối (chat …" + tail + ") nhưng lần gửi gần nhất lỗi: " + cfg.last_notify_error; }
+      else { lvl = "ok"; txt = "✅ Đã kết nối Telegram (chat …" + tail + ")."; }
+    }
+    el.textContent = txt; el.dataset.level = lvl;
+    $("tn-paused").checked = cfg ? !!cfg.notify_paused : true;
+    $("tn-problem").checked = cfg ? !!cfg.notify_problem : true;
+    $("tn-dry").checked = cfg ? !!cfg.notify_dry : false;
+    $("tn-report").checked = cfg ? !!cfg.report_enabled : false;
+    setTimeUI(cfg && timeOk(cfg.report_time) ? cfg.report_time : "20:00");
+    $("tn-token").placeholder = hasBot ? "Đã lưu (ẩn) — dán mã mới để thay" : "Dán mã bot (dạng 123456789:AAE…)";
+    $("tn-link").disabled = locked || !hasBot;
+    $("tn-test").disabled = locked || !(hasBot && chat);
+    $("tn-report-now").disabled = locked || !(hasBot && chat);
+    $("tn-remove").hidden = !cfg;
+  }
+  function load() {
+    if (!usable()) { lock("Tài khoản test local không có dữ liệu trên máy chủ Supabase nên không dùng được thông báo."); cfg = null; render(); return; }
+    window.sb.from("ads_notify_settings").select(COLS).maybeSingle().then(function(res) {
+      if (res && res.error) {
+        if (missing(res.error)) lock("Thông báo Telegram chưa được kích hoạt đầy đủ trên máy chủ (thiếu bảng hoặc cột mới), nên chưa dùng được.");
+        else { locked = false; showErr("Không tải được cài đặt: " + res.error.message); }
+        cfg = null; render(); return;
+      }
+      locked = false; CTRL.forEach(function(id) { $(id).disabled = false; }); $("tn-note").hidden = true;
+      cfg = (res && res.data) || null; loaded = true; render();
+    }).catch(function() { showErr("Không kết nối được máy chủ."); });
+  }
+  function uid() { return window.sb.auth.getSession().then(function(s) { var u = s && s.data && s.data.session && s.data.session.user; if (!u) throw new Error("Phiên đăng nhập đã hết — hãy tải lại trang."); return u.id; }); }
+  function saveToken() {
+    if (locked || busy) return;
+    var tk = $("tn-token").value.trim();
+    if (!/^\d{6,}:[A-Za-z0-9_-]{30,}$/.test(tk)) { showErr("Mã bot không đúng định dạng (phải dạng 123456789:AAE… — copy nguyên từ @BotFather)."); return; }
+    showErr(""); busy = true;
+    // Mã bot ghi qua HÀM save_telegram_bot (chạy với quyền chủ bảng, tự lấy user từ phiên đăng nhập, tự xóa chat cũ khi đổi bot).
+    // KHÔNG dùng upsert: upsert đọc EXCLUDED.telegram_bot_token nên Postgres đòi quyền đọc cột mã bot — web không có quyền đó ("permission denied").
+    window.sb.rpc("save_telegram_bot", { p_token: tk }).then(function(res) {
+      busy = false; $("tn-token").value = "";
+      if (res && res.error) { showErr("Không lưu được: " + res.error.message); return; }
+      toast("Đã lưu mã bot. Giờ mở bot trong Telegram, bấm Start rồi bấm Kết nối.", { type: "success" }); load();
+    }).catch(function(e) { busy = false; $("tn-token").value = ""; showErr("Không lưu được: " + (e && e.message ? e.message : "lỗi kết nối")); });
+  }
+  function savePrefs() {
+    if (locked || busy) return;
+    var tm = $("tn-time").value;
+    if (!timeOk(tm)) { showErr("Giờ gửi báo cáo không hợp lệ — hãy chọn giờ dạng 20:00."); return; }
+    showErr(""); busy = true;
+    window.sb.rpc("save_notify_prefs", { p_paused: $("tn-paused").checked, p_problem: $("tn-problem").checked, p_dry: $("tn-dry").checked, p_report: $("tn-report").checked, p_time: tm }).then(function(res) {
+      busy = false;
+      if (res && res.error) { showErr("Không lưu được: " + res.error.message); return; }
+      toast($("tn-report").checked ? "Đã lưu — báo cáo sẽ gửi lúc " + tm + " mỗi ngày." : "Đã lưu cài đặt thông báo.", { type: "success" }); load();
+    }).catch(function(e) { busy = false; showErr("Không lưu được: " + (e && e.message ? e.message : "lỗi kết nối")); });
+  }
+  function callFn(op, okMsg) {
+    if (locked || busy || !window.ADS_CLOUD || !ADS_CLOUD.fn) return;
+    busy = true; showErr(""); $("tn-link").disabled = true; $("tn-test").disabled = true; $("tn-report-now").disabled = true;
+    ADS_CLOUD.fn("autopause-notify", { op: op }).then(function(r) {
+      busy = false;
+      if (!r.ok) { showErr((r.json && r.json.error && r.json.error.message) || "Không thực hiện được (mã " + r.status + ")."); render(); return; }
+      if (okMsg) toast(okMsg, { type: "success" });
+      load();
+    }).catch(function() { busy = false; showErr("Không kết nối được máy chủ."); render(); });
+  }
+  function remove() {
+    if (locked || busy || !cfg) return;
+    if (!window.confirm("Xóa kết nối Telegram? Mã bot đã lưu sẽ bị xóa và bạn sẽ không còn nhận tin về điện thoại.")) return;
+    busy = true;
+    uid().then(function(id) { return window.sb.from("ads_notify_settings").delete().eq("user_id", id); }).then(function(res) {
+      busy = false;
+      if (res && res.error) { showErr("Không xóa được: " + res.error.message); return; }
+      cfg = null; showErr(""); render(); toast("Đã xóa kết nối Telegram.");
+    }).catch(function() { busy = false; showErr("Không xóa được: lỗi kết nối"); });
+  }
+  // Mở tab Thông báo hoặc Cài đặt (nhóm Telegram) thì tải cài đặt mới nhất (setTab gọi ADS_NOTIFY_OPEN)
+  window.ADS_NOTIFY_OPEN = function() { showErr(""); $("tn-token").value = ""; load(); };
+  $("tn-save").addEventListener("click", saveToken);
+  $("tn-prefs-save").addEventListener("click", savePrefs);
+  $("tn-link").addEventListener("click", function() { callFn("link", "Đã kết nối Telegram — bạn vừa nhận một tin xác nhận."); });
+  $("tn-test").addEventListener("click", function() { callFn("test", "Đã gửi tin thử — kiểm tra điện thoại của bạn."); });
+  $("tn-report-now").addEventListener("click", function() { callFn("report", "Đã gửi báo cáo hôm nay — kiểm tra điện thoại của bạn."); });
+  $("tn-remove").addEventListener("click", remove);
+})();
+
 // Thẻ người dùng ở menu trái cũng mở Tài khoản
 (function() { var su = document.querySelector("#side .side-user"); if (!su) return;
   su.setAttribute("role", "button"); su.setAttribute("tabindex", "0"); su.setAttribute("data-open-account", ""); su.title = "Tài khoản";
   su.addEventListener("keydown", function(e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openAccount(false); } });
 })();
 
-function renderViews(){if(S.tab==="day"||S.tab==="settings")return;if(S.tab==="toggle"){if(typeof renderToggleView==="function")renderToggleView(true);return}statsSyncRange();renderRange();if(S.tab==="days")renderStats();else renderAds()}
+function renderViews(){if(S.tab==="settings"){if(typeof ADS_NOTIFY_OPEN==="function")ADS_NOTIFY_OPEN();return}if(S.tab==="day")return;if(S.tab==="notify"){if(typeof ADS_NOTIFY_OPEN==="function")ADS_NOTIFY_OPEN();return}if(S.tab==="toggle"){if(typeof renderToggleView==="function")renderToggleView(true);return}statsSyncRange();renderStats()}
+// Bộ lọc ngày của "Báo cáo ngày" và "Tổng theo ngày" TÁCH RIÊNG: vào Tổng theo ngày thì ô chọn ngày nạp khoảng riêng (S.sf..S.st) và cất ngày của Báo cáo ngày (dayStash); rời đi thì trả lại.
+var dayStash=null;
+function swapDay(k){if(S.day===k)return;setAccountRowsForDay(currentAccountId,S.day,S.rows);S.day=k;S.rows=getAccountRowsForDay(currentAccountId,k);selectedCampKey=null;selectedAdsetKey=null;$("day").value=k}
+function statsEnter(){dayStash={day:S.day,range:dpRange};var f=S.sf,e=S.st;if(!f||!e||f>e){e=dpToday();f=ad(e,-6)}if(f===e){dpRange=null;dpRangeRows=null;swapDay(f)}else{dpRange={from:f,to:e};dpRangeRows=null;swapDay(e)}dpSync()}
+function statsLeave(){var d=dayStash;dayStash=null;if(!d)return;dpRange=d.range;dpRangeRows=null;swapDay(d.day);dpSync();render()}
 function setTab(t,init){
-  S.tab=t;document.documentElement.setAttribute("data-tab",t);var show={day:["v-day","metaDay"],days:["rangeCard","v-days","metaDay"],ads:["rangeCard","v-ads","metaDay"],toggle:["metaDay","v-toggle"],settings:["v-settings"]};
-  ["v-day","metaDay","rangeCard","v-days","v-ads","v-toggle","v-settings"].forEach(function(id){$(id).hidden=(show[t]||show.day).indexOf(id)<0});
-  var pre=t==="toggle"?"tg":(t==="days"||t==="ads")?"rng":"hier";[["acc-ctl","-acc-slot"],["sync-ctl","-sync-slot"]].forEach(function(x){var s=$(pre+x[1]),el=$(x[0]);if(s&&el&&el.parentNode!==s)s.appendChild(el)});
-  var dslot=$(t==="toggle"?"tg-date-slot":(t==="days"||t==="ads")?"rng-date-slot":"hier-date-slot");if(dslot&&$("metaDay").parentNode!==dslot)dslot.appendChild($("metaDay"));if(typeof dpClose==="function")dpClose();
+  var prev=init?null:S.tab;S.tab=t;if(prev==="days"&&t!=="days")statsLeave();if(t==="days"&&prev!=="days")statsEnter();document.documentElement.setAttribute("data-tab",t);var show={day:["v-day","metaDay"],days:["rangeCard","v-days","metaDay"],toggle:["v-toggle"],notify:["v-notify"],settings:["v-settings"]};
+  ["v-day","metaDay","rangeCard","v-days","v-toggle","v-notify","v-settings"].forEach(function(id){$(id).hidden=(show[t]||show.day).indexOf(id)<0});
+  var pre=t==="toggle"?"tg":t==="days"?"rng":"hier";[["acc-ctl","-acc-slot"],["sync-ctl","-sync-slot"]].forEach(function(x){var s=$(pre+x[1]),el=$(x[0]);if(s&&el&&el.parentNode!==s)s.appendChild(el)});
+  var dslot=t==="toggle"?null:$(t==="days"?"rng-date-slot":"hier-date-slot");if(dslot&&$("metaDay").parentNode!==dslot)dslot.appendChild($("metaDay"));if(typeof dpClose==="function")dpClose();
   document.querySelectorAll("#tabs [data-tab]").forEach(function(b){var on=b.dataset.tab===t;b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1});
   document.querySelectorAll("#side [data-side-tab]").forEach(function(b){if(b.dataset.sideTab===t)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
   if(!init)save();renderViews()}
 $("tabs").addEventListener("click",function(e){var b=e.target.closest("[data-tab]");if(b)setTab(b.dataset.tab)});
-$("tabs").addEventListener("keydown",function(e){var o=["day","days","ads","toggle","settings"],n=o.length,i=o.indexOf(S.tab),j=-1;if(e.key==="ArrowRight")j=(i+1)%n;else if(e.key==="ArrowLeft")j=(i+n-1)%n;else if(e.key==="Home")j=0;else if(e.key==="End")j=n-1;if(j<0)return;e.preventDefault();setTab(o[j]);$("tab-"+o[j]).focus()});
-function adsData(){
-  var days=[],k=S.sf,i=0;while(i<31&&k<=S.st){days.push(k);k=ad(k,1);i++}
-  var map={},tot={s:0,m:0,p:0,d:0};
-  days.forEach(function(x){var rows=x===S.day?S.rows:S.days[x];(rows||[]).forEach(function(r){
-    if(!hasData([r]))return;var nm=String(r.name||"").trim(),key=nm.toLowerCase(),c=calc(r),o=map[key]||(map[key]={name:nm||"Chưa đặt tên",ds:{},s:0,m:0,p:0,d:0});
-    o.ds[x]=1;o.s+=c.s;o.m+=c.m;o.p+=c.p;o.d+=c.d;tot.s+=c.s;tot.m+=c.m;tot.p+=c.p;tot.d+=c.d})});
-  var list=Object.keys(map).map(function(q){var o=map[q];o.days=Object.keys(o.ds).length;o.gm=div(o.s,o.m);o.gp=div(o.s,o.p);o.cp=o.d>0?o.s/o.d*100:NaN;return o});
-  tot.gm=div(tot.s,tot.m);tot.gp=div(tot.s,tot.p);tot.cp=tot.d>0?tot.s/tot.d*100:NaN;
-  return{list:list,tot:tot}
-}
-function sortAds(l){var k=AS.k,dir=AS.dir;return l.slice().sort(function(a,b){if(k==="name")return dir*a.name.localeCompare(b.name,"vi");var x=a[k],y=b[k],xn=!isFinite(x),yn=!isFinite(y);if(xn&&yn)return 0;if(xn)return 1;if(yn)return-1;return dir*(x-y)})}
-function renderAds(){
-  var D=adsData(),t=D.tot,g=gr(t.cp),L=sortAds(D.list),cnt={g:0,y:0,r:0,n:0},best=null;
-  D.list.forEach(function(o){cnt[gr(o.cp)[0]]++;if(isFinite(o.cp)&&(!best||o.cp<best.cp))best=o});
-  var tiles=[["Số bài ads",String(D.list.length),"",""],["Tổng tiền chạy",fd(t.s),"Giá mess "+fd(t.gm),""],["Doanh số",fd(t.d),"Giá số "+fd(t.gp),""],["CPQC chung",pct(t.cp),"",g[0]],["Bài tốt nhất",best?esc(best.name):"–",best?pct(best.cp):"",best?gr(best.cp)[0]:""]];
-  $("akp").innerHTML=tiles.map(function(x){return'<div class="k sk" data-g="'+x[3]+'"><small>'+x[0]+'</small><b>'+x[1]+'</b><i>'+x[2]+'</i></div>'}).join("");
-  var cap=Math.max(n(S.t2)*1.5,1);
-  $("abars").innerHTML=L.length?L.map(function(o){var gg=gr(o.cp)[0],w=isFinite(o.cp)?Math.min(o.cp/cap,1)*100:0;
-    return'<div class="hb" data-g="'+gg+'"><span class="hn" title="'+esc(o.name)+'">'+esc(o.name)+'</span><div class="ht"><i style="width:'+w+'%"></i></div><b>'+pct(o.cp)+'</b></div>'}).join(""):'<div class="empty">Chưa có dữ liệu trong khoảng ngày này.</div>';
-  $("atab").querySelector("tbody").innerHTML=L.length?L.map(function(o){var gg=gr(o.cp)[0];
-    return'<tr><td>'+esc(o.name)+'</td><td>'+o.days+'</td><td>'+fd(o.s)+'</td><td>'+money(o.m)+'</td><td>'+fd(o.gm)+'</td><td>'+money(o.p)+'</td><td>'+fd(o.gp)+'</td><td>'+fd(o.d)+'</td><td><span class="spill" data-g="'+gg+'">'+pct(o.cp)+'</span></td></tr>'}).join(""):'<tr><td colspan="9" class="sempty">Chưa có dữ liệu trong khoảng ngày này.</td></tr>';
-  document.querySelectorAll("#atab th").forEach(function(th){th.setAttribute("aria-sort",th.dataset.k===AS.k?(AS.dir>0?"ascending":"descending"):"none")});
-}
-$("atab").addEventListener("click",function(e){var b=e.target.closest(".sortb");if(!b)return;var k=b.dataset.k;if(AS.k===k)AS.dir*=-1;else{AS.k=k;AS.dir=(k==="name"||k==="cp"||k==="gm"||k==="gp")?1:-1}renderAds()});
-function adsText(){var D=adsData(),L=sortAds(D.list),o="Thống kê theo bài từ "+dm(S.sf)+" đến "+dm(S.st)+" ("+L.length+" bài)\n\n"+block("Tổng cộng",D.tot);L.forEach(function(x){o+="\n\n"+block(x.name+" ("+x.days+" ngày)",x)});return o}
-$("acopy").onclick=function(){var t=adsText();try{navigator.clipboard.writeText(t).then(function(){toast("Đã sao chép thống kê")},function(){toast("Không sao chép được")})}catch(e){toast("Không sao chép được")}};
-function openDay(e){var r=e.target.closest("[data-d]");if(!r)return;dpRange=null;dpRangeRows=null;gotoDay(r.dataset.d);setTab("day");window.scrollTo({top:0,behavior:RM?"auto":"smooth"});toast("Đang xem ngày "+dm(r.dataset.d))}
+$("tabs").addEventListener("keydown",function(e){var o=["day","days","toggle","notify","settings"],n=o.length,i=o.indexOf(S.tab),j=-1;if(e.key==="ArrowRight")j=(i+1)%n;else if(e.key==="ArrowLeft")j=(i+n-1)%n;else if(e.key==="Home")j=0;else if(e.key==="End")j=n-1;if(j<0)return;e.preventDefault();setTab(o[j]);$("tab-"+o[j]).focus()});
+function openDay(e){var r=e.target.closest("[data-d]");if(!r)return;dayStash=null;dpRange=null;dpRangeRows=null;setTab("day");gotoDay(r.dataset.d);window.scrollTo({top:0,behavior:RM?"auto":"smooth"});toast("Đang xem ngày "+dm(r.dataset.d))}
 $("stab").addEventListener("click",openDay);$("schart").addEventListener("click",openDay);
 function statsText(){var D=statsData(),o="Thống kê từ "+dm(S.sf)+" đến "+dm(S.st)+" ("+D.n+" ngày, "+D.k+" ngày có dữ liệu)\n\n"+block("Tổng cộng",D.tot);D.days.forEach(function(x){if(x.h)o+="\n\n"+block(dm(x.d).slice(0,5),x.t)});return o}
 $("scopy").onclick=function(){var t=statsText();try{navigator.clipboard.writeText(t).then(function(){toast("Đã sao chép thống kê")},function(){toast("Không sao chép được")})}catch(e){toast("Không sao chép được")}};
@@ -3692,8 +4086,7 @@ if(S.day&&S.rows&&S.rows.length&&!S.days[S.day])S.days[S.day]=S.rows;
 S.day=sd(new Date());S.rows=S.days[S.day]&&S.days[S.day].length?S.days[S.day]:blank();
 $("day").value=S.day;dpSync();
 if(!S.st||!S.sf||span(S.sf,S.st)<1||span(S.sf,S.st)>30){S.st=S.day;S.sf=ad(S.day,-6)}
-if(["day","days","ads","toggle","settings"].indexOf(S.tab)<0)S.tab="day";
-if(["day","days","ads","toggle","settings"].indexOf(S.tab)<0)S.tab="day";
+if(["day","days","toggle","notify","settings"].indexOf(S.tab)<0)S.tab="day";
 render();setTab(S.tab,true);
 
 // ================= TÍCH HỢP FACEBOOK ADS MANAGER V4 (PHÂN TÁCH ĐỘC LẬP TỪNG TÀI KHOẢN QUẢNG CÁO) =================
@@ -4225,7 +4618,7 @@ debtRefresh(false);
   if (desktop.addEventListener) desktop.addEventListener("change", syncMode); else desktop.addListener(syncMode);
   syncMode();
 
-  var viewOf = { day: "v-day", days: "rangeCard", ads: "rangeCard", toggle: "v-toggle", settings: "v-settings" };
+  var viewOf = { day: "v-day", days: "rangeCard", toggle: "v-toggle", notify: "v-notify", settings: "v-settings" };
   side.addEventListener("click", function(e){
     var b = e.target.closest("[data-side-tab],[data-side-jump]");
     var target = null;

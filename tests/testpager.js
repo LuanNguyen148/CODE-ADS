@@ -16,6 +16,7 @@ const ctx = {
   document: { querySelectorAll: () => [], addEventListener() {} }, $: el, fbCfg: { token: 'TK' },
   S: { tab: 'toggle', day: '2026-11-19', rows: [] },
   dpRange: null, dpRangeRows: null, VR: function () { return ctx.S.rows; },
+  dpToday: () => ctx.S.day, dpAggregate: () => ctx.S.rows,
   ALL_ACC: '__all__', ADS_FB_API: 'https://graph.facebook.com/v21.0/', currentAccountId: 'act_1', currentAccountName: 'TK 1', isAll: () => false, listAccountIds: () => ['act_1'],
   dm: d => d, toast() {}, esc: x => String(x), fd: x => String(x), money: x => String(x), pct: x => String(x), gr: () => 'g',
   shortAcc: x => x, shortId: x => x, sortList: l => l, total: () => ({ s: 0, m: 0, cp: NaN }),

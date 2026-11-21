@@ -50,25 +50,9 @@
 .tabs button:focus-visible{outline:2px solid #fff1d5;outline-offset:2px}
 @media (max-width:560px){.tabs button{padding:8px 14px;font-size:12.5px}}
 
-/* ---------- Thống kê theo bài ---------- */
-.subh{font-size:18px;font-weight:600;margin:18px 0 8px;font-family:"Cormorant Garamond",Georgia,serif}
 .sk b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hbars{display:grid;gap:8px;margin-bottom:16px}
-.hb{--v:var(--n);display:grid;grid-template-columns:minmax(80px,170px) 1fr 62px;gap:10px;align-items:center;font-size:13px}
-.hb[data-g=g]{--v:var(--g)}.hb[data-g=y]{--v:var(--y)}.hb[data-g=r]{--v:var(--r)}
-.hn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
-.ht{height:12px;border-radius:99px;background:var(--nb);overflow:hidden}
-.ht i{display:block;height:100%;border-radius:99px;background:var(--v);transition:width .6s cubic-bezier(.22,1,.36,1)}
-.hb b{text-align:right;color:var(--v);font-variant-numeric:tabular-nums}
 /* Cột số rộng đều nhau → khoảng cách giữa các cột đều; cột tên/ngày có độ rộng riêng */
 #stab{table-layout:fixed;min-width:640px}
 #stab th:first-child{width:22%}
-#atab{table-layout:fixed;min-width:960px}
-#atab th:first-child{width:24%}
-.sortb{all:unset;cursor:pointer;font-weight:600;color:inherit;white-space:nowrap;padding:2px 0}
-.sortb:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:4px}
-#atab th[aria-sort=ascending] .sortb::after{content:" ▲";font-size:10px}
-#atab th[aria-sort=descending] .sortb::after{content:" ▼";font-size:10px}
-#atab td:first-child{overflow:hidden;text-overflow:ellipsis}
 #rangeCard .sub{margin-top:12px}
 #rangeCard .hint2{margin:2px 0 0}

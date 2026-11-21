@@ -34,12 +34,32 @@ check(['#dp-btn|\\.dp-btn', '\\.hier-sort select', '\\.acc-sel select'].every(s 
 check(find(/\.tbl td\.in \.nm\b/, /text-overflow:\s*ellipsis/), 'bảng Báo cáo ngày: tên quảng cáo dài hiện dấu "…"');
 // Tiêu đề cột đầu bảng Báo cáo ngày thẳng mép với nội dung (ô đầu thụt 16px)
 check(find(/\.tbl th:first-child/, /padding-left:\s*16px/), 'bảng Báo cáo ngày: tiêu đề cột đầu thụt 16px như ô bên dưới');
+// Bộ chọn ngày: popup thẳng mép với nút (không thò sang trái / tràn khỏi màn hình), nút và popup cùng độ rộng, mũi tên sát phải
+{
+  const last = (selRe, prop) => { let v = null; rules.forEach(r => { if (selRe.test(r.split('{')[0].trim())) { const m = r.split('{')[1].match(new RegExp('(?:^|;)\\s*' + prop + ':\\s*([^;}]+)')); if (m) v = m[1].trim(); } }); return v; };
+  check(last(/^\.dp-pop$/, 'left') === '0' && last(/^\.dp-pop$/, 'right') === '0', 'popup chọn ngày: left:0 + right:0 → cùng mép trái và cùng độ rộng với nút');
+  check(/min\(300px/.test(last(/^\.day-pick$/, 'min-width') || ''), 'nút ngày có độ rộng tối thiểu 300px (co lại trên màn hình hẹp) → mọi tab giống nhau');
+  check(last(/^\.dp-btn \.dp-caret$/, 'margin-left') === 'auto', 'mũi tên ▾ luôn sát mép phải của nút');
+  const syncRule = rules.find(r => /:root\[data-tab="toggle"\] #tg-sync-slot/.test(r.split('{')[0])) || '';
+  check(/display:\s*none/.test(syncRule), 'tab Bật/Tắt ẩn nút "Lấy số liệu ngày này" (không còn chọn ngày)');
+}
 // Điện thoại (< 1100px): thông báo hiện ở PHÍA TRÊN màn hình, mới nhất nằm trên cùng (người dùng yêu cầu)
 {
   const m = css.match(/@media \(max-width:1099px\)\s*{\s*\.nt-stack\s*{([^}]*)}/);
   const body = m ? m[1] : '';
   check(!!m && /(^|;)\s*top:\s*calc\(env\(safe-area-inset-top/.test(body) && /bottom:\s*auto/.test(body), 'điện thoại: khung thông báo neo ở phía trên (top theo vùng an toàn, bottom:auto)');
   check(!!m && !/column-reverse/.test(body), 'điện thoại: thông báo mới nhất nằm trên cùng (không đảo cột)');
+}
+// Dóng hàng số liệu (đo bằng Playwright, mép chữ thật): nhãn tiêu đề phải thẳng mép với số bên dưới
+{
+  const last = (selRe, prop) => { let v = null; rules.forEach(r => { if (selRe.test(r.split('{')[0].trim())) { const m = r.split('{')[1].match(new RegExp('(?:^|;)\\s*' + prop + ':\\s*([^;}]+)')); if (m) v = m[1].trim(); } }); return v; };
+  // 1. Mũi tên sắp xếp "treo" ra ngoài (rộng 0) thay vì chiếm chỗ → nhãn không bị đẩy lệch trái 13px so với số
+  check(last(/^\.tbl th\[data-sort\]:not\(:first-child\) \.ar$/, 'width') === '0', 'bảng Báo cáo ngày: mũi tên sắp xếp rộng 0 (treo ra ngoài), nhãn cột thẳng mép phải với số');
+  // 2. Ô nhập: chữ trong ô nhập thẳng mép với tiêu đề (đệm phải của ô nhập = đệm phải của tiêu đề − viền − đệm ô)
+  check(last(/^\.tbl td\.in input,\.tbl td\.edit \.drill-in$/, 'padding-right') === '5px', 'ô nhập trong bảng: đệm phải 5px để số thẳng mép với tiêu đề cột');
+  // 3. Tab Bật/Tắt: các cột Chi / Mess / CPQC có độ rộng cố định, số canh phải → thẳng hàng giữa các dòng
+  check(/^\d+px$/.test(last(/^\.tg-kpi > span:nth-child\(1\)$/, 'width') || '') && /^\d+px$/.test(last(/^\.tg-kpi > span:nth-child\(2\)$/, 'width') || '') && /^\d+px$/.test(last(/^\.tg-kpi \.spill$/, 'width') || ''), 'tab Bật/Tắt: cột Chi, Mess, CPQC có độ rộng cố định (không nhảy theo độ dài số)');
+  check(last(/^\.tg-kpi > span:nth-child\(1\)$/, 'text-align') === 'right' && last(/^\.tg-kpi > span:nth-child\(2\)$/, 'text-align') === 'right', 'tab Bật/Tắt: số Chi và Mess canh phải');
 }
 console.log(ok ? '\nALL PASS' : '\nSOME FAILED');
 process.exit(ok ? 0 : 2);

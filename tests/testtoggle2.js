@@ -6,7 +6,7 @@ const s = main.indexOf('// ================= CHỨC NĂNG BẬT / TẮT');
 const e = main.indexOf('$("tg-list").addEventListener("change"');
 const block = main.slice(s, main.indexOf('});', e) + 3);
 
-const els = {}, listeners = {}, toasts = [], requests = [];
+const els = {}, listeners = {}, toasts = [], requests = [], aggCalls = [];
 const el = id => els[id] || (els[id] = { id, innerHTML: '', textContent: '', disabled: false, addEventListener(t, f) { listeners[id + ':' + t] = f; } });
 const page = (data, after) => ({ data, paging: after ? { cursors: { after }, next: 'https://graph.facebook.com/next' } : { cursors: {} } });
 const fb = {
@@ -25,7 +25,8 @@ const ctx = {
   S: { tab: 'toggle', day: '2026-11-19', rows: [
     { campaign: 'Camp đang tiêu', campaign_id: 'C1', adset: 'Set 1', adset_id: 'A1', name: 'QC đã tiêu', ad_id: 'AD1', spend: '150k', accountId: 'act_1' },
   ] },
-  dpRange: null, dpRangeRows: null, VR: function () { return ctx.S.rows; },
+  dpRange: null, dpRangeRows: null, VR: function () { throw new Error('tab Bật/Tắt không được dùng VR() (phụ thuộc ngày/khoảng đang chọn)'); },
+  dpToday: () => '2026-11-21', dpAggregate: (f, t) => { aggCalls.push([f, t]); return ctx.S.rows; },
   ALL_ACC: '__all__', ADS_FB_API: 'https://graph.facebook.com/v21.0/', currentAccountId: 'act_1', currentAccountName: 'TK 1',
   isAll: () => false, listAccountIds: () => ['act_1'],
   dm: d => d, toast: m => toasts.push(m), esc: x => String(x), fd: x => String(x), money: x => String(x), pct: x => String(x),
@@ -57,6 +58,8 @@ const flush = async () => { for (let i = 0; i < 10; i++) await new Promise(r => 
   check(requests.filter(r => /\/ads\?/.test(r.url)).length === 2, 'tải tiếp trang 2 của danh sách quảng cáo');
   check(api.live['act_1'] && api.live['act_1'].campaigns.length === 2, 'bỏ chiến dịch đã xóa (DELETED)');
 
+  check(aggCalls.length > 0 && aggCalls.every(c => c[0] === '2026-11-21' && c[1] === '2026-11-21'), 'số liệu chi tiêu lấy của HÔM NAY (không theo ngày/khoảng đang chọn ở tab khác)');
+  check(/hôm nay/i.test(els['tg-sub'].textContent) && !/ngày \d|từ .* đến/.test(els['tg-sub'].textContent), 'dòng mô tả ghi "hôm nay", không ghi ngày/khoảng ngày đang chọn (thực tế: "' + els['tg-sub'].textContent + '")');
   check(/Camp đang tiêu/.test(list()) && /Camp chưa tiêu/.test(list()), 'cấp Chiến dịch: hiện cả chiến dịch CHƯA tiêu tiền');
   check(!/Camp đã xóa/.test(list()), 'cấp Chiến dịch: không hiện chiến dịch đã xóa');
   check(/data-tg-id="C2"/.test(list()) && !/data-tg-id="C2"[^>]*disabled/.test(list()), 'chiến dịch chưa tiêu vẫn có công tắc bật/tắt được');

@@ -6,6 +6,8 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const DASH = path.join(ROOT, 'dashboard.html');
 const PROXY = path.join(ROOT, 'supabase', 'functions', 'fb-proxy', 'index.ts');
+const AUTOPAUSE = path.join(ROOT, 'supabase', 'functions', 'fb-autopause', 'index.ts');
+const NOTIFY = path.join(ROOT, 'supabase', 'functions', 'autopause-notify', 'index.ts');
 
 // Bài nhận thư mục gốc hoặc file proxy thay vì dashboard.html
 const TESTS = [
@@ -30,11 +32,19 @@ const TESTS = [
   { file: 'nightcsstest.js', arg: DASH },
   { file: 'csslayouttest.js', arg: DASH },
   { file: 'statstest.js', arg: DASH },
+  { file: 'splitdatetest.js', arg: DASH },
   { file: 'numfmttest.js', arg: DASH },
   { file: 'fabtest.js', arg: DASH },
   { file: 'cleanurltest.js', arg: DASH },
+  { file: 'cleantexttest.js', arg: DASH },
+  { file: 'noadstabtest.js', arg: DASH },
   { file: 'cloudtest.js', arg: DASH },
   { file: 'testproxy2.js', arg: PROXY },
+  { file: 'testautopause.js', arg: AUTOPAUSE },
+  { file: 'autopausetest.js', arg: DASH },
+  { file: 'testnotify.js', arg: NOTIFY },
+  { file: 'notifytest.js', arg: DASH },
+  { file: 'autopausesqltest.js', arg: DASH },
 ];
 
 let failed = 0;

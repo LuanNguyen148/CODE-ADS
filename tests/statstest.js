@@ -1,4 +1,4 @@
-// Tab "Tổng theo bài" và "Tổng theo ngày": bỏ dòng đếm "Tốt · Theo dõi · Cắt/sửa" và chữ đánh giá dưới "CPQC chung"
+// Tab "Tổng theo ngày" (tab "Tổng theo bài" đã gỡ): bỏ chữ đánh giá dưới "CPQC chung"
 // (màu của con số đã cho biết đánh giá); bảng phía dưới cùng phong cách với bảng ở Báo cáo ngày.
 const { JSDOM, VirtualConsole } = require('jsdom');
 const fs = require('fs'), path = require('path');
@@ -36,18 +36,9 @@ const seed = { t1: 25, t2: 35, day: today, byAcc: { act_1: { name: 'TK', days: {
   const tiles = id => [...d.querySelectorAll('#' + id + ' .k')];
   const tileByLabel = (id, label) => tiles(id).find(t => t.querySelector('small').textContent.trim() === label);
 
-  d.querySelector('#tab-ads').click(); await wait(300);
-  // Các tab thống kê dùng chung bộ chọn ngày với Báo cáo ngày: chọn khoảng 7 ngày gần đây bằng chính bộ chọn đó
-  d.getElementById('dp-from').value = day(-6); d.getElementById('dp-to').value = today; d.getElementById('dp-apply').click(); await wait(300);
-  const a1 = tileByLabel('akp', 'Số bài ads'), a4 = tileByLabel('akp', 'CPQC chung');
-  check(a1 && a1.querySelector('b').textContent.trim() === '3', '"Số bài ads" vẫn hiện số bài (3)');
-  check(a1 && !/Tốt|Theo dõi|Cắt/.test(a1.textContent), '"Số bài ads": đã bỏ dòng "Tốt · Theo dõi · Cắt/sửa" (thực tế: "' + (a1 ? a1.textContent.replace(/\s+/g, ' ').trim() : '') + '")');
-  check(a4 && a4.querySelector('i').textContent.trim() === '', '"CPQC chung" ở tab Theo bài: đã bỏ chữ đánh giá bên dưới (thực tế: "' + (a4 ? a4.querySelector('i').textContent.trim() : '') + '")');
-  check(a4 && ['g', 'y', 'r', 'n'].includes(a4.dataset.g), '"CPQC chung" vẫn tô màu theo đánh giá (data-g=' + (a4 && a4.dataset.g) + ')');
-  const best = tileByLabel('akp', 'Bài tốt nhất');
-  check(best && /Bài tốt/.test(best.textContent), '"Bài tốt nhất" vẫn hiện tên bài');
-
   d.querySelector('#tab-days').click(); await wait(300);
+  // Tab thống kê dùng chung bộ chọn ngày với Báo cáo ngày: chọn khoảng 7 ngày gần đây bằng chính bộ chọn đó
+  d.getElementById('dp-from').value = day(-6); d.getElementById('dp-to').value = today; d.getElementById('dp-apply').click(); await wait(300);
   const s5 = tileByLabel('skp', 'CPQC chung');
   check(s5 && s5.querySelector('i').textContent.trim() === '', '"CPQC chung" ở tab Theo ngày: đã bỏ chữ đánh giá bên dưới (thực tế: "' + (s5 ? s5.querySelector('i').textContent.trim() : '') + '")');
   check(tileByLabel('skp', 'Mess') && /Giá mess/.test(tileByLabel('skp', 'Mess').textContent), 'ô Mess vẫn hiện "Giá mess"');
@@ -58,7 +49,7 @@ const seed = { t1: 25, t2: 35, day: today, byAcc: { act_1: { name: 'TK', days: {
   check(gOf(day(-2)) === 'y', 'bảng Tổng theo ngày: hôm kia CPQC 30% → nhãn vàng (data-g=' + gOf(day(-2)) + ')');
   // Đổi ngưỡng thì màu đổi theo ngay khi xem lại bảng
   [['t1', '35'], ['t2', '200']].forEach(([id, v]) => { const el = d.getElementById(id); el.value = v; el.dispatchEvent(new w.Event('input')); });
-  d.querySelector('#tab-ads').click(); await wait(100); d.querySelector('#tab-days').click(); await wait(300);
+  d.querySelector('#tab-day').click(); await wait(100); d.querySelector('#tab-days').click(); await wait(300);
   check(gOf(day(-2)) === 'g' && gOf(today) === 'y', 'đổi ngưỡng (35/200) → màu nhãn đổi theo (hôm kia ' + gOf(day(-2)) + ', hôm nay ' + gOf(today) + ')');
   check(errors.length === 0, 'không lỗi JavaScript' + (errors.length ? ': ' + errors[0] : ''));
   w.close();
@@ -73,10 +64,8 @@ const seed = { t1: 25, t2: 35, day: today, byAcc: { act_1: { name: 'TK', days: {
   check(parseFloat((last(/^\.stats td$/, 'padding') || '0').split(' ')[0]) >= 12, 'hàng bảng thống kê thoáng (padding dọc >= 12px)');
   check(/#1c7c3a/i.test(last(/^\.spill\[data-g=g\]$/, 'background') || ''), 'nhãn CPQC "Tốt" ở bảng thống kê là nhãn đặc màu xanh như bảng Báo cáo ngày');
   // Cột số chia đều độ rộng (khoảng cách giữa các cột đều nhau), cột đầu có độ rộng riêng
-  ['#stab', '#atab'].forEach(id => {
-    check(last(new RegExp('^' + id + '$'), 'table-layout') === 'fixed', id + ': table-layout:fixed → các cột số rộng đều nhau');
-    check(/%$/.test(last(new RegExp('^' + id + ' th:first-child$'), 'width') || ''), id + ': cột đầu (Ngày / Tên bài) có độ rộng riêng theo %');
-  });
+  check(last(/^#stab$/, 'table-layout') === 'fixed', '#stab: table-layout:fixed → các cột số rộng đều nhau');
+  check(/%$/.test(last(/^#stab th:first-child$/, 'width') || ''), '#stab: cột Ngày có độ rộng riêng theo %');
   console.log(ok ? '\nALL PASS' : '\nSOME FAILED');
   process.exit(ok ? 0 : 2);
 })().catch(e => { console.error('FAILED', e.stack || e.message); process.exit(1); });

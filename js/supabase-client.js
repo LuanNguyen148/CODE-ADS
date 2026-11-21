@@ -60,6 +60,14 @@
         if(typeof ADS_CLOUD.onError==='function')ADS_CLOUD.onError(e.message);
       }
     },
+    // Gọi một Edge Function của chúng ta (có phiên đăng nhập); trả về { ok, status, json } — không ném lỗi theo mã HTTP
+    async fn(name,payload){
+      if(!window.sb)throw new Error('Chưa kết nối Supabase');
+      var s=await window.sb.auth.getSession();var t=s.data&&s.data.session&&s.data.session.access_token;
+      var r=await fetch(cfg.url+'/functions/v1/'+name,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t,apikey:cfg.anonKey},body:JSON.stringify(payload||{})});
+      var j={};try{j=await r.json()}catch(e){}
+      return {ok:r.ok,status:r.status,json:j};
+    },
     // Trang đã biết cloud đang có gì: cho phép đẩy dữ liệu đang chờ (nếu có)
     release(){hold=false;if(pending)ADS_CLOUD.flush()},
     // Bỏ dữ liệu đang chờ đẩy (khi vừa nhận dữ liệu mới hơn từ cloud, bản trên máy đã cũ)

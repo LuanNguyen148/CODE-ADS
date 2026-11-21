@@ -12,15 +12,45 @@
 /* Ngưỡng CPQC: ô nhập đủ cao + dòng giải thích */
 .in-pct{min-height:36px}
 .bar{flex-wrap:wrap}
-.thr-hint{flex:1 1 100%;margin:2px 0 0;font-size:12.5px;line-height:1.45;color:var(--mu)}
-.thr-hint b{font-weight:800}
-.thr-hint .g{color:var(--g)}.thr-hint .y{color:var(--y)}.thr-hint .r{color:var(--r)}
 
 /* Popup chọn ngày: khối .hier-nav (có backdrop-filter) tạo lớp xếp chồng riêng nên z-index:40 của popup
    không vượt được header bảng sticky (z-index 2–3). Nâng cả khối lên trên bảng, và cho popup nền đặc. */
 .hier-nav,#rangeCard{position:relative;z-index:20}
 #rangeCard .srange{margin-top:10px}
 .dp-pop{background:var(--sf2);backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* Bộ chọn ngày — cùng một kiểu ở mọi tab (Báo cáo ngày, Thống kê theo ngày / theo bài):
+   nút rộng tối thiểu 300px (co lại trên màn hình hẹp), mũi tên ▾ sát mép phải; popup thẳng mép trái
+   và đúng bằng độ rộng nút (trước đây dính mép phải, rộng hơn nút nên thò sang trái và tràn màn hình hẹp). */
+.day-pick{min-width:min(300px,100%)}
+.dp-btn{flex:1 1 auto;justify-content:flex-start}
+.dp-btn .dp-caret{margin-left:auto}
+.dp-pop{left:0;right:0;width:auto;min-width:0;max-width:calc(100vw - 32px)}
+/* Hàng lọc Chiến dịch / Nhóm QC / Quảng cáo: tab bên trái, cụm [ngày · Thẻ/Bảng · Sắp xếp] bên phải, CÙNG MỘT HÀNG.
+   Không đủ chỗ thì cả cụm xuống hàng dưới (căn phải), không bẻ lẻ từng nút. Nút ngày dùng min-width bằng px
+   (phần trăm làm trình duyệt tính sai độ rộng cụm nên nút sắp xếp bị đẩy xuống dòng). */
+@media (min-width:761px){
+  .hier-tabs-row{gap:10px 12px;justify-content:space-between;align-items:center}
+  .hier-tabs{flex:0 0 auto;flex-wrap:nowrap}
+  .hier-tools{flex:1 1 auto;flex-wrap:nowrap;justify-content:flex-end;align-items:center;gap:8px}
+  .hier-tools .day-pick{min-width:300px;flex:0 0 auto}
+  .hier-tools .seg,.hier-tools .hier-sort{flex:0 0 auto}
+}
+/* ===== Dóng hàng số liệu (đo mép chữ thật bằng Playwright, đừng đổi nếu chưa đo lại) ===== */
+/* 1. Mũi tên sắp xếp ▲▼ "treo" ra ngoài mép (rộng 0, chữ tràn sang phải vào phần đệm) thay vì chiếm 13px:
+      trước đây mọi cột sắp xếp được có nhãn lệch trái 13px so với số bên dưới. Cột đầu (canh trái) giữ mũi tên sau nhãn. */
+.tbl th[data-sort]:not(:first-child) .ar{width:0;margin-left:0;overflow:visible;white-space:nowrap;text-indent:3px}
+/* 2. Ô nhập: số trong ô nhập thẳng mép phải với tiêu đề (12px đệm tiêu đề = 6 đệm ô + 1 viền + 5 đệm ô nhập) */
+.tbl td.in input,.tbl td.edit .drill-in{padding-right:5px}
+/* 3. Tab Bật/Tắt: cột Chi / Mess / CPQC rộng cố định, số canh phải → thẳng hàng giữa các dòng (trước đây nhảy theo độ dài số) */
+@media (min-width:761px){
+  .tg-kpi{gap:10px}
+  .tg-kpi > span:nth-child(1){width:128px;text-align:right}
+  .tg-kpi > span:nth-child(2){width:84px;text-align:right}
+  .tg-kpi .spill{width:72px;text-align:center}
+}
+/* Tab Bật/Tắt không lọc theo ngày → ẩn nút "Lấy số liệu ngày này" (nó lấy số liệu của một ngày đang chọn) */
+:root[data-tab="toggle"] #tg-sync-slot{display:none}
 
 /* Nút menu nổi: nhỏ hơn, hơi mờ khi không dùng, thấp xuống để ít che nội dung
    (vị trí do người dùng kéo thả được lưu bằng style nội tuyến nên vẫn được giữ) */
@@ -31,9 +61,8 @@
 
 /* Tablet / laptop nhỏ (có banner + tab ngang): tab dàn đều, không lẻ một nút */
 @media (min-width:761px) and (max-width:1099px){
-  .tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
-  .tabs button{grid-column:span 2;text-align:center;white-space:nowrap}
-  .tabs button:nth-child(n+4){grid-column:span 3}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tabs button{text-align:center;white-space:nowrap}
   .top{margin-bottom:12px}
   .hero{padding:16px;margin-bottom:14px}
 }
@@ -74,3 +103,91 @@
 /* Dòng bản quyền: nền viên thuốc tối nhẹ để đọc được trên ảnh nền ở mọi cảnh ngày/đêm */
 .site-footer{font-size:12px;color:#fff1d5;text-shadow:none;background:color-mix(in srgb,#3a0b12 66%,transparent);
   padding:5px 14px;border-radius:99px;width:max-content;max-width:100%;margin-left:auto;margin-right:0;gap:12px}
+
+/* ===== Tab Bật/Tắt → biểu tượng ⏱ Tự tắt + popup cài điều kiện cho từng mục ===== */
+.tg-auto{flex:none;width:34px;height:34px;padding:0;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--bd);background:var(--sf2);color:var(--mu);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.tg-auto svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tg-auto:hover{border-color:#a31118;color:#a31118}
+.tg-auto:focus-visible{outline:2px solid #a31118;outline-offset:2px}
+.tg-auto[data-st="try"]{color:#8a5a12;border-color:color-mix(in srgb,#b9823a 70%,transparent);background:color-mix(in srgb,#dcb16f 28%,transparent)}
+.tg-auto[data-st="on"]{color:#fff;border-color:transparent;background:linear-gradient(135deg,#c4122f,#8c0b1f);box-shadow:0 4px 10px -4px #8c0b1fcc}
+.tg-auto[data-st="off"]{opacity:.55}
+:root[data-scene="night"] .tg-auto[data-st="try"]{color:#f1d6a6;background:color-mix(in srgb,#f1d6a6 16%,transparent)}
+.tg-auto-ghost{visibility:hidden;border-color:transparent;background:transparent;pointer-events:none}
+.tg-ap-sum{margin:10px 0 0;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.45;border:1px solid var(--bd);background:var(--sf2);color:var(--tx)}
+.tg-ap-sum[data-level="bad"]{border-color:var(--r);background:color-mix(in srgb,var(--r) 12%,transparent);font-weight:700}
+.tg-ap-sum[hidden]{display:none}
+/* Popup: dùng khung .acct nhưng cao theo nội dung (không cố định 440px như popup Tài khoản) */
+.ap-dlg[open]{display:block;height:fit-content;max-height:calc(100vh - 24px);overflow:auto;width:min(480px,calc(100vw - 24px))}
+.ap-logdlg[open]{width:min(640px,calc(100vw - 24px))}
+.ap-body{display:flex;flex-direction:column;gap:12px}
+.ap-note{margin:0;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--y) 16%,transparent);border:1px solid color-mix(in srgb,var(--y) 45%,transparent);color:var(--tx);font-size:13px}
+.ap-rows{display:flex;flex-direction:column;gap:8px}
+.ap-row{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.ap-row input[type=text]{font:inherit;font-size:14px;font-weight:700;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 10px;min-height:42px;width:100%;text-align:right;font-variant-numeric:tabular-nums}
+.ap-row input[type=text]:disabled{opacity:.5;cursor:not-allowed}
+.ap-chk{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.ap-chk input{width:18px;height:18px;accent-color:#a31118}
+.ap-hint{margin:0;font-size:12.5px;color:var(--mu);line-height:1.45}
+.ap-match{border:1px solid var(--bd);border-radius:10px;padding:8px 12px;margin:0;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.ap-match legend{padding:0 6px;font-size:12px;font-weight:700;color:var(--mu)}
+.ap-match[hidden]{display:none}
+.ap-match label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.ap-summary{margin:0;padding:10px 12px;border-radius:10px;background:var(--sf2);border:1px dashed var(--bd);font-size:13.5px;font-weight:700;line-height:1.45}
+.ap-status{margin:0;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.45;border:1px solid var(--bd);background:var(--sf2);color:var(--tx)}
+.ap-status[data-level="bad"]{border-color:var(--r);background:color-mix(in srgb,var(--r) 12%,transparent);font-weight:700}
+.ap-status[data-level="warn"]{border-color:color-mix(in srgb,var(--y) 55%,var(--bd))}
+.ap-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ap-actions .pw-btn{min-width:96px}
+.ap-ghost,.ap-danger{min-height:42px;padding:0 16px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;background:transparent;border:1px solid var(--bd);color:var(--tx)}
+.ap-danger{margin-left:auto;color:var(--r);border-color:color-mix(in srgb,var(--r) 50%,var(--bd))}
+.ap-danger[hidden]{display:none}
+.ap-dlg button:disabled,.ap-dlg input:disabled{opacity:.5;cursor:not-allowed}
+.ap-tw{overflow-x:auto;border:1px solid var(--bd);border-radius:12px}
+.ap-table{width:100%;border-collapse:collapse;font-size:13px;min-width:460px}
+.ap-table th{text-align:left;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);padding:10px 12px;background:color-mix(in srgb,var(--sf2) 80%,var(--sf));white-space:nowrap}
+.ap-table td{padding:10px 12px;border-top:1px solid var(--bd);vertical-align:middle}
+.ap-table th:nth-child(3),.ap-table td:nth-child(3){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ap-table tr.ap-try td:last-child{color:var(--mu)}
+.ap-table tr.ap-bad td:last-child{color:var(--r);font-weight:700}
+.ap-lv{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:99px;border:1px solid var(--bd);font-size:11px;color:var(--mu);white-space:nowrap}
+.ap-empty{text-align:center;color:var(--mu);padding:18px 12px!important}
+.ap-restore{margin-left:8px;padding:3px 10px;min-height:28px;border-radius:99px;border:1px solid #f1d6a6;background:linear-gradient(120deg,#a31118,#750812);color:#fff1d5;font-weight:700;font-size:12px;cursor:pointer}
+.ap-restore:disabled{opacity:.5;cursor:wait}
+.ap-restore:focus-visible,.ap-ghost:focus-visible,.ap-danger:focus-visible{outline:2px solid #a31118;outline-offset:2px}
+@media (max-width:560px){.ap-row{grid-template-columns:minmax(0,1fr) 110px}}
+/* Ghi đè kiểu nhãn chung (label dạng cột) cho các ô tick / radio trong popup tự tắt */
+body .ap-dlg .ap-chk{display:inline-flex;flex-direction:row;align-items:center;gap:8px;text-align:left}
+body .ap-dlg .ap-row{display:grid;flex-direction:row}
+body .ap-dlg label.ap-row{align-items:center}
+body .ap-dlg .ap-match label{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;text-align:left}
+body .ap-dlg .ap-match input{margin:0}
+body .ap-dlg .ap-match input[type=radio],body .ap-dlg .ap-chk input[type=checkbox]{width:18px;height:18px;min-height:0;padding:0;flex:none;accent-color:#a31118}
+
+/* ===== Tab Thông báo (Telegram) ===== */
+.tn-steps{margin:0;padding-left:20px;font-size:13px;line-height:1.55;color:var(--tx)}
+.tn-steps li{margin:4px 0}
+.tn-steps code{font-size:12px;padding:1px 6px;border-radius:6px;background:var(--sf2);border:1px solid var(--bd)}
+.tn-token-row{display:flex;gap:8px;align-items:stretch}
+.tn-token-row input{flex:1;min-width:0;font:inherit;font-size:14px;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 12px;min-height:42px}
+.tn-token-row .pw-btn{flex:none}
+#v-notify .set-sec{display:flex;flex-direction:column;gap:12px}
+#v-notify>.ap-note{margin:0 0 4px}
+#v-notify .set-sec h3{margin:0}
+#v-notify .set-sec .set-help{margin:0}
+#v-notify .tn-chk{font-size:13.5px;align-items:flex-start;display:flex;flex-direction:row;gap:8px;text-align:left}
+#v-notify .tn-chk input{margin-top:2px;width:18px;height:18px;min-height:0;padding:0;flex:none;accent-color:#a31118}
+.tn-time-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px;font-weight:700;color:var(--tx)}
+.tn-time-row input{font:inherit;font-size:15px;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 10px;min-height:42px;width:120px}
+.tn-time-row .set-help{flex:1 1 220px;font-weight:400}
+#v-notify .tn-foot{border-top:1px solid var(--bd)}
+
+.set-sec .set-sub{margin:24px 0 10px;font-size:15px}
+#set-pane-tg{display:flex;flex-direction:column;gap:12px}
+#set-pane-tg.pane-off{display:none}
+#set-pane-tg>h3{margin:0}
+#v-notify .tn-conn .ap-actions{margin-top:0}
+
+.tn-time-row select{font:inherit;font-size:16px;font-weight:700;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 12px;min-height:44px;min-width:76px}
+.tn-time-row #tn-ap{min-width:84px}
+.tn-colon{font-size:18px;font-weight:800}

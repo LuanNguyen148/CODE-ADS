@@ -51,11 +51,9 @@ const lbl = d => d.getDate() + ' Tháng ' + (d.getMonth() + 1) + ', ' + d.getFul
   check(d.getElementById('dp-pop').hidden, 'bấm ra ngoài → đóng bảng chọn');
   // Tab Bật/Tắt: nút ngày chuyển lên đầu danh sách; tab thống kê: ẩn
   d.querySelector('#side [data-side-tab="toggle"]').click(); await wait(50);
-  check(d.getElementById('metaDay').parentNode.id === 'tg-date-slot' && !d.getElementById('metaDay').hidden, 'tab Bật/Tắt: nút ngày chuyển lên đầu danh sách');
+  check(d.getElementById('metaDay').hidden && !d.getElementById('tg-date-slot'), 'tab Bật/Tắt: KHÔNG có nút chọn ngày (trạng thái bật/tắt không cần lọc theo ngày)');
   d.querySelector('#side [data-side-tab="days"]').click(); await wait(50);
   check(d.getElementById('metaDay').parentNode.id === 'rng-date-slot' && !d.getElementById('metaDay').hidden, 'tab Thống kê theo ngày: dùng chung nút ngày với Báo cáo ngày');
-  d.querySelector('#side [data-side-tab="ads"]').click(); await wait(50);
-  check(d.getElementById('metaDay').parentNode.id === 'rng-date-slot' && !d.getElementById('metaDay').hidden, 'tab Thống kê theo bài: dùng chung nút ngày với Báo cáo ngày');
   d.querySelector('#side [data-side-tab="day"]').click(); await wait(50);
   check(d.getElementById('metaDay').parentNode.id === 'hier-date-slot' && !d.getElementById('metaDay').hidden, 'quay lại Báo cáo ngày: nút ngày về hàng tab');
   // Báo cáo sao chép vẫn có tên (lấy từ tài khoản đăng nhập)
