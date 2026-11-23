@@ -260,3 +260,44 @@ body .ap-dlg .ap-match input[type=radio],body .ap-dlg .ap-chk input[type=checkbo
 }
 @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){dialog.acct[open],dialog.ap-dlg[open]{animation:none}}
+
+/* ===== UX điện thoại: danh sách gọn hơn, bộ lọc gọn hơn, công tắc thay ô tick (rà soát bằng skill design-critique) ===== */
+#v-notify .tn-sw{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:52px;padding:6px 2px;border-bottom:1px solid var(--bd);cursor:pointer}
+#v-notify .tn-sw>span:last-child{order:-1;flex:1;font-size:15px;font-weight:600;color:var(--tx);line-height:1.3}
+#v-notify .tn-sw .set-track{flex:none}
+#v-notify #tn-sec-alerts .tn-sw:last-of-type{border-bottom:0}
+@media (max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1099px){
+  /* tab Thông báo: tiêu đề đã nằm ở banner → bỏ khối biểu tượng trống */
+  body #v-notify .set-head{display:none}
+  /* nút "Lấy số liệu": màu chủ đề thay cho xanh dương, gọn hơn */
+  body #fb-sync-btn{min-height:46px;border-radius:14px;font-size:15px;background:linear-gradient(120deg,#a31118,#750812);color:#fff1d5;border:1px solid #f1d6a6;box-shadow:0 8px 18px -10px #54281dcc}
+  :root[data-scene="night"] body #fb-sync-btn,:root[data-scene="night"] #fb-sync-btn{background:linear-gradient(120deg,#f1d6a6,#dcb16f);color:#4a1a14}
+  /* hàng công cụ: ngày một hàng, Thẻ/Bảng + Sắp xếp chung một hàng */
+  body .hier-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+  body .hier-tools #hier-date-slot{flex:1 1 100%;min-width:0}
+  body .hier-tools #view-seg{flex:0 0 auto;width:auto}
+  body .hier-tools #view-seg button{padding-left:16px;padding-right:16px}
+  body .hier-tools .hier-sort{flex:1 1 0;min-width:0;display:flex;align-items:center}
+  body .hier-tools .hier-sort{font-size:0}
+  body .hier-tools .hier-sort select{font-size:16px}
+  body .hier-tools #view-seg button{display:inline-flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;white-space:nowrap;min-height:44px}
+  body .hier-tools .hier-sort select{text-overflow:ellipsis;font-size:15px}
+  body .hier-tools .hier-sort select{width:100%;min-width:0}
+  /* thẻ chiến dịch / nhóm / quảng cáo: gọn, 3 cột số liệu, bỏ nhãn cấp trùng tiêu đề danh sách */
+  body .drill-card{padding:14px 14px 12px}
+  body .drill-card .lvl-tag{display:none}
+  body .drill-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  body .drill-grid .drill-cell{padding:8px 10px;min-height:0}
+  body .drill-grid .drill-cell small{font-size:12px;white-space:nowrap}
+  body .drill-grid .drill-cell b,body .drill-grid .drill-cell .drill-in{font-size:16px}
+}
+
+/* ===== Cài đặt → Chỉ tiêu CPQC (ngưỡng Tốt / Theo dõi) ===== */
+.cp-form{display:flex;flex-direction:column;gap:12px;max-width:380px}
+.cp-form label{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:48px;font-size:15px;font-weight:700;color:var(--tx)}
+.cp-form .in-pct{width:104px;min-height:44px;padding:6px 10px;font-size:16px;text-align:right}
+body .cp-form label{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:14px}
+@media (max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1099px){
+  body .set-head .pill-tabs{flex-wrap:nowrap}
+  body .set-head .pill-tabs button{padding:6px 8px;font-size:13px;white-space:nowrap}
+}

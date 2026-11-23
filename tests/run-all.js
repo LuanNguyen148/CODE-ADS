@@ -38,6 +38,7 @@ const TESTS = [
   { file: 'swipetest.js', arg: DASH },
   { file: 'bnavtest.js', arg: DASH },
   { file: 'mobileuitest.js', arg: DASH },
+  { file: 'resumetest.js', arg: DASH },
   { file: 'numfmttest.js', arg: DASH },
   { file: 'cleanurltest.js', arg: DASH },
   { file: 'cleantexttest.js', arg: DASH },

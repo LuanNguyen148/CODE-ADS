@@ -1090,7 +1090,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
 <link rel="stylesheet" href="css/dashboard-stats.css?v=8">
 <link rel="stylesheet" href="css/logout-popup.css?v=2">
-<link rel="stylesheet" href="css/ui-polish.css?v=25">
+<link rel="stylesheet" href="css/ui-polish.css?v=30">
 </head>
 <body>
 <div class="xmas-scene" aria-hidden="true"><span class="xmas-bg xmas-bg-day"></span><span class="xmas-bg xmas-bg-night"></span><span class="xmas-wash"></span><canvas id="xmas-snow"></canvas></div>
@@ -1177,10 +1177,6 @@ td .pick{margin-right:8px;vertical-align:middle}
 </section>
 
 <div class="bar"><h2 id="hier-heading">1. Danh sách Chiến dịch (Bấm vào Chiến dịch để xem Nhóm QC)</h2>
-<div class="meta">
-<label title="CPQC nhỏ hơn hoặc bằng mức này được tính là Tốt (xanh)">CPQC tốt ≤ (%)<input id="t1" type="number" inputmode="decimal" min="0" class="in-pct"></label>
-<label title="CPQC nhỏ hơn hoặc bằng mức này (nhưng cao hơn mức Tốt) là Theo dõi (vàng)">Theo dõi ≤ (%)<input id="t2" type="number" inputmode="decimal" min="0" class="in-pct"></label>
-</div>
 </div>
 
 <div class="hier-nav" aria-label="Điều hướng phân cấp Chiến dịch - Nhóm quảng cáo - Quảng cáo">
@@ -1292,7 +1288,7 @@ td .pick{margin-right:8px;vertical-align:middle}
   </div>
   <div class="set-sec" id="tn-sec-report">
     <h3>1. Báo cáo hằng ngày</h3>
-    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-report"><span>Gửi báo cáo hằng ngày</span></label>
+    <label class="set-switch tn-sw"><input type="checkbox" id="tn-report"><span class="set-track" aria-hidden="true"></span><span>Gửi báo cáo hằng ngày</span></label>
     <div class="tn-time-row">
       <label for="tn-hh">Gửi lúc</label>
       <select id="tn-hh" aria-label="Giờ"><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
@@ -1305,9 +1301,9 @@ td .pick{margin-right:8px;vertical-align:middle}
   </div>
   <div class="set-sec" id="tn-sec-alerts">
     <h3>2. Báo ngay khi có sự việc</h3>
-    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-paused" checked><span>Báo khi một mục bị tự tắt (kèm lý do)</span></label>
-    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-problem" checked><span>Báo sự cố (token hết hạn, không tắt được)</span></label>
-    <label class="ap-chk tn-chk"><input type="checkbox" id="tn-dry"><span>Báo cả khi chạy thử</span></label>
+    <label class="set-switch tn-sw"><input type="checkbox" id="tn-paused" checked><span class="set-track" aria-hidden="true"></span><span>Báo khi một mục bị tự tắt (kèm lý do)</span></label>
+    <label class="set-switch tn-sw"><input type="checkbox" id="tn-problem" checked><span class="set-track" aria-hidden="true"></span><span>Báo sự cố (token hết hạn, không tắt được)</span></label>
+    <label class="set-switch tn-sw"><input type="checkbox" id="tn-dry"><span class="set-track" aria-hidden="true"></span><span>Báo cả khi chạy thử</span></label>
   </div>
   <div class="set-sec tn-foot">
     <div class="ap-actions"><button type="button" class="pw-btn" id="tn-prefs-save">Lưu cài đặt thông báo</button></div>
@@ -1321,6 +1317,7 @@ td .pick{margin-right:8px;vertical-align:middle}
     <div class="set-who"><h2>Cài đặt</h2><strong id="set-name"></strong><small id="set-email"></small></div>
     <div class="pill-tabs" id="set-tabs" role="tablist" aria-label="Nhóm cài đặt">
       <button type="button" role="tab" id="set-tab-look" data-set-tab="look" aria-selected="true" aria-controls="set-pane-look">Giao diện</button>
+      <button type="button" role="tab" id="set-tab-cp" data-set-tab="cp" aria-selected="false" aria-controls="set-pane-cp" tabindex="-1">Chỉ tiêu</button>
       <button type="button" role="tab" id="set-tab-tg" data-set-tab="tg" aria-selected="false" aria-controls="set-pane-tg" tabindex="-1">Telegram</button>
       <button type="button" role="tab" id="set-tab-pw" data-set-tab="pw" aria-selected="false" aria-controls="set-pane-pw" tabindex="-1">Mật khẩu</button>
     </div>
@@ -1336,6 +1333,13 @@ td .pick{margin-right:8px;vertical-align:middle}
     <h3 class="set-sub">Hiệu ứng Giáng sinh</h3>
     <label class="set-switch"><input type="checkbox" id="set-snow" checked><span class="set-track" aria-hidden="true"></span><span>Tuyết rơi</span></label>
     <p class="set-help">Tắt nếu máy chậm hoặc muốn tiết kiệm pin.</p>
+  </div>
+  <div class="set-sec pane-off" id="set-pane-cp" data-set-pane="cp" role="tabpanel" aria-labelledby="set-tab-cp">
+    <h3>Chỉ tiêu CPQC</h3>
+    <div class="cp-form">
+<label title="CPQC nhỏ hơn hoặc bằng mức này được tính là Tốt (xanh)">CPQC tốt ≤ (%)<input id="t1" type="number" inputmode="decimal" min="0" class="in-pct"></label>
+<label title="CPQC nhỏ hơn hoặc bằng mức này (nhưng cao hơn mức Tốt) là Theo dõi (vàng)">Theo dõi ≤ (%)<input id="t2" type="number" inputmode="decimal" min="0" class="in-pct"></label>
+    </div>
   </div>
   <div class="set-sec pane-off" id="set-pane-tg" data-set-pane="tg" role="tabpanel" aria-labelledby="set-tab-tg">
     <h3>Kết nối Telegram</h3>
@@ -4511,6 +4515,35 @@ if (fbCfg.accountId) {
 }
 loadFbAdAccounts();
 debtRefresh(false);
+
+// ===== Mở lại ứng dụng / quay lại trang: tự làm mới dữ liệu =====
+// iOS (và trình duyệt điện thoại) giữ trang trong bộ nhớ khi ẩn ứng dụng, nên trang KHÔNG tự nạp lại → số liệu cũ.
+//  • sang ngày mới hoặc vắng ≥ 10 phút → nạp lại cả trang (lấy lại dữ liệu cloud, danh sách tài khoản, số liệu hôm nay)
+//  • vắng 15 giây – 10 phút → chỉ lấy lại số liệu đang xem (bấm "Lấy số liệu" ngầm) hoặc làm mới tab Bật/Tắt
+//  • vắng dưới 15 giây (chỉ lướt qua ứng dụng khác) → không làm gì
+(function() {
+  var loadDay = sd(new Date()), hiddenAt = 0, BRIEF = 15 * 1000, LONG = 10 * 60 * 1000;
+  window.ADS_RELOAD = function() { location.reload(); };
+  window.ADS_RESUME = function(awayMs, today) {
+    if (window.ADS_RELOADING) return "bỏ qua";
+    if (today !== loadDay || awayMs >= LONG) { window.ADS_RELOAD(); return "nạp lại"; }
+    if (awayMs < BRIEF) return "bỏ qua";
+    if (S.tab === "toggle") { if (typeof renderToggleView === "function") { renderToggleView(true); return "làm mới Bật/Tắt"; } return "bỏ qua"; }
+    if (S.tab === "day" || S.tab === "days") {
+      var b = $("fb-sync-btn");
+      if (b && !b.disabled) { b.click(); return "lấy số liệu"; }
+    }
+    return "bỏ qua";
+  };
+  function away() { var a = hiddenAt ? Date.now() - hiddenAt : 0; hiddenAt = 0; return a; }
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === "hidden") hiddenAt = Date.now();
+    else window.ADS_RESUME(away(), sd(new Date()));
+  });
+  document.addEventListener("pause", function() { hiddenAt = Date.now(); });
+  document.addEventListener("resume", function() { window.ADS_RESUME(away(), sd(new Date())); });
+  window.addEventListener("pageshow", function(e) { if (e.persisted) window.ADS_RELOAD(); });
+})();
 
 // ===== Menu dọc bên trái: đổi chức năng, thu gọn (máy tính), trượt ra/vào (điện thoại) =====
 (function(){
