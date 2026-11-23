@@ -52,12 +52,6 @@
 /* Tab Bật/Tắt không lọc theo ngày → ẩn nút "Lấy số liệu ngày này" (nó lấy số liệu của một ngày đang chọn) */
 :root[data-tab="toggle"] #tg-sync-slot{display:none}
 
-/* Nút menu nổi: nhỏ hơn, hơi mờ khi không dùng, thấp xuống để ít che nội dung
-   (vị trí do người dùng kéo thả được lưu bằng style nội tuyến nên vẫn được giữ) */
-.fab-menu{width:46px;height:46px;opacity:.78;transition:opacity .2s,transform .15s,box-shadow .2s;
-  bottom:calc(env(safe-area-inset-bottom,0px) + 20px)}
-.fab-menu svg{width:22px;height:22px}
-.fab-menu:hover,.fab-menu:focus-visible,.fab-menu.dragging,.fab-menu[aria-expanded="true"]{opacity:1}
 
 /* Tablet / laptop nhỏ (có banner + tab ngang): tab dàn đều, không lẻ một nút */
 @media (min-width:761px) and (max-width:1099px){
@@ -196,7 +190,7 @@ body .ap-dlg .ap-match input[type=radio],body .ap-dlg .ap-chk input[type=checkbo
 @media (hover:none) and (pointer:coarse){
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   button,a,select,summary,label,[role=tab],[role=radio]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  button,[role=tab],[role=radio],.tabs,.side,.fab-menu{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+  button,[role=tab],[role=radio],.tabs,.side{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
   body input:not([type=checkbox]):not([type=radio]):not([type=range]),body select,body textarea{font-size:16px !important}
   body .tabs button,body .pill-tabs button,body .set-seg button,body .tg-pills button,body .hier-tabs button{min-height:44px}
   body .ap-ghost,body .ap-danger,body .pw-btn,body .tg-refresh{min-height:44px}
@@ -212,3 +206,57 @@ body .ap-dlg .ap-match input[type=radio],body .ap-dlg .ap-chk input[type=checkbo
 :root:not([data-scene="night"]) .tbl tr[data-g=g] .pill,:root:not([data-scene="night"]) .spill[data-g=g]{background:#166534}
 :root[data-scene="night"] .spill[data-g=g],:root[data-scene="night"] .tbl tr[data-g=g] .pill{background:#12803f}
 :root[data-scene="night"] .spill[data-g=r],:root[data-scene="night"] .tbl tr[data-g=r] .pill{background:#c9263c}
+
+/* ===== Thanh chức năng DƯỚI (bottom navbar) NỔI dạng viên thuốc bo tròn — điện thoại / máy tính bảng cảm ứng; trên web (chuột) giữ tab ở banner ===== */
+.bnav{display:none}
+@media (max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1099px){
+  body .banner .tabs{display:none}
+  .bnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:23;
+    padding:8px 6px;border-radius:28px;border:1px solid rgba(255,255,255,.75);
+    background:rgba(255,250,242,.9);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);
+    box-shadow:0 14px 34px -12px rgba(84,40,29,.55),0 2px 6px rgba(84,40,29,.12)}
+  .bnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:54px;padding:4px 2px;border:0;border-radius:20px;
+    background:transparent;color:#6b5143;font:inherit;font-size:11px;font-weight:700;line-height:1.1;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:color .2s}
+  .bnav button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+  .bnav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bnav button[aria-current="page"]{color:#a31118}
+  .bnav button[aria-current="page"] svg{stroke-width:2;fill:rgba(163,17,24,.16);transform:translateY(-1px)}
+  .bnav button:focus-visible{outline:2px solid #a31118;outline-offset:-2px}
+  :root[data-scene="night"] .bnav{background:rgba(46,6,12,.88);border-color:rgba(241,214,166,.32);box-shadow:0 14px 34px -12px #000d,0 2px 6px #0006}
+  :root[data-scene="night"] .bnav button{color:#f1d6a6}
+  :root[data-scene="night"] .bnav button[aria-current="page"]{color:#f1c96b}
+  :root[data-scene="night"] .bnav button[aria-current="page"] svg{fill:rgba(241,201,107,.2)}
+  :root[data-scene="night"] .bnav button:focus-visible{outline-color:#f1d6a6}
+  body{padding-bottom:96px}
+  .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+}
+
+/* ===== Giao diện ĐIỆN THOẠI (iOS): thanh trên gọn + tiêu đề lớn theo màn + hộp thoại dạng tấm trượt từ đáy ===== */
+.m-title{display:none}
+@media (max-width:760px),(hover:none) and (pointer:coarse) and (max-width:1099px){
+  /* thanh tài khoản: logo + tên thương hiệu bên trái, ảnh đại diện bên phải (chạm mở Tài khoản) */
+  body .auth-bar{padding:8px 10px 8px 12px;margin-bottom:8px;border-radius:20px;gap:10px}
+  body .auth-bar .auth-info,body .auth-bar .side-open,body .auth-bar .logout-btn{display:none}
+  body .auth-bar .auth-user{flex:1;min-width:0;gap:0;justify-content:space-between}
+  body .auth-bar .xmas-logo{display:flex}
+  body .auth-bar .auth-avatar{width:40px;height:40px;font-size:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  /* banner gọn: tiêu đề lớn bên trái, đồng hồ bên phải */
+  body .banner{min-height:0;padding:14px 16px 16px;border-radius:24px;margin-bottom:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+  body .banner .bt{flex:1 1 auto;min-width:0;position:static}
+  body .banner .bt h1,body .banner .bt>p:not(.m-title),body .banner .tabs,body .banner .deco{display:none}
+  body .banner .bt .m-title{display:block;margin:0;font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:34px;line-height:1.02;letter-spacing:-.01em;color:#fff1d5;text-wrap:balance}
+  body .banner .clock{order:2;position:static;flex:none;width:auto;margin:0;padding:7px 10px;gap:8px;border-radius:16px;align-self:flex-start;justify-content:flex-start;transform:none}
+  body .auth-bar .xmas-logo .brand-name{display:inline}
+  body .banner .clock .ct small,body .banner .clock .ct span{display:none}
+  body .banner .clock .ct b{font-size:19px;letter-spacing:.02em}
+  body .banner .clock .orb{width:28px;height:28px}
+  /* tiêu đề lớn ở banner đã nêu tên màn → ẩn tiêu đề trùng trong thẻ (vẫn cho trình đọc màn hình) */
+  body .rep>h2:first-child,body .tg-head h2,body #v-notify .set-who h2,body #v-settings .set-who h2{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  /* hộp thoại → tấm trượt từ đáy (kiểu iOS) */
+  dialog.acct[open],dialog.ap-dlg[open]{position:fixed;inset:auto 0 0 0;margin:0;width:100%;max-width:100%;height:auto;max-height:88vh;border-radius:26px 26px 0 0;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));animation:sheetUp .28s cubic-bezier(.2,.8,.2,1)}
+  dialog.acct[open]{height:min(560px,88vh)}
+  dialog.acct[open]::before,dialog.ap-dlg[open]::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:currentColor;opacity:.28;margin:8px auto 2px}
+  dialog.acct::backdrop,dialog.ap-dlg::backdrop{background:rgba(26,5,8,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){dialog.acct[open],dialog.ap-dlg[open]{animation:none}}

@@ -429,16 +429,6 @@ pre:not([hidden]){animation:pop .3s ease both}
   .tg-sw input:checked + span::before{transform:translateX(20px)}
 }
 
-/* ===== v15b: Nút menu nổi (điện thoại/máy tính bảng) — thay cho thanh nổi cũ; kéo đi đâu cũng được ===== */
-.fab-menu{position:fixed;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 88px);z-index:24;width:52px;height:52px;padding:0;border-radius:50%;
-  display:inline-flex;align-items:center;justify-content:center;color:#fff1d5;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;
-  background:linear-gradient(135deg,#c4122f 0%,#a31118 55%,#750812 100%);border:2px solid #f1d6a6;box-shadow:0 10px 22px -8px #54281dcc,0 0 0 4px #f1d6a633;
-  transition:transform .15s,box-shadow .2s}
-.fab-menu svg{width:24px;height:24px;pointer-events:none}
-.fab-menu:active{transform:scale(.94)}
-.fab-menu.dragging{cursor:grabbing;transform:scale(1.08);box-shadow:0 18px 30px -10px #000c,0 0 0 6px #f1d6a64d;transition:none}
-.fab-menu:focus-visible{outline:3px solid #f1d6a6;outline-offset:3px}
-:root[data-scene="night"] .fab-menu{background:linear-gradient(135deg,#8a0d18 0%,#5e0911 55%,#3a050b 100%);color:#f1c96b}
 /* Khi nhảy tới một mục, chừa chỗ phía trên cho dây đèn */
 .view,#rangeCard{scroll-margin-top:84px}
 
@@ -486,7 +476,6 @@ pre:not([hidden]){animation:pop .3s ease both}
   .side{transition:width .25s}
   .wrap{max-width:1240px;padding-left:24px;padding-right:24px}
   .auth-bar,#tabs{display:none!important}
-  .fab-menu{display:none}
   .side-scrim{display:none}
   /* Thu gọn: chỉ còn biểu tượng, rê chuột hiện tên (title) */
   :root.side-mini .side{padding-left:10px;padding-right:10px}
@@ -1101,7 +1090,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 <link rel="stylesheet" href="css/dashboard-christmas.css?v=webp1">
 <link rel="stylesheet" href="css/dashboard-stats.css?v=8">
 <link rel="stylesheet" href="css/logout-popup.css?v=2">
-<link rel="stylesheet" href="css/ui-polish.css?v=18">
+<link rel="stylesheet" href="css/ui-polish.css?v=25">
 </head>
 <body>
 <div class="xmas-scene" aria-hidden="true"><span class="xmas-bg xmas-bg-day"></span><span class="xmas-bg xmas-bg-night"></span><span class="xmas-wash"></span><canvas id="xmas-snow"></canvas></div>
@@ -1134,13 +1123,12 @@ td .pick{margin-right:8px;vertical-align:middle}
   </div>
 </aside>
 <div class="side-scrim" id="side-scrim" hidden></div>
-<button type="button" class="fab-menu" id="fab-menu" aria-label="Mở menu (kéo để di chuyển)" aria-controls="side" aria-expanded="false" title="Mở menu — giữ và kéo để di chuyển"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 <div class="wrap" role="main">
 <div class="auth-bar" aria-label="Thông tin tài khoản">
   <div class="auth-user">
     <button type="button" class="side-open" id="side-open" aria-label="Mở menu" aria-controls="side" aria-expanded="false" title="Mở menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <span class="xmas-logo" role="img" aria-label="adsCGD"><img src="image/logo-adscgd.webp" alt="" width="512" height="512"><span class="brand-name">ads<b>CGD</b></span></span>
-    <div class="auth-avatar" id="user-avatar">U</div>
+    <div class="auth-avatar" id="user-avatar" role="button" tabindex="0" data-open-account title="Tài khoản" aria-label="Tài khoản">U</div>
     <div class="auth-info">
       <strong id="user-name">Người dùng</strong>
       <span id="user-email">user@example.com</span>
@@ -1150,7 +1138,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 </div>
 
 <div class="top">
-<div class="banner" data-ph="day"><div class="stars"></div><div class="clock" aria-label="Ngày giờ hiện tại"><svg class="orb" viewBox="0 0 44 44" aria-hidden="true"><g class="sun"><g class="rays"><line x1="22" y1="3" x2="22" y2="8"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(45 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(90 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(135 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(180 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(225 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(270 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(315 22 22)"/></g><circle class="disc" cx="22" cy="22" r="9"/></g><g class="moon"><mask id="mk"><rect width="44" height="44" fill="#fff"/><circle cx="30" cy="16" r="10" fill="#000"/></mask><circle cx="21" cy="23" r="12" fill="#fff6c8" mask="url(#mk)"/></g></svg><div class="ct"><small id="ckg">Xin chào</small><b id="ck">--:--:--</b><span id="cd"></span></div></div><div class="bt"><h1>Đánh giá chỉ số Ads</h1><p>Theo dõi mess, số điện thoại, doanh số và CPQC từng bài trên một màn hình.</p><div class="tabs" id="tabs" role="tablist" aria-label="Chọn chức năng"><button type="button" role="tab" id="tab-day" data-tab="day" aria-selected="true" aria-controls="v-day">Báo cáo ngày</button><button type="button" role="tab" id="tab-days" data-tab="days" aria-selected="false" aria-controls="v-days" tabindex="-1">Thống kê tổng theo ngày</button><button type="button" role="tab" id="tab-toggle" data-tab="toggle" aria-selected="false" aria-controls="v-toggle" tabindex="-1">Bật / Tắt quảng cáo</button><button type="button" role="tab" id="tab-notify" data-tab="notify" aria-selected="false" aria-controls="v-notify" tabindex="-1">Thông báo</button><button type="button" role="tab" id="tab-settings" data-tab="settings" aria-selected="false" aria-controls="v-settings" tabindex="-1">Cài đặt</button></div></div><svg class="deco" viewBox="0 0 220 110" aria-hidden="true"><rect x="10" y="80" width="28" height="30" rx="6" style="animation-delay:.1s"/><rect x="50" y="62" width="28" height="48" rx="6" style="animation-delay:.2s"/><rect x="90" y="70" width="28" height="40" rx="6" style="animation-delay:.3s"/><rect x="130" y="40" width="28" height="70" rx="6" style="animation-delay:.4s"/><rect class="hi" x="170" y="18" width="28" height="92" rx="6" style="animation-delay:.5s"/><polyline class="ln" points="24,66 64,46 104,54 144,26 184,8"/><circle cx="24" cy="66" r="4"/><circle cx="64" cy="46" r="4"/><circle cx="104" cy="54" r="4"/><circle cx="144" cy="26" r="4"/><circle cx="184" cy="8" r="5"/></svg></div>
+<div class="banner" data-ph="day"><div class="stars"></div><div class="clock" aria-label="Ngày giờ hiện tại"><svg class="orb" viewBox="0 0 44 44" aria-hidden="true"><g class="sun"><g class="rays"><line x1="22" y1="3" x2="22" y2="8"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(45 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(90 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(135 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(180 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(225 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(270 22 22)"/><line x1="22" y1="3" x2="22" y2="8" transform="rotate(315 22 22)"/></g><circle class="disc" cx="22" cy="22" r="9"/></g><g class="moon"><mask id="mk"><rect width="44" height="44" fill="#fff"/><circle cx="30" cy="16" r="10" fill="#000"/></mask><circle cx="21" cy="23" r="12" fill="#fff6c8" mask="url(#mk)"/></g></svg><div class="ct"><small id="ckg">Xin chào</small><b id="ck">--:--:--</b><span id="cd"></span></div></div><div class="bt"><p class="m-title" id="m-title" role="heading" aria-level="1">Báo cáo ngày</p><h1>Đánh giá chỉ số Ads</h1><p>Theo dõi mess, số điện thoại, doanh số và CPQC từng bài trên một màn hình.</p><div class="tabs" id="tabs" role="tablist" aria-label="Chọn chức năng"><button type="button" role="tab" id="tab-day" data-tab="day" aria-selected="true" aria-controls="v-day">Báo cáo ngày</button><button type="button" role="tab" id="tab-days" data-tab="days" aria-selected="false" aria-controls="v-days" tabindex="-1">Thống kê tổng theo ngày</button><button type="button" role="tab" id="tab-toggle" data-tab="toggle" aria-selected="false" aria-controls="v-toggle" tabindex="-1">Bật / Tắt quảng cáo</button><button type="button" role="tab" id="tab-notify" data-tab="notify" aria-selected="false" aria-controls="v-notify" tabindex="-1">Thông báo</button><button type="button" role="tab" id="tab-settings" data-tab="settings" aria-selected="false" aria-controls="v-settings" tabindex="-1">Cài đặt</button></div></div><svg class="deco" viewBox="0 0 220 110" aria-hidden="true"><rect x="10" y="80" width="28" height="30" rx="6" style="animation-delay:.1s"/><rect x="50" y="62" width="28" height="48" rx="6" style="animation-delay:.2s"/><rect x="90" y="70" width="28" height="40" rx="6" style="animation-delay:.3s"/><rect x="130" y="40" width="28" height="70" rx="6" style="animation-delay:.4s"/><rect class="hi" x="170" y="18" width="28" height="92" rx="6" style="animation-delay:.5s"/><polyline class="ln" points="24,66 64,46 104,54 144,26 184,8"/><circle cx="24" cy="66" r="4"/><circle cx="64" cy="46" r="4"/><circle cx="104" cy="54" r="4"/><circle cx="144" cy="26" r="4"/><circle cx="184" cy="8" r="5"/></svg></div>
 <div class="day-pick" id="metaDay">
   <button type="button" class="dp-btn" id="dp-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="dp-pop">
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
@@ -1383,6 +1371,7 @@ td .pick{margin-right:8px;vertical-align:middle}
 </section>
 
 </div>
+<nav class="bnav" id="bnav" aria-label="Chức năng chính"><button type="button" id="bn-day" data-tab="day" aria-label="Báo cáo ngày" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4M8 14h3"/></svg><span>Báo cáo</span></button><button type="button" id="bn-days" data-tab="days" aria-label="Tổng theo ngày"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/></svg><span>Tổng ngày</span></button><button type="button" id="bn-toggle" data-tab="toggle" aria-label="Bật / Tắt quảng cáo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="5"/><circle cx="16" cy="12" r="3"/></svg><span>Bật/Tắt</span></button><button type="button" id="bn-notify" data-tab="notify" aria-label="Thông báo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span>Thông báo</span></button><button type="button" id="bn-settings" data-tab="settings" aria-label="Cài đặt"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg><span>Cài đặt</span></button></nav>
 <dialog class="logout-dialog" id="logout-dialog" aria-labelledby="logout-title" tabindex="-1">
   <div class="logout-lights" aria-hidden="true"><i class="lt"></i><i class="lb"></i><i class="ll"></i><i class="lr"></i></div>
   <div class="logout-content">
@@ -4072,8 +4061,11 @@ function setTab(t,init){
   var dslot=t==="toggle"?null:$(t==="days"?"rng-date-slot":"hier-date-slot");if(dslot&&$("metaDay").parentNode!==dslot)dslot.appendChild($("metaDay"));if(typeof dpClose==="function")dpClose();
   document.querySelectorAll("#tabs [data-tab]").forEach(function(b){var on=b.dataset.tab===t;b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1});
   document.querySelectorAll("#side [data-side-tab]").forEach(function(b){if(b.dataset.sideTab===t)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+  document.querySelectorAll("#bnav [data-tab]").forEach(function(b){if(b.dataset.tab===t)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+  var mt=$("m-title");if(mt)mt.textContent={day:"Báo cáo ngày",days:"Tổng theo ngày",toggle:"Bật / Tắt quảng cáo",notify:"Thông báo",settings:"Cài đặt"}[t]||"Báo cáo ngày";
   if(!init)save();renderViews()}
 $("tabs").addEventListener("click",function(e){var b=e.target.closest("[data-tab]");if(b)setTab(b.dataset.tab)});
+$("bnav").addEventListener("click",function(e){var b=e.target.closest("[data-tab]");if(b){setTab(b.dataset.tab);window.scrollTo(0,0)}});
 $("tabs").addEventListener("keydown",function(e){var o=["day","days","toggle","notify","settings"],n=o.length,i=o.indexOf(S.tab),j=-1;if(e.key==="ArrowRight")j=(i+1)%n;else if(e.key==="ArrowLeft")j=(i+n-1)%n;else if(e.key==="Home")j=0;else if(e.key==="End")j=n-1;if(j<0)return;e.preventDefault();setTab(o[j]);$("tab-"+o[j]).focus()});
 function openDay(e){var r=e.target.closest("[data-d]");if(!r)return;dayStash=null;dpRange=null;dpRangeRows=null;setTab("day");gotoDay(r.dataset.d);window.scrollTo({top:0,behavior:RM?"auto":"smooth"});toast("Đang xem ngày "+dm(r.dataset.d))}
 $("stab").addEventListener("click",openDay);$("schart").addEventListener("click",openDay);
@@ -4522,7 +4514,7 @@ debtRefresh(false);
 
 // ===== Menu dọc bên trái: đổi chức năng, thu gọn (máy tính), trượt ra/vào (điện thoại) =====
 (function(){
-  var side = $("side"), scrim = $("side-scrim"), openBtn = $("side-open"), collapseBtn = $("side-collapse"), fab = $("fab-menu");
+  var side = $("side"), scrim = $("side-scrim"), openBtn = $("side-open"), collapseBtn = $("side-collapse");
   if (!side) return;
   var root = document.documentElement, desktop = matchMedia("(min-width:1100px)");
   $("side-name").textContent = $("user-name").textContent;
@@ -4546,7 +4538,6 @@ debtRefresh(false);
     side.classList.toggle("open", on);
     scrim.hidden = !on;
     openBtn.setAttribute("aria-expanded", on ? "true" : "false");
-    if (fab) fab.setAttribute("aria-expanded", on ? "true" : "false");
     side.inert = !on && !desktop.matches;
     if (on) { lastFocus = document.activeElement; var cur = side.querySelector("[aria-current=page]") || side.querySelector("button"); if (cur) cur.focus({ preventScroll: true }); }
     else if (lastFocus && lastFocus.focus) { lastFocus.focus({ preventScroll: true }); }
@@ -4555,58 +4546,11 @@ debtRefresh(false);
     var d = desktop.matches;
     side.inert = !d && !side.classList.contains("open");
     side.setAttribute("aria-hidden", side.inert ? "true" : "false");
-    if (d) { side.classList.remove("open"); scrim.hidden = true; openBtn.setAttribute("aria-expanded", "false"); if (fab) fab.setAttribute("aria-expanded", "false"); }
+    if (d) { side.classList.remove("open"); scrim.hidden = true; openBtn.setAttribute("aria-expanded", "false"); }
     collapseBtn.setAttribute("aria-label", d ? (root.classList.contains("side-mini") ? "Mở rộng menu" : "Thu gọn menu") : "Đóng menu");
   }
   openBtn.addEventListener("click", function(){ setOpen(true); syncMode(); });
 
-  // Nút menu nổi (điện thoại): chạm để mở menu; giữ và kéo để đặt ở đâu cũng được; nhớ vị trí theo tỉ lệ màn hình
-  if (fab) {
-    var FAB_KEY = "ads_fab_pos_v1", drag = null, justDragged = false;
-    function fabSize() { return fab.offsetWidth || 52; }
-    function place(x, y) { // x, y: góc trên trái (px), giữ trong màn hình
-      var s = fabSize(), m = 6;
-      x = Math.max(m, Math.min(innerWidth - s - m, x));
-      y = Math.max(m, Math.min(innerHeight - s - m, y));
-      fab.style.left = Math.round(x) + "px"; fab.style.top = Math.round(y) + "px"; fab.style.bottom = "auto";
-      return { x: x, y: y };
-    }
-    function applySaved() {
-      var p = null; try { p = JSON.parse(localStorage.getItem(FAB_KEY) || "null"); } catch (e) {}
-      if (p && isFinite(p.x) && isFinite(p.y)) { var s = fabSize(); place(p.x * (innerWidth - s), p.y * (innerHeight - s)); }
-    }
-    applySaved();
-    window.addEventListener("resize", applySaved);
-    fab.addEventListener("pointerdown", function(e) {
-      if (e.button !== 0) return;
-      var r = fab.getBoundingClientRect();
-      drag = { sx: e.clientX, sy: e.clientY, ox: e.clientX - r.left, oy: e.clientY - r.top, moved: false };
-      try { if (e.pointerId != null) fab.setPointerCapture(e.pointerId); } catch (err) {}
-    });
-    window.addEventListener("pointermove", function(e) {
-      if (!drag) return;
-      if (!drag.moved && Math.abs(e.clientX - drag.sx) + Math.abs(e.clientY - drag.sy) < 8) return;
-      drag.moved = true; fab.classList.add("dragging");
-      place(e.clientX - drag.ox, e.clientY - drag.oy);
-      if (e.cancelable) e.preventDefault();
-    });
-    function endDrag() {
-      if (!drag) return;
-      if (drag.moved) {
-        justDragged = true; fab.classList.remove("dragging");
-        var s = fabSize(), x = parseFloat(fab.style.left), y = parseFloat(fab.style.top);
-        try { localStorage.setItem(FAB_KEY, JSON.stringify({ x: +(x / Math.max(1, innerWidth - s)).toFixed(4), y: +(y / Math.max(1, innerHeight - s)).toFixed(4) })); } catch (e) {}
-        setTimeout(function(){ justDragged = false; }, 300);
-      }
-      drag = null;
-    }
-    window.addEventListener("pointerup", endDrag);
-    window.addEventListener("pointercancel", endDrag);
-    fab.addEventListener("click", function(e) {
-      if (justDragged) { justDragged = false; e.preventDefault(); return; }
-      setOpen(true); syncMode();
-    });
-  }
   scrim.addEventListener("click", function(){ setOpen(false); syncMode(); });
   collapseBtn.addEventListener("click", function(){
     if (desktop.matches) setMini(!root.classList.contains("side-mini"));
@@ -4632,7 +4576,7 @@ debtRefresh(false);
       mode = null;
       if (desktop.matches || !e.touches || e.touches.length !== 1 || document.querySelector("dialog[open]")) return;
       var t = e.touches[0], el = e.target, open = side.classList.contains("open");
-      if (el && el.closest && el.closest("input,select,textarea,[contenteditable],#fab-menu")) return;
+      if (el && el.closest && el.closest("input,select,textarea,[contenteditable]")) return;
       if (!open && hScroll(el)) return;
       mode = open ? "close" : "open"; sx = t.clientX; sy = t.clientY;
     }, { passive: true });

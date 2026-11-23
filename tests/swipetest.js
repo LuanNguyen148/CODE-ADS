@@ -45,16 +45,16 @@ function swipe(w, el, x0, y0, x1, y1) {
   check(!isOpen(), 'gạt từ phải sang trái khi menu đang đóng → KHÔNG mở');
   swipe(w, body, 30, 400, 160, 410); await wait(50);
   check(isOpen(), 'gạt từ trái sang phải (130px, gần như ngang) → MỞ menu chức năng');
-  check(d.querySelector('#fab-menu').getAttribute('aria-expanded') === 'true', 'nút ☰ báo aria-expanded="true" khi mở bằng cử chỉ');
+  check(d.getElementById('side-scrim').hidden === false && side.getAttribute('aria-hidden') === 'false', 'mở bằng cử chỉ: nền tối hiện, menu hiện cho trình đọc màn hình (không còn nút ☰ nổi)');
   swipe(w, side, 250, 400, 240, 400); await wait(50);
   check(isOpen(), 'gạt trái quá ngắn khi menu mở → vẫn mở');
   swipe(w, side, 260, 400, 120, 395); await wait(50);
-  check(!isOpen() && d.querySelector('#fab-menu').getAttribute('aria-expanded') === 'false', 'gạt từ phải sang trái khi menu mở → ĐÓNG menu');
+  check(!isOpen() && d.getElementById('side-scrim').hidden === true, 'gạt từ phải sang trái khi menu mở → ĐÓNG menu (nền tối biến mất)');
   // không kích hoạt khi bắt đầu từ ô nhập hoặc nút ☰ (kéo nút) hoặc đang mở hộp thoại
   const inp = d.getElementById('t1'); swipe(w, inp, 30, 400, 200, 400); await wait(50);
   check(!isOpen(), 'bắt đầu gạt từ ô nhập → KHÔNG mở (người dùng đang chọn chữ)');
-  swipe(w, d.getElementById('fab-menu'), 30, 700, 200, 700); await wait(50);
-  check(!isOpen(), 'bắt đầu từ nút ☰ (kéo nút) → KHÔNG mở bằng cử chỉ');
+  swipe(w, d.getElementById('bnav'), 30, 700, 200, 700); await wait(50);
+  check(isOpen(), 'gạt bắt đầu trên thanh dưới vẫn mở menu (cử chỉ là cách mở menu duy nhất)'); swipe(w, side, 260, 400, 120, 400); await wait(50);
   const dlg = d.createElement('dialog'); d.body.appendChild(dlg); dlg.setAttribute('open', ''); swipe(w, body, 30, 400, 200, 400); await wait(50);
   check(!isOpen(), 'đang mở hộp thoại → KHÔNG mở menu'); dlg.remove();
   // vùng tự cuộn ngang (bảng/dải tab) thì để nó cuộn
